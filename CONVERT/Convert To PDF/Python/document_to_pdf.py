@@ -5,7 +5,7 @@ import time
 
 def convert_to_pdf():
     api_url = "https://api.pdf4me.com/api/v2/ConvertToPdf"                               # API endpoint for converting documents to PDF
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"     # Replace with your actual API key
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"     # Replace with your actual API key
     input_path= "sample_pdf.docx"                                                        # Path to the input document file (can be DOCX, PPTX, etc.)     
     output_path = "Document_to_PDF_output.pdf"
 

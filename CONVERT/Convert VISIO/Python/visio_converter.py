@@ -5,7 +5,7 @@ import time
 
 # API Configuration - PDF4Me service for converting Visio files
 api_url = "https://api.pdf4me.com/api/v2/ConvertVisio?schemaVal=PDF"
-api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
 
 # File paths - Input Visio file and output converted file
 input_path = "E-Commerce.vsdx"  # Change to your Visio file (.vsdx, .vsd, .vsdm)

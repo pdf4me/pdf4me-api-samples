@@ -10,7 +10,7 @@ def convert_word_to_pdf_form():
     """
     
     # API Configuration - PDF4Me service for converting Word to PDF forms
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
     input_path = "sample.docx"  # Path to input Word document
     output_path = "Word_to_PDF_Form_output.pdf"          # Output PDF form file name
     

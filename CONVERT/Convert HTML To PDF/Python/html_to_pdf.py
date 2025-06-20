@@ -11,7 +11,7 @@ def convert_html_to_pdf():
     """
     
     # API Configuration - PDF4Me service for converting HTML to PDF documents
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/" # Replace with your actual API key
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/" # Replace with your actual API key
     input_path = "sample.html"  # Path to input HTML file
     output_path = "HTML_to_PDF_output.pdf"           # Output PDF file name
     

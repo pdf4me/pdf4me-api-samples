@@ -11,7 +11,7 @@ def convert_url_to_pdf():
     
     # API Configuration - PDF4Me service for converting web URLs to PDF documents
     api_url = "https://api.pdf4me.com/api/v2/ConvertUrlToPdf"
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
     
     # Target web page to convert and output configuration
     target_url = "https://en.wikipedia.org/wiki/Microsoft_Power_Automate"  # Web page URL to convert

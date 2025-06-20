@@ -12,7 +12,7 @@ def convert_pdf_to_excel():
     
     # API Configuration - PDF4Me service for converting PDF documents to Excel spreadsheets
     url = "https://api.pdf4me.com/api/v2/ConvertPdfToExcel"
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
     pdf_file_path = "sample.pdf"  # Path to input PDF file
     output_path = "PDF_to_EXCEL_output.xlsx"               # Output Excel file name
 

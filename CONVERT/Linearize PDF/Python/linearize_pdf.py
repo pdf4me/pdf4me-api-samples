@@ -11,7 +11,7 @@ def linearize_pdf():
     """
     
     # API Configuration - PDF4Me service for linearizing PDF documents
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
     input_path = "sample.pdf"  # Path to input PDF file
     output_path = "Linearize_PDF_output.pdf"        # Output linearized PDF file name
     

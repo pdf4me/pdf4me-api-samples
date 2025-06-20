@@ -11,7 +11,7 @@ def create_pdf_a():
     """
     
     # API Configuration - PDF4Me service for converting PDF to PDF/A format
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"  # Replace with your actual API key
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"  # Replace with your actual API key
     input_path = "sample.pdf"  # Path to input PDF file (must be PDF)
     output_path = "PDF_to_PDF_A_output.pdf"         # Output PDF/A compliant file name
     

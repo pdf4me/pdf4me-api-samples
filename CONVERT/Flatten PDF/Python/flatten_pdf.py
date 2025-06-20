@@ -11,7 +11,7 @@ def flatten_pdf():
     """
     
     # API Configuration - PDF4Me service for flattening PDF documents
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
     input_path = "unflattened-sample.pdf"  # Path to input PDF with interactive elements
     output_path = "Flatten_PDF_output.pdf"                      # Output flattened PDF file name
     

@@ -6,7 +6,7 @@ import time
 
 def convert_json_to_excel():
     api_url = "https://api.pdf4me.com/api/v2/ConvertJsonToExcel"
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
     output_path = "JSON_to_EXCEL_output.xlsx"
 
     # Path to your JSON file

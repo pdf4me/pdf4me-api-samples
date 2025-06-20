@@ -11,7 +11,7 @@ def convert_markdown_to_pdf():
     """
     
     # API Configuration - PDF4Me service for converting Markdown to PDF documents
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
     input_path = "sample.md"   # Path to input Markdown file (.md extension)
     output_path = "Markdown_to_PDF_output.pdf"      # Output PDF file name
     

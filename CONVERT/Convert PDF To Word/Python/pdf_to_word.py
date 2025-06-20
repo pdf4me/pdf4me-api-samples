@@ -12,7 +12,7 @@ def convert_pdf_to_word():
     
     # API Configuration - PDF4Me service for converting PDF documents to Word documents
     url = "https://api.pdf4me.com/api/v2/ConvertPdfToWord"
-    api_key = "Please Get API Key From https://dev.pdf4me.com/dashboard/#/api-keys/"
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/"
     pdf_file_path = "sample.pdf"    # Path to input PDF file
     output_path = "PDF_to_Word_output.docx"              # Output Word document file name
 
