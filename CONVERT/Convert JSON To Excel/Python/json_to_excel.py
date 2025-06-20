@@ -37,7 +37,16 @@ def convert_json_to_excel():
     # Initial conversion request
     response = requests.post(api_url, json=payload, headers=headers, verify=False)
 
-    if response.status_code == 202:
+    if response.status_code == 200:
+        # 200 means "Success" - conversion completed successfully
+        print("JSON to Excel conversion completed successfully!")
+        with open(output_path, "wb") as f:
+            f.write(response.content)
+        print(f"Excel file saved successfully at:\n{output_path}")
+        
+    elif response.status_code == 202:
+        # 202 means "Accepted" - API is processing the conversion asynchronously
+        print("Request accepted. PDF4Me is processing asynchronously...")
         location_url = response.headers.get('Location')
         if not location_url:
             print("No 'Location' header found in the response.")
@@ -48,32 +57,35 @@ def convert_json_to_excel():
         retry_delay = 10  # seconds
 
         for attempt in range(max_retries):
-            print(f"Waiting for result... (Attempt {attempt + 1})")
+            print(f"Waiting for result... (Attempt {attempt + 1}/{max_retries})")
             time.sleep(retry_delay)
 
             response_conversion = requests.get(location_url, headers=headers, verify=False)
 
             if response_conversion.status_code == 200:
+                # Conversion completed successfully
+                print("JSON to Excel conversion completed successfully!")
                 with open(output_path, 'wb') as out_file:
                     out_file.write(response_conversion.content)
                 print(f"Excel file saved successfully at:\n{output_path}")
                 return
             elif response_conversion.status_code == 202:
-                continue  # still processing
+                # Still processing, continue polling
+                print("Still processing...")
+                continue
             else:
-                print(f"Unexpected error: {response_conversion.status_code}")
-                print(response_conversion.text)
+                # Error occurred during processing
+                print(f"Error during polling. Status code: {response_conversion.status_code}")
+                print(f"Response text: {response_conversion.text}")
                 return
 
         print("Timeout: JSON conversion did not complete after multiple retries.")
         
-    elif response.status_code == 200:
-        with open(output_path, "wb") as f:
-            f.write(response.content)
-        print(f"Excel file saved successfully at:\n{output_path}")
     else:
-        print(f"Initial request failed: {response.status_code}")
-        print(response.text)
+        # All other status codes are errors
+        print(f"Error: Failed to convert JSON to Excel. Status code: {response.status_code}")
+        print(f"Response text: {response.text}")
+        return
 
 if __name__ == "__main__":
     convert_json_to_excel()

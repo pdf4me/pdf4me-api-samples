@@ -69,8 +69,8 @@ def convert_url_to_pdf():
 
     # Handle different response scenarios based on status code
     if response.status_code == 200:
-        # Direct response - conversion completed immediately
-        print("URL to PDF conversion completed immediately!")
+        # 200 means "Success" - conversion completed successfully
+        print("URL to PDF conversion completed successfully!")
         
         # Check if response is a binary PDF file
         content_type = response.headers.get('Content-Type', '')
@@ -164,8 +164,8 @@ def convert_url_to_pdf():
                     continue
                 else:
                     # Error occurred during processing
-                    print(f"Unexpected error during conversion: {poll_response.status_code}")
-                    print("Error details:", poll_response.text)
+                    print(f"Error during polling. Status code: {poll_response.status_code}")
+                    print(f"Response text: {poll_response.text}")
                     return
                     
             except requests.exceptions.RequestException as e:
@@ -184,9 +184,10 @@ def convert_url_to_pdf():
         print("Please check if the URL is valid and accessible, then try again later.")
         
     else:
-        # Error in initial request
-        print(f"Initial request failed with status code: {response.status_code}")
-        print("Response details:", response.text)
+        # All other status codes are errors
+        print(f"Error: Failed to convert URL to PDF. Status code: {response.status_code}")
+        print(f"Response text: {response.text}")
+        return
 
 # Main execution - Run the conversion when script is executed directly
 if __name__ == "__main__":

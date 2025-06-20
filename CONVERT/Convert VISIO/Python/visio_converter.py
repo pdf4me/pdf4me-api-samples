@@ -116,10 +116,24 @@ def convert_visio_to_pdf():
     print(f"Response headers: {response.headers}")
     print(f"Response content length: {len(response.content)}")
 
-    # Step 6: Handle different response scenarios
-    if response.status_code == 202:
+    # Step 6: Handle different response scenarios based on status code
+    if response.status_code == 200:
+        # 200 means "Success" - conversion completed successfully
+        print("Visio conversion completed successfully!")
+        
+        # Step 7: Validate the response and save the file
+        if response.content.startswith(b'%PDF') or len(response.content) > 1000:
+            with open(output_path, "wb") as f:
+                f.write(response.content)
+            print(f"File saved successfully at: {output_path}")
+        else:
+            print("Warning: Response doesn't appear to be a valid file")
+            print(f"First 100 bytes: {response.content[:100]}")
+        return
+        
+    elif response.status_code == 202:
         # 202 means "Accepted" - API is processing asynchronously
-        print("API is processing the conversion asynchronously...")
+        print("Request accepted. PDF4Me is processing the conversion asynchronously...")
         
         # Get the polling URL from the Location header
         location_url = response.headers.get('Location')
@@ -131,7 +145,7 @@ def convert_visio_to_pdf():
         max_retries = 10    # Maximum number of polling attempts
         retry_delay = 10    # seconds between each polling attempt
 
-        # Step 7: Poll the API until conversion is complete
+        # Step 8: Poll the API until conversion is complete
         for attempt in range(max_retries):
             print(f"Waiting for result... (Attempt {attempt + 1}/{max_retries})")
             time.sleep(retry_delay)  # Wait before next attempt
@@ -141,9 +155,9 @@ def convert_visio_to_pdf():
 
             if response_conversion.status_code == 200:
                 # Conversion completed successfully
-                print("Conversion completed successfully!")
+                print("Visio conversion completed successfully!")
                 
-                # Step 8: Validate and save the result
+                # Step 9: Validate and save the result
                 if response_conversion.content.startswith(b'%PDF') or len(response_conversion.content) > 1000:
                     with open(output_path, 'wb') as out_file:
                         out_file.write(response_conversion.content)
@@ -159,31 +173,18 @@ def convert_visio_to_pdf():
                 continue
             else:
                 # Error occurred during processing
-                print(f"Unexpected error during polling: {response_conversion.status_code}")
-                print(response_conversion.text)
+                print(f"Error during polling. Status code: {response_conversion.status_code}")
+                print(f"Response text: {response_conversion.text}")
                 return
 
         # If we reach here, polling timed out
         print("Timeout: Visio conversion did not complete after multiple retries.")
         
-    elif response.status_code == 200:
-        # Direct response - conversion completed immediately
-        print("Conversion completed immediately!")
-        
-        # Step 8: Validate the response and save the file
-        if response.content.startswith(b'%PDF') or len(response.content) > 1000:
-            with open(output_path, "wb") as f:
-                f.write(response.content)
-            print(f"File saved successfully at: {output_path}")
-        else:
-            print("Warning: Response doesn't appear to be a valid file")
-            print(f"First 100 bytes: {response.content[:100]}")
     else:
-        # Error in initial request
-        print(f"Initial request failed: {response.status_code}")
-        print(f"Error details: {response.text}")
-        if not response.content:
-            print("No content returned. Check if input file is valid and payload is correct.")
+        # All other status codes are errors
+        print(f"Error: Failed to convert Visio file. Status code: {response.status_code}")
+        print(f"Response text: {response.text}")
+        return
 
 # Step 9: Main execution - Run the conversion when script is executed directly
 if __name__ == "__main__":

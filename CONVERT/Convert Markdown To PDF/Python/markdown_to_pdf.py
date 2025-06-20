@@ -71,60 +71,9 @@ def convert_markdown_to_pdf():
     print(f"Response content length: {len(response.content)}")
     
     # Handle different response scenarios based on status code
-    if response.status_code == 202:
-        # 202 means "Accepted" - API is processing the conversion asynchronously
-        print("Request accepted. PDF4Me is processing asynchronously...")
-        
-        # Get the polling URL from the Location header for checking status
-        location_url = response.headers.get('Location')
-        if not location_url:
-            print("No 'Location' header found in the response.")
-            return
-
-        # Retry logic for polling the result
-        max_retries = 10    # Maximum number of polling attempts
-        retry_delay = 10    # seconds between each polling attempt
-
-        # Poll the API until conversion is complete
-        for attempt in range(max_retries):
-            print(f"Waiting for result... (Attempt {attempt + 1}/{max_retries})")
-            time.sleep(retry_delay)  # Wait before next attempt
-
-            # Check the conversion status by calling the polling URL
-            response_conversion = requests.get(location_url, headers=headers, verify=False)
-
-            if response_conversion.status_code == 200:
-                # Conversion completed successfully
-                print("Markdown to PDF conversion completed successfully!")
-                
-                # Validate and save the converted PDF
-                if (response_conversion.content.startswith(b'%PDF') or 
-                    len(response_conversion.content) > 1000):
-                    with open(output_path, 'wb') as out_file:
-                        out_file.write(response_conversion.content)
-                    print(f"PDF saved successfully to: {output_path}")
-                    print("Markdown formatting has been converted to PDF layout")
-                else:
-                    print("Warning: Response doesn't appear to be a valid PDF")
-                    print(f"First 100 bytes: {response_conversion.content[:100]}")
-                return
-                
-            elif response_conversion.status_code == 202:
-                # Still processing, continue polling
-                print("Still processing...")
-                continue
-            else:
-                # Error occurred during processing
-                print(f"Unexpected error during polling: {response_conversion.status_code}")
-                print(response_conversion.text)
-                return
-
-        # If we reach here, polling timed out
-        print("Timeout: Markdown to PDF conversion did not complete after multiple retries.")
-        
-    elif response.status_code == 200:
-        # Direct response - conversion completed immediately
-        print("Markdown to PDF conversion completed immediately!")
+    if response.status_code == 200:
+        # 200 means "Success" - conversion completed successfully
+        print("Markdown to PDF conversion completed successfully!")
         
         # Check if response is a binary PDF file
         if (response.headers.get('content-type', '').startswith('application/pdf') or 
@@ -169,10 +118,62 @@ def convert_markdown_to_pdf():
             print(f"Failed to parse JSON response: {e}")
             print(f"Raw response text: {response.text[:500]}...")  # Show first 500 characters
             
+    elif response.status_code == 202:
+        # 202 means "Accepted" - API is processing the conversion asynchronously
+        print("Request accepted. PDF4Me is processing asynchronously...")
+        
+        # Get the polling URL from the Location header for checking status
+        location_url = response.headers.get('Location')
+        if not location_url:
+            print("No 'Location' header found in the response.")
+            return
+
+        # Retry logic for polling the result
+        max_retries = 10    # Maximum number of polling attempts
+        retry_delay = 10    # seconds between each polling attempt
+
+        # Poll the API until conversion is complete
+        for attempt in range(max_retries):
+            print(f"Waiting for result... (Attempt {attempt + 1}/{max_retries})")
+            time.sleep(retry_delay)  # Wait before next attempt
+
+            # Check the conversion status by calling the polling URL
+            response_conversion = requests.get(location_url, headers=headers, verify=False)
+
+            if response_conversion.status_code == 200:
+                # Conversion completed successfully
+                print("Markdown to PDF conversion completed successfully!")
+                
+                # Validate and save the converted PDF
+                if (response_conversion.content.startswith(b'%PDF') or 
+                    len(response_conversion.content) > 1000):
+                    with open(output_path, 'wb') as out_file:
+                        out_file.write(response_conversion.content)
+                    print(f"PDF saved successfully to: {output_path}")
+                    print("Markdown formatting has been converted to PDF layout")
+                else:
+                    print("Warning: Response doesn't appear to be a valid PDF")
+                    print(f"First 100 bytes: {response_conversion.content[:100]}")
+                return
+                
+            elif response_conversion.status_code == 202:
+                # Still processing, continue polling
+                print("Still processing...")
+                continue
+            else:
+                # Error occurred during processing
+                print(f"Error during polling. Status code: {response_conversion.status_code}")
+                print(f"Response text: {response_conversion.text}")
+                return
+
+        # If we reach here, polling timed out
+        print("Timeout: Markdown to PDF conversion did not complete after multiple retries.")
+        
     else:
-        # Error in initial request
-        print(f"Failed to convert Markdown to PDF. Status code: {response.status_code}")
+        # All other status codes are errors
+        print(f"Error: Failed to convert Markdown to PDF. Status code: {response.status_code}")
         print(f"Response text: {response.text}")
+        return
 
 # Main execution - Run the conversion when script is executed directly
 if __name__ == "__main__":
