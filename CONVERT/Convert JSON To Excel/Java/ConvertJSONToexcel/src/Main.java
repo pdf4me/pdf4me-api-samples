@@ -1,77 +1,22 @@
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.*;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import java.util.concurrent.*;
+import java.net.HttpURLConnection;
 
-/**
- * JSON to Excel Converter
- * Converts JSON data to Excel spreadsheets using PDF4Me API
- * Supports various formatting options and data transformation
- * Enhanced with async processing capabilities
- */
 public class Main {
-    
-    // API key as in Python
     private static final String API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     private static final String API_URL = "https://api.pdf4me.com/api/v2/ConvertJsonToExcel";
-    
-    // Thread pool for async operations
-    private static final ExecutorService executor = Executors.newFixedThreadPool(4);
-    
-    /**
-     * Convert JSON file to Excel (Async by default)
-     * @param jsonFilePath Path to the JSON file
-     * @param outputPath Output Excel file path
-     * @param progressCallback Optional callback for progress updates
-     * @return CompletableFuture that completes when conversion is done
-     */
-    public static CompletableFuture<Void> convertJsonToExcel(String jsonFilePath, String outputPath, 
-                                                            Consumer<String> progressCallback) {
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    public static CompletableFuture<Void> convertJsonToExcel(String json, boolean isFile, String output) {
         return CompletableFuture.runAsync(() -> {
             try {
-                if (progressCallback != null) {
-                    progressCallback.accept("Starting JSON to Excel conversion...");
-                }
-                
-                System.out.println("Starting JSON to Excel conversion process...");
-                System.out.println("Input JSON file: " + jsonFilePath);
-                System.out.println("Output Excel file: " + outputPath);
-                
-                // Check if input file exists
-                if (!FileUtils.fileExists(jsonFilePath)) {
-                    String error = "Error: Input file not found at " + jsonFilePath;
-                    System.err.println(error);
-                    if (progressCallback != null) {
-                        progressCallback.accept(error);
-                    }
-                    throw new IOException(error);
-                }
-                
-                if (progressCallback != null) {
-                    progressCallback.accept("Reading and encoding JSON file...");
-                }
-                
-                // Read and encode JSON file
-                String jsonContent = FileUtils.readFileAsString(jsonFilePath);
-                String jsonBase64 = FileUtils.encodeToBase64(jsonContent);
-                
-                System.out.println("JSON content read and encoded to Base64");
-                
-                if (progressCallback != null) {
-                    progressCallback.accept("Preparing API request...");
-                }
-                
-                // Prepare the payload for JSON to Excel conversion
-                Map<String, Object> payload = new HashMap<>();
+                String jsonBase64 = isFile ? Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get(json)))
+                                          : Base64.getEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
+                Map<String, Object> payload = new LinkedHashMap<>();
                 payload.put("docContent", jsonBase64);
                 payload.put("docName", "output");
                 payload.put("worksheetName", "Sheet1");
@@ -85,483 +30,100 @@ public class Main {
                 payload.put("firstColumn", 1);
                 payload.put("isAsync", true);
                 
-                if (progressCallback != null) {
-                    progressCallback.accept("Sending request to PDF4Me API...");
-                }
+                ApiResponse resp = post(API_URL, API_KEY, payload);
                 
-                // Send the conversion request
-                System.out.println("Sending JSON to Excel conversion request to PDF4Me API...");
-                Pdf4MeApiClient.ApiResponse response = Pdf4MeApiClient.postWithApiKey(API_URL, API_KEY, payload);
-                
-                System.out.println("Initial response status code: " + response.getStatusCode());
-                
-                if (response.getStatusCode() == 202) {
-                    // 202 means "Accepted" - API is processing asynchronously
-                    System.out.println("Request accepted. PDF4Me is processing the JSON conversion asynchronously...");
+                if (resp.status == 200) {
+                    handleSuccessResponse(resp, output);
+                } else if (resp.status == 202) {
+                    String locationUrl = resp.location;
+                    if (locationUrl == null) return;
                     
-                    if (progressCallback != null) {
-                        progressCallback.accept("Request accepted, polling for completion...");
-                    }
-                    
-                    String locationUrl = response.getLocation();
-                    if (locationUrl == null) {
-                        String error = "No 'Location' header found in the response.";
-                        System.err.println(error);
-                        if (progressCallback != null) {
-                            progressCallback.accept(error);
+                    for (int attempt = 1; attempt <= 10; attempt++) {
+                        Thread.sleep(10000);
+                        ApiResponse pollResp = get(locationUrl, API_KEY);
+                        if (pollResp.status == 200) {
+                            handleSuccessResponse(pollResp, output);
+                            return;
+                        } else if (pollResp.status != 202) {
+                            System.err.println("Polling failed: " + pollResp.status);
+                            return;
                         }
-                        throw new IOException(error);
                     }
-                    
-                    System.out.println("Location header for polling: " + locationUrl);
-                    
-                    // Poll for completion with progress updates
-                    Pdf4MeApiClient.ApiResponse finalResponse = Pdf4MeApiClient.pollForCompletionWithApiKeyAsync(
-                        locationUrl, API_KEY, progressCallback);
-                    handleSuccessfulResponse(finalResponse, outputPath);
-                    
-                    if (progressCallback != null) {
-                        progressCallback.accept("Conversion completed successfully!");
-                    }
-                    
-                } else if (response.getStatusCode() == 200) {
-                    // Direct response - conversion completed immediately
-                    System.out.println("JSON to Excel conversion completed immediately!");
-                    if (progressCallback != null) {
-                        progressCallback.accept("Conversion completed immediately!");
-                    }
-                    handleSuccessfulResponse(response, outputPath);
+                    System.err.println("Timeout");
                 } else {
-                    // Error in initial request
-                    String error = "Initial request failed with status code: " + response.getStatusCode();
-                    System.err.println(error);
-                    if (progressCallback != null) {
-                        progressCallback.accept(error);
-                    }
-                    throw new IOException("Conversion failed with status: " + response.getStatusCode());
+                    System.err.println("API failed: " + resp.status);
                 }
-                
-            } catch (Exception e) {
-                String error = "Conversion failed: " + e.getMessage();
-                System.err.println(error);
-                if (progressCallback != null) {
-                    progressCallback.accept(error);
-                }
-                throw new RuntimeException(e);
+            } catch (Exception e) { 
+                System.err.println("Error: " + e.getMessage());
+                throw new RuntimeException(e); 
             }
         }, executor);
-    }
-    
-    /**
-     * Convert JSON string to Excel (Async by default)
-     * @param jsonContent JSON content as string
-     * @param outputPath Output Excel file path
-     * @param progressCallback Optional callback for progress updates
-     * @return CompletableFuture that completes when conversion is done
-     */
-    public static CompletableFuture<Void> convertJsonStringToExcel(String jsonContent, String outputPath,
-                                                                  Consumer<String> progressCallback) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                if (progressCallback != null) {
-                    progressCallback.accept("Starting JSON string to Excel conversion...");
-                }
-                
-                System.out.println("Starting JSON string to Excel conversion process...");
-                System.out.println("Output Excel file: " + outputPath);
-                
-                if (progressCallback != null) {
-                    progressCallback.accept("Encoding JSON content...");
-                }
-                
-                // Encode JSON content
-                String jsonBase64 = FileUtils.encodeToBase64(jsonContent);
-                
-                System.out.println("JSON content encoded to Base64");
-                
-                if (progressCallback != null) {
-                    progressCallback.accept("Preparing API request...");
-                }
-                
-                // Prepare the payload for JSON to Excel conversion
-                Map<String, Object> payload = new HashMap<>();
-                payload.put("docContent", jsonBase64);
-                payload.put("docName", "output");
-                payload.put("worksheetName", "Sheet1");
-                payload.put("isTitleWrapText", true);
-                payload.put("isTitleBold", true);
-                payload.put("convertNumberAndDate", false);
-                payload.put("numberFormat", "11");
-                payload.put("dateFormat", "01/01/2025");
-                payload.put("ignoreNullValues", false);
-                payload.put("firstRow", 1);
-                payload.put("firstColumn", 1);
-                payload.put("isAsync", true);
-                
-                if (progressCallback != null) {
-                    progressCallback.accept("Sending request to PDF4Me API...");
-                }
-                
-                // Send the conversion request
-                System.out.println("Sending JSON to Excel conversion request to PDF4Me API...");
-                Pdf4MeApiClient.ApiResponse response = Pdf4MeApiClient.postWithApiKey(API_URL, API_KEY, payload);
-                
-                System.out.println("Initial response status code: " + response.getStatusCode());
-                
-                if (response.getStatusCode() == 202) {
-                    // 202 means "Accepted" - API is processing asynchronously
-                    System.out.println("Request accepted. PDF4Me is processing the JSON conversion asynchronously...");
-                    
-                    if (progressCallback != null) {
-                        progressCallback.accept("Request accepted, polling for completion...");
-                    }
-                    
-                    String locationUrl = response.getLocation();
-                    if (locationUrl == null) {
-                        String error = "No 'Location' header found in the response.";
-                        System.err.println(error);
-                        if (progressCallback != null) {
-                            progressCallback.accept(error);
-                        }
-                        throw new IOException(error);
-                    }
-                    
-                    System.out.println("Location header for polling: " + locationUrl);
-                    
-                    // Poll for completion with progress updates
-                    Pdf4MeApiClient.ApiResponse finalResponse = Pdf4MeApiClient.pollForCompletionWithApiKeyAsync(
-                        locationUrl, API_KEY, progressCallback);
-                    handleSuccessfulResponse(finalResponse, outputPath);
-                    
-                    if (progressCallback != null) {
-                        progressCallback.accept("Conversion completed successfully!");
-                    }
-                    
-                } else if (response.getStatusCode() == 200) {
-                    // Direct response - conversion completed immediately
-                    System.out.println("JSON to Excel conversion completed immediately!");
-                    if (progressCallback != null) {
-                        progressCallback.accept("Conversion completed immediately!");
-                    }
-                    handleSuccessfulResponse(response, outputPath);
-                } else {
-                    // Error in initial request
-                    String error = "Initial request failed with status code: " + response.getStatusCode();
-                    System.err.println(error);
-                    if (progressCallback != null) {
-                        progressCallback.accept(error);
-                    }
-                    throw new IOException("Conversion failed with status: " + response.getStatusCode());
-                }
-                
-            } catch (Exception e) {
-                String error = "Conversion failed: " + e.getMessage();
-                System.err.println(error);
-                if (progressCallback != null) {
-                    progressCallback.accept(error);
-                }
-                throw new RuntimeException(e);
-            }
-        }, executor);
-    }
-    
-    /**
-     * Handle successful API response and save the Excel file
-     */
-    private static void handleSuccessfulResponse(Pdf4MeApiClient.ApiResponse response, String outputPath) throws IOException {
-        byte[] content = response.getContentBytes();
-        
-        if (content != null && content.length > 0) {
-            // Save the Excel file
-            FileUtils.writeBytesToFile(outputPath, content);
-            
-            System.out.println("Excel file saved successfully to: " + outputPath);
-            System.out.println("JSON data has been converted to Excel format");
-            System.out.println("File size: " + content.length + " bytes");
-        } else {
-            throw new IOException("Empty response received from API");
-        }
     }
 
-    /**
-     * Main method - entry point for the application
-     * Uses the Main class to convert JSON data to Excel format
-     * All conversions are async by default
-     */
+    private static void handleSuccessResponse(ApiResponse resp, String output) throws IOException {
+        byte[] content = resp.bytes;
+        if (content == null || content.length == 0) throw new IOException("Empty response");
+        Files.write(Paths.get(output), content);
+    }
+
+    private static ApiResponse post(String url, String key, Map<String, Object> payload) throws IOException {
+        HttpURLConnection c = (HttpURLConnection) new java.net.URL(url).openConnection();
+        c.setRequestMethod("POST");
+        c.setRequestProperty("Content-Type", "application/json");
+        c.setRequestProperty("Authorization", "Basic " + key);
+        c.setDoOutput(true);
+        StringBuilder j = new StringBuilder("{");
+        for (Map.Entry<String, Object> e : payload.entrySet()) {
+            if (j.length() > 1) j.append(',');
+            j.append('"').append(e.getKey()).append('"').append(':');
+            Object v = e.getValue();
+            if (v instanceof String) j.append('"').append(v.toString().replace("\"", "\\\"")).append('"');
+            else j.append(v);
+        }
+        j.append('}');
+        try (OutputStream os = c.getOutputStream()) { os.write(j.toString().getBytes(StandardCharsets.UTF_8)); }
+        int s = c.getResponseCode();
+        String loc = c.getHeaderField("Location");
+        String contentType = c.getHeaderField("Content-Type");
+        byte[] b = read(s >= 200 && s < 300 ? c.getInputStream() : c.getErrorStream());
+        return new ApiResponse(s, b, loc, contentType);
+    }
+    
+    private static ApiResponse get(String url, String key) throws IOException {
+        HttpURLConnection c = (HttpURLConnection) new java.net.URL(url).openConnection();
+        c.setRequestMethod("GET");
+        c.setRequestProperty("Authorization", "Basic " + key);
+        int s = c.getResponseCode();
+        String contentType = c.getHeaderField("Content-Type");
+        byte[] b = read(c.getInputStream());
+        return new ApiResponse(s, b, null, contentType);
+    }
+    
+    private static byte[] read(InputStream in) throws IOException {
+        if (in == null) return new byte[0];
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        byte[] d = new byte[1024]; int n;
+        while ((n = in.read(d)) != -1) buf.write(d, 0, n);
+        return buf.toByteArray();
+    }
+    
+    private static class ApiResponse {
+        int status; byte[] bytes; String location; String contentType;
+        ApiResponse(int s, byte[] b, String l, String ct) { status = s; bytes = b; location = l; contentType = ct; }
+    }
+    
     public static void main(String[] args) {
-        System.out.println("JSON to Excel Converter (Async by Default)");
-        System.out.println("=".repeat(50));
-        
-        String jsonFilePath = "sample.json";
-        String outputPath = "JSON_to_EXCEL_output.xlsx";
-        
+        String in = "sample.json", out = "JSON_to_EXCEL_output.xlsx";
         try {
-            // Check if sample.json exists
-            if (Main.class.getResource("/" + jsonFilePath) != null || 
-                new java.io.File(jsonFilePath).exists()) {
-                
-                System.out.println("Using existing sample.json file");
-                
-                // Progress callback for updates
-                Consumer<String> progressCallback = message -> {
-                    System.out.println("Progress: " + message);
-                };
-                
-                // Convert using async method
-                CompletableFuture<Void> future = convertJsonToExcel(jsonFilePath, outputPath, progressCallback);
-                
-                // Wait for completion
-                future.get(5, TimeUnit.MINUTES); // 5 minute timeout
-                
+            CompletableFuture<Void> f;
+            if (Files.exists(Paths.get(in))) {
+                f = convertJsonToExcel(in, true, out);
             } else {
-                System.out.println("Sample file not found, using built-in sample data");
-                
-                // Create sample JSON data for testing
-                String sampleJson = """
-                    [
-                        {"name": "John Doe", "age": 30, "city": "New York", "salary": 75000, "department": "Engineering"},
-                        {"name": "Jane Smith", "age": 25, "city": "Los Angeles", "salary": 65000, "department": "Marketing"},
-                        {"name": "Bob Johnson", "age": 35, "city": "Chicago", "salary": 80000, "department": "Sales"},
-                        {"name": "Alice Brown", "age": 28, "city": "Houston", "salary": 70000, "department": "HR"},
-                        {"name": "Charlie Wilson", "age": 32, "city": "Phoenix", "salary": 72000, "department": "Engineering"}
-                    ]
-                    """;
-                
-                // Progress callback for updates
-                Consumer<String> progressCallback = message -> {
-                    System.out.println("Progress: " + message);
-                };
-                
-                // Convert using async method
-                CompletableFuture<Void> future = convertJsonStringToExcel(sampleJson, outputPath, progressCallback);
-                
-                // Wait for completion
-                future.get(5, TimeUnit.MINUTES); // 5 minute timeout
+                f = convertJsonToExcel("[{\"name\":\"John\",\"age\":30},{\"name\":\"Jane\",\"age\":25}]", false, out);
             }
-            
-            System.out.println("\n✅ Conversion completed successfully!");
-            System.out.println("📁 Output file: " + outputPath);
-            
-        } catch (Exception e) {
-            System.err.println("\n❌ Conversion failed: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            // Shutdown the executor service
-            executor.shutdown();
-            try {
-                if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
-                    executor.shutdownNow();
-                }
-            } catch (InterruptedException e) {
-                executor.shutdownNow();
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-}
-
-// Utility class for file operations
-class FileUtils {
-    public static String readFileAsString(String filePath) throws IOException {
-        System.out.println("Reading file: " + filePath);
-        Path path = Paths.get(filePath);
-        return Files.readString(path, StandardCharsets.UTF_8);
-    }
-    public static byte[] readFileAsBytes(String filePath) throws IOException {
-        System.out.println("Reading file as bytes: " + filePath);
-        Path path = Paths.get(filePath);
-        return Files.readAllBytes(path);
-    }
-    public static void writeBytesToFile(String filePath, byte[] content) throws IOException {
-        System.out.println("Writing bytes to file: " + filePath);
-        Path path = Paths.get(filePath);
-        Files.write(path, content);
-    }
-    public static String encodeToBase64(String content) {
-        return Base64.getEncoder().encodeToString(content.getBytes(StandardCharsets.UTF_8));
-    }
-    public static String encodeToBase64(byte[] content) {
-        return Base64.getEncoder().encodeToString(content);
-    }
-    public static byte[] decodeFromBase64(String base64String) {
-        return Base64.getDecoder().decode(base64String);
-    }
-    public static boolean fileExists(String filePath) {
-        return Files.exists(Paths.get(filePath));
-    }
-}
-
-// Common API client for PDF4Me API interactions
-class Pdf4MeApiClient {
-    private static final int MAX_RETRIES = 10;
-    private static final int RETRY_DELAY_SECONDS = 10;
-    
-    public static ApiResponse postWithApiKey(String url, String apiKey, Map<String, Object> payload) throws IOException {
-        java.net.URL apiUrl = new java.net.URL(url);
-        java.net.HttpURLConnection connection = (java.net.HttpURLConnection) apiUrl.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Authorization", "Basic " + apiKey);
-        connection.setDoOutput(true);
-        String jsonPayload = convertMapToJson(payload);
-        try (java.io.OutputStream os = connection.getOutputStream()) {
-            byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
-        }
-        int statusCode = connection.getResponseCode();
-        String location = connection.getHeaderField("Location");
-        byte[] contentBytes;
-        if (statusCode >= 200 && statusCode < 300) {
-            contentBytes = readInputStream(connection.getInputStream());
-        } else {
-            contentBytes = readInputStream(connection.getErrorStream());
-        }
-        return new ApiResponse(statusCode, contentBytes, location);
-    }
-    
-    public static ApiResponse pollForCompletionWithApiKey(String pollingUrl, String apiKey) throws IOException {
-        System.out.println("Starting polling for completion at: " + pollingUrl);
-        for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-            System.out.println("Polling attempt " + attempt + "/" + MAX_RETRIES);
-            try {
-                Thread.sleep(RETRY_DELAY_SECONDS * 1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new IOException("Polling interrupted", e);
-            }
-            ApiResponse response = getWithApiKey(pollingUrl, apiKey);
-            if (response.getStatusCode() == 200) {
-                System.out.println("Operation completed successfully");
-                return response;
-            } else if (response.getStatusCode() == 202) {
-                System.out.println("Operation still in progress, continuing to poll...");
-                continue;
-            } else {
-                System.err.println("Unexpected status code during polling: " + response.getStatusCode());
-                throw new IOException("Polling failed with status: " + response.getStatusCode());
-            }
-        }
-        throw new IOException("Operation timed out after " + MAX_RETRIES + " attempts");
-    }
-    
-    /**
-     * Async version of polling with progress callback support
-     * @param pollingUrl URL to poll for completion
-     * @param apiKey API key for authentication
-     * @param progressCallback Optional callback for progress updates
-     * @return ApiResponse when operation completes
-     * @throws IOException if polling fails
-     */
-    public static ApiResponse pollForCompletionWithApiKeyAsync(String pollingUrl, String apiKey, 
-                                                              Consumer<String> progressCallback) throws IOException {
-        System.out.println("Starting async polling for completion at: " + pollingUrl);
-        
-        for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-            if (progressCallback != null) {
-                progressCallback.accept("Polling attempt " + attempt + "/" + MAX_RETRIES);
-            }
-            
-            System.out.println("Polling attempt " + attempt + "/" + MAX_RETRIES);
-            
-            try {
-                Thread.sleep(RETRY_DELAY_SECONDS * 1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new IOException("Polling interrupted", e);
-            }
-            
-            ApiResponse response = getWithApiKey(pollingUrl, apiKey);
-            
-            if (response.getStatusCode() == 200) {
-                if (progressCallback != null) {
-                    progressCallback.accept("Operation completed successfully");
-                }
-                System.out.println("Operation completed successfully");
-                return response;
-            } else if (response.getStatusCode() == 202) {
-                if (progressCallback != null) {
-                    progressCallback.accept("Operation still in progress, continuing to poll...");
-                }
-                System.out.println("Operation still in progress, continuing to poll...");
-                continue;
-            } else {
-                String error = "Unexpected status code during polling: " + response.getStatusCode();
-                System.err.println(error);
-                if (progressCallback != null) {
-                    progressCallback.accept(error);
-                }
-                throw new IOException("Polling failed with status: " + response.getStatusCode());
-            }
-        }
-        
-        String timeoutError = "Operation timed out after " + MAX_RETRIES + " attempts";
-        if (progressCallback != null) {
-            progressCallback.accept(timeoutError);
-        }
-        throw new IOException(timeoutError);
-    }
-    
-    public static ApiResponse getWithApiKey(String url, String apiKey) throws IOException {
-        java.net.URL apiUrl = new java.net.URL(url);
-        java.net.HttpURLConnection connection = (java.net.HttpURLConnection) apiUrl.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Authorization", "Basic " + apiKey);
-        int statusCode = connection.getResponseCode();
-        byte[] contentBytes = readInputStream(connection.getInputStream());
-        return new ApiResponse(statusCode, contentBytes, null);
-    }
-    
-    private static String convertMapToJson(Map<String, Object> map) {
-        StringBuilder json = new StringBuilder("{");
-        boolean first = true;
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (!first) {
-                json.append(",");
-            }
-            first = false;
-            json.append("\"").append(entry.getKey()).append("\":");
-            Object value = entry.getValue();
-            if (value instanceof String) {
-                json.append("\"").append(value.toString().replace("\"", "\\\"")).append("\"");
-            } else if (value instanceof Boolean || value instanceof Number) {
-                json.append(value);
-            } else {
-                json.append("\"").append(value.toString().replace("\"", "\\\"")).append("\"");
-            }
-        }
-        json.append("}");
-        return json.toString();
-    }
-    
-    private static byte[] readInputStream(java.io.InputStream inputStream) throws IOException {
-        if (inputStream == null) {
-            return new byte[0];
-        }
-        java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
-        int nRead;
-        byte[] data = new byte[1024];
-        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, nRead);
-        }
-        buffer.flush();
-        return buffer.toByteArray();
-    }
-    
-    public static class ApiResponse {
-        private final int statusCode;
-        private final byte[] contentBytes;
-        private final String location;
-        
-        public ApiResponse(int statusCode, byte[] contentBytes, String location) {
-            this.statusCode = statusCode;
-            this.contentBytes = contentBytes;
-            this.location = location;
-        }
-        
-        public int getStatusCode() { return statusCode; }
-        public byte[] getContentBytes() { return contentBytes; }
-        public String getLocation() { return location; }
-        public boolean isSuccess() { return statusCode == 200; }
-        public boolean isAccepted() { return statusCode == 202; }
+            f.get(10, TimeUnit.MINUTES);
+            System.out.println("Done: " + out);
+        } catch (Exception e) { e.printStackTrace(); }
+        executor.shutdown();
     }
 } 
