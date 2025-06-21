@@ -21,7 +21,9 @@ public class Program
         string pdfPath = "sample.pdf";
         
         // Create HTTP client for API communication
+        const string BASE_URL = "https://api.pdf4me.com/";
         using HttpClient httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the PDF to image converter with the HTTP client and PDF path
         var pdfToImageConverter = new PdfToImageConverter(httpClient, pdfPath);
@@ -44,14 +46,9 @@ public class PdfToImageConverter
 {
     // Configuration constants
     /// <summary>
-    /// The PDF4ME API endpoint for creating images from PDFs
-    /// </summary>
-    private const string API_URL = "https://api.pdf4me.com/api/v2/CreateImages";
-    
-    /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 
     // File paths
     /// <summary>
@@ -81,10 +78,6 @@ public class PdfToImageConverter
         
         // Get the directory of the input PDF file for output location
         _outputDirectory = Path.GetDirectoryName(inputPdfPath) ?? "/Users/";
-
-        // Set up HTTP client headers for authentication and content type
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
     /// <summary>
@@ -114,14 +107,17 @@ public class PdfToImageConverter
                     }
                 },
                 pageNrs = "1",                                // Page numbers to process
-                async = true                                  // Enable asynchronous processing
+                async = true // For big file and too many calls async is recommended to reduce the server load.
             };
 
             // Serialize payload to JSON and create HTTP content
             var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
             
             // Send the initial request to the API
-            var response = await _httpClient.PostAsync(API_URL, content);
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/CreateImages");
+            httpRequest.Content = content;
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            var response = await _httpClient.SendAsync(httpRequest);
 
             // Handle immediate success response (200)
             if ((int)response.StatusCode == 200)
@@ -157,7 +153,9 @@ public class PdfToImageConverter
                     await Task.Delay(retryDelay * 1000);
                     
                     // Make polling request
-                    var pollResponse = await _httpClient.GetAsync(locationUrl);
+                    using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion
                     if ((int)pollResponse.StatusCode == 200)

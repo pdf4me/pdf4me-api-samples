@@ -7,29 +7,32 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for compressing images using PDF4ME API
+/// Main program class for image compression functionality
+/// This program demonstrates how to compress images using the PDF4ME API
 /// </summary>
 public class Program
 {
     /// <summary>
     /// Main entry point of the application
     /// </summary>
-    /// <param name="args">Command line arguments (not used in this application)</param>
+    /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the input image file - update this to your image file location
-        string imagePath = "sample.jpg";
+        // Path to the input image file to be compressed
+        string imagePath = "sample.jpg";  // Update this path to your image file location
+        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the image compressor with the HTTP client and image path
         var imageCompressor = new ImageCompressor(httpClient, imagePath);
         
-        // Compress the image
+        // Perform the image compression operation
         var result = await imageCompressor.CompressImageAsync();
         
-        // Display the results
+        // Display the result
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"Compressed image saved to: {result}");
         else
@@ -44,14 +47,9 @@ public class ImageCompressor
 {
     // Configuration constants
     /// <summary>
-    /// The PDF4ME API endpoint for image compression
-    /// </summary>
-    private const string API_URL = "https://api.pdf4me.com/api/v2/CompressImage";
-    
-    /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 
     // File paths
     /// <summary>
@@ -70,7 +68,7 @@ public class ImageCompressor
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Initializes a new instance of the ImageCompressor class
+    /// Constructor to initialize the image compressor
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
@@ -79,139 +77,109 @@ public class ImageCompressor
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
         
-        // Generate output filename by adding ".compressed" before the extension
+        // Generate output path by adding ".compressed" suffix to the original filename
         _outputImagePath = inputImagePath.Replace(Path.GetExtension(inputImagePath), ".compressed" + Path.GetExtension(inputImagePath));
-
-        // Set up HTTP client headers for authentication and content type
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
     /// <summary>
-    /// Compresses the specified image file asynchronously
+    /// Compresses the image asynchronously using the PDF4ME API
     /// </summary>
-    /// <returns>The path to the saved compressed image, or null if compression failed</returns>
+    /// <returns>Path to the compressed image file, or null if compression failed</returns>
     public async Task<string?> CompressImageAsync()
     {
-        try
+        // Read the image file and convert it to base64 for API transmission
+        byte[] imageBytes = await File.ReadAllBytesAsync(_inputImagePath);
+        string imageBase64 = Convert.ToBase64String(imageBytes);
+
+        // Prepare the API request payload with compression parameters
+        var payload = new
         {
-            // Read the image file and convert it to base64 for API transmission
-            byte[] imageBytes = await File.ReadAllBytesAsync(_inputImagePath);
-            string imageBase64 = Convert.ToBase64String(imageBytes);
+            docContent = imageBase64,     // Base64 encoded image content
+            docName = "output",           // Output document name
+            Quality = 80,                 // Compression quality (0-100, higher = better quality, larger file)
+            async = true // For big file and too many calls async is recommended to reduce the server load.
+        };
 
-            // Determine image type from file extension for proper compression handling
-            string imageType = GetImageTypeFromExtension(_inputImagePath);
+        // Serialize payload to JSON and create HTTP content
+        var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+        
+        // Create HTTP request message for the compression operation
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/CompressImage");
+        httpRequest.Content = content;
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        
+        // Send the compression request to the API
+        var response = await _httpClient.SendAsync(httpRequest);
 
-            // Prepare the API request payload with compression settings
-            var payload = new
-            {
-                docContent = imageBase64,                     // Base64 encoded image content
-                docName = Path.GetFileName(_inputImagePath),  // Original image filename
-                imageType = imageType,                        // Type of image (JPG, PNG, etc.)
-                compressionLevel = "Low",                     // Compression level (Low, Medium, High)
-                async = true                                  // Enable asynchronous processing
-            };
-
-            // Serialize payload to JSON and create HTTP content
-            var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+        // Handle immediate success response (200 OK)
+        if ((int)response.StatusCode == 200)
+        {
+            // Read the compressed image content from the response
+            byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
             
-            // Send the initial request to the API
-            var response = await _httpClient.PostAsync(API_URL, content);
+            // Save the compressed image to the output path
+            await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
+            return _outputImagePath;
+        }
+        // Handle asynchronous processing response (202 Accepted)
+        else if ((int)response.StatusCode == 202)
+        {
+            // Extract the polling URL from response headers
+            string? locationUrl = response.Headers.Location?.ToString();
+            if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
+                locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
 
-            // Handle immediate success response (200)
-            if ((int)response.StatusCode == 200)
+            if (string.IsNullOrEmpty(locationUrl))
             {
-                // Read the response as bytes and save to file
-                byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
-                await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
-                return _outputImagePath;
+                Console.WriteLine("No 'Location' header found in the response.");
+                return null;
             }
-            // Handle asynchronous processing response (202)
-            else if ((int)response.StatusCode == 202)
-            {
-                // Extract the polling URL from the Location header
-                string? locationUrl = response.Headers.Location?.ToString();
-                if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
-                    locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
 
-                if (string.IsNullOrEmpty(locationUrl))
+            // Poll for completion with retry logic
+            int maxRetries = 10;
+            int retryDelay = 10; // seconds
+
+            for (int attempt = 0; attempt < maxRetries; attempt++)
+            {
+                // Wait before polling
+                await Task.Delay(retryDelay * 1000);
+                
+                // Create polling request
+                using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                var pollResponse = await _httpClient.SendAsync(pollRequest);
+
+                // Handle successful completion
+                if ((int)pollResponse.StatusCode == 200)
                 {
-                    Console.WriteLine("No 'Location' header found in the response.");
+                    byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
+                    await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
+                    return _outputImagePath;
+                }
+                // Continue polling if still processing
+                else if ((int)pollResponse.StatusCode == 202)
+                {
+                    continue;
+                }
+                // Handle polling errors
+                else
+                {
+                    Console.WriteLine($"Polling error: {(int)pollResponse.StatusCode}");
+                    Console.WriteLine(await pollResponse.Content.ReadAsStringAsync());
                     return null;
                 }
-
-                // Polling configuration
-                int maxRetries = 10;      // Maximum number of polling attempts
-                int retryDelay = 10;      // Delay between polling attempts in seconds
-
-                // Poll the API until processing is complete
-                for (int attempt = 0; attempt < maxRetries; attempt++)
-                {
-                    // Wait before making the next polling request
-                    await Task.Delay(retryDelay * 1000);
-                    
-                    // Make polling request
-                    var pollResponse = await _httpClient.GetAsync(locationUrl);
-
-                    // Handle successful completion
-                    if ((int)pollResponse.StatusCode == 200)
-                    {
-                        // Read the response as bytes and save to file
-                        byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
-                        await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
-                        return _outputImagePath;
-                    }
-                    // Handle still processing
-                    else if ((int)pollResponse.StatusCode == 202)
-                    {
-                        continue;
-                    }
-                    // Handle polling errors
-                    else
-                    {
-                        Console.WriteLine($"Polling error: {(int)pollResponse.StatusCode}");
-                        Console.WriteLine(await pollResponse.Content.ReadAsStringAsync());
-                        return null;
-                    }
-                }
-                
-                // Handle timeout after maximum retries
-                Console.WriteLine("Timeout: Image compression did not complete after multiple retries.");
-                return null;
             }
-            // Handle other error responses
-            else
-            {
-                Console.WriteLine($"Initial request failed: {(int)response.StatusCode}");
-                Console.WriteLine(await response.Content.ReadAsStringAsync());
-                return null;
-            }
-        }
-        catch (Exception ex)
-        {
-            // Handle any exceptions during processing
-            Console.WriteLine($"Error: {ex.Message}");
+            
+            // Timeout if compression doesn't complete within retry limit
+            Console.WriteLine("Timeout: Image compression did not complete after multiple retries.");
             return null;
         }
-    }
-
-    /// <summary>
-    /// Determines the image type based on the file extension
-    /// </summary>
-    /// <param name="filePath">Path to the image file</param>
-    /// <returns>The image type as a string (JPG, PNG, GIF, BMP, TIFF, WEBP)</returns>
-    private string GetImageTypeFromExtension(string filePath)
-    {
-        string extension = Path.GetExtension(filePath).ToUpperInvariant();
-        return extension switch
+        // Handle other error responses
+        else
         {
-            ".JPG" or ".JPEG" => "JPG",
-            ".PNG" => "PNG",
-            ".GIF" => "GIF",
-            ".BMP" => "BMP",
-            ".TIFF" or ".TIF" => "TIFF",
-            ".WEBP" => "WEBP",
-            _ => "JPG" // Default to JPG if unknown extension
-        };
+            Console.WriteLine($"Initial request failed: {(int)response.StatusCode}");
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
+            return null;
+        }
     }
 }

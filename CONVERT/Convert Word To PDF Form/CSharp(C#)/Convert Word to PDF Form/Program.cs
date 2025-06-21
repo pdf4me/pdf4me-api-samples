@@ -20,16 +20,14 @@ public class Program
     {
         // Path to the Word file to be converted
         string wordPath = "sample.docx";  // Use the local sample.docx file
-        
+        const string BASE_URL = "https://api.pdf4me.com/";
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
-        
+        httpClient.BaseAddress = new Uri(BASE_URL);
         // Initialize the Word to PDF Form converter
         var converter = new WordToPdfFormConverter(httpClient, wordPath);
-        
         // Perform the conversion
         var result = await converter.ConvertWordToPdfFormAsync();
-        
         // Display the result
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"PDF Form file saved to: {result}");
@@ -44,16 +42,12 @@ public class Program
 public class WordToPdfFormConverter
 {
     // Configuration constants
-    private const string API_URL = "https://api.pdf4me.com/api/v2/ConvertWordToPdfForm";
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     // File paths
     private readonly string _inputWordPath;
     private readonly string _outputPdfPath;
-
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
-
     /// <summary>
     /// Constructor to initialize the Word to PDF Form converter
     /// </summary>
@@ -63,17 +57,11 @@ public class WordToPdfFormConverter
     {
         _httpClient = httpClient;
         _inputWordPath = inputWordPath;
-        
         // Generate output PDF path by replacing Word extensions with PDF
         _outputPdfPath = inputWordPath.Replace(".docx", ".pdf").Replace(".doc", ".pdf");
-
-        // Set up HTTP headers for API authentication and content type
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
-
     /// <summary>
-    /// Converts the Word file to PDF form format asynchronously
+    /// Converts the Word file to PDF form format asynchronously using HttpRequestMessage pattern
     /// </summary>
     /// <returns>Path to the generated PDF form file, or null if conversion failed</returns>
     public async Task<string?> ConvertWordToPdfFormAsync()
@@ -81,27 +69,26 @@ public class WordToPdfFormConverter
         // Read the Word file and convert to base64
         byte[] wordBytes = await File.ReadAllBytesAsync(_inputWordPath);
         string wordBase64 = Convert.ToBase64String(wordBytes);
-
         // Prepare the API request payload with conversion settings
         var payload = new
         {
             docContent = wordBase64,           // Base64 encoded Word content
             docName = "output.pdf",            // Output document name
-            async = true                   // Enable asynchronous processing
+            async = true // For big file and too many calls async is recommended to reduce the server load.
         };
-
         // Serialize payload to JSON and create HTTP content
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
-        
+        // Create HTTP request message
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertWordToPdfForm");
+        httpRequest.Content = content;
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
         // Send the conversion request to the API
-        var response = await _httpClient.PostAsync(API_URL, content);
-
+        var response = await _httpClient.SendAsync(httpRequest);
         // Handle immediate success response (200 OK)
         if ((int)response.StatusCode == 200)
         {
             // Read the PDF content from the response
             byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
-            
             // Save the PDF to the output file
             await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
             return _outputPdfPath;
@@ -113,25 +100,22 @@ public class WordToPdfFormConverter
             string? locationUrl = response.Headers.Location?.ToString();
             if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
                 locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
-
             if (string.IsNullOrEmpty(locationUrl))
             {
                 Console.WriteLine("No 'Location' header found in the response.");
                 return null;
             }
-
             // Poll for completion with retry logic
             int maxRetries = 10;
             int retryDelay = 10; // seconds
-
             for (int attempt = 0; attempt < maxRetries; attempt++)
             {
                 // Wait before polling
                 await Task.Delay(retryDelay * 1000);
-                
-                // Poll the status URL
-                var pollResponse = await _httpClient.GetAsync(locationUrl);
-
+                // Create polling request
+                using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                var pollResponse = await _httpClient.SendAsync(pollRequest);
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)
                 {
@@ -152,7 +136,6 @@ public class WordToPdfFormConverter
                     return null;
                 }
             }
-            
             // Timeout if conversion doesn't complete within retry limit
             Console.WriteLine("Timeout: Word to PDF Form conversion did not complete after multiple retries.");
             return null;

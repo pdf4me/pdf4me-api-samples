@@ -20,16 +20,14 @@ public class Program
     {
         // Path to the PDF file to be linearized
         string pdfPath = "sample.pdf";  // Use the local sample.pdf file
-        
+        const string BASE_URL = "https://api.pdf4me.com/";
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
-        
+        httpClient.BaseAddress = new Uri(BASE_URL);
         // Initialize the PDF linearizer
         var linearizer = new PdfLinearizer(httpClient, pdfPath);
-        
         // Perform the linearization
         var result = await linearizer.LinearizePdfAsync();
-        
         // Display the result
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"Linearized PDF saved to: {result}");
@@ -44,16 +42,12 @@ public class Program
 public class PdfLinearizer
 {
     // Configuration constants
-    private const string API_URL = "https://api.pdf4me.com/api/v2/LinearizePdf";
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     // File paths
     private readonly string _inputPdfPath;
     private readonly string _outputPdfPath;
-
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
-
     /// <summary>
     /// Constructor to initialize the PDF linearizer
     /// </summary>
@@ -63,15 +57,9 @@ public class PdfLinearizer
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
-        
         // Generate output PDF path with a unique suffix
         _outputPdfPath = inputPdfPath.Replace(".pdf", ".linearized.pdf");
-
-        // Set up HTTP headers for API authentication and content type
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
-
     /// <summary>
     /// Linearizes the PDF file for web optimization asynchronously
     /// </summary>
@@ -81,28 +69,27 @@ public class PdfLinearizer
         // Read the PDF file and convert to base64
         byte[] pdfBytes = await File.ReadAllBytesAsync(_inputPdfPath);
         string pdfBase64 = Convert.ToBase64String(pdfBytes);
-
         // Prepare the API request payload with optimization settings
         var payload = new
         {
             docContent = pdfBase64,           // Base64 encoded PDF content
             docName = "output.pdf",           // Output document name
             optimizeProfile = "web",          // Optimization profile for web delivery
-            async = true                  // Enable asynchronous processing
+            async = true // For big file and too many calls async is recommended to reduce the server load.
         };
-
         // Serialize payload to JSON and create HTTP content
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
-        
-        // Send the linearization request to the API
-        var response = await _httpClient.PostAsync(API_URL, content);
-
+        // Create HTTP request message
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/LinearizePdf");
+        httpRequest.Content = content;
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        // Send the conversion request to the API
+        var response = await _httpClient.SendAsync(httpRequest);
         // Handle immediate success response (200 OK)
         if ((int)response.StatusCode == 200)
         {
             // Read the linearized PDF content from the response
             byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
-            
             // Save the linearized PDF to the output file
             await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
             return _outputPdfPath;
@@ -114,25 +101,22 @@ public class PdfLinearizer
             string? locationUrl = response.Headers.Location?.ToString();
             if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
                 locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
-
             if (string.IsNullOrEmpty(locationUrl))
             {
                 Console.WriteLine("No 'Location' header found in the response.");
                 return null;
             }
-
             // Poll for completion with retry logic
             int maxRetries = 10;
             int retryDelay = 10; // seconds
-
             for (int attempt = 0; attempt < maxRetries; attempt++)
             {
                 // Wait before polling
                 await Task.Delay(retryDelay * 1000);
-                
-                // Poll the status URL
-                var pollResponse = await _httpClient.GetAsync(locationUrl);
-
+                // Create polling request
+                using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                var pollResponse = await _httpClient.SendAsync(pollRequest);
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)
                 {
@@ -153,7 +137,6 @@ public class PdfLinearizer
                     return null;
                 }
             }
-            
             // Timeout if linearization doesn't complete within retry limit
             Console.WriteLine("Timeout: PDF linearization did not complete after multiple retries.");
             return null;

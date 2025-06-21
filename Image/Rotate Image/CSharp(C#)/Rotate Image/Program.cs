@@ -6,16 +6,33 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Main program class for image rotation functionality
+/// This program demonstrates how to rotate images by a specified angle using the PDF4ME API
+/// </summary>
 public class Program
 {
+    /// <summary>
+    /// Main entry point of the application
+    /// </summary>
+    /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
+        // Path to the input image file to be rotated
         string imagePath = "sample.jpg";  // Update this path to your image file location
+        const string BASE_URL = "https://api.pdf4me.com/";
         
+        // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(BASE_URL);
+        
+        // Initialize the image rotator with the HTTP client and image path
         var imageRotator = new ImageRotator(httpClient, imagePath);
+        
+        // Perform the image rotation operation
         var result = await imageRotator.RotateImageAsync();
         
+        // Display the result
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"Rotated image saved to: {result}");
         else
@@ -23,105 +40,146 @@ public class Program
     }
 }
 
+/// <summary>
+/// Class responsible for rotating images using the PDF4ME API
+/// </summary>
 public class ImageRotator
 {
     // Configuration constants
-    private const string API_URL = "https://api-dev.pdf4me.com/api/v2/RotateImage";
-    private const string API_KEY = "ZWJhNjMwNDEtZTY4NC00YTViLWE2ZWMtYTliYjIzODEwMjEzOlV1TyU5JkxqTnJMa3AhRzdPWkR0ZVZ6Y3FaTWNpckRM";
+    /// <summary>
+    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
+    /// </summary>
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 
     // File paths
+    /// <summary>
+    /// Path to the input image file
+    /// </summary>
     private readonly string _inputImagePath;
+    
+    /// <summary>
+    /// Path where the rotated image will be saved
+    /// </summary>
     private readonly string _outputImagePath;
 
+    /// <summary>
+    /// HTTP client for making API requests
+    /// </summary>
     private readonly HttpClient _httpClient;
 
+    /// <summary>
+    /// Constructor to initialize the image rotator
+    /// </summary>
+    /// <param name="httpClient">HTTP client for API communication</param>
+    /// <param name="inputImagePath">Path to the input image file</param>
     public ImageRotator(HttpClient httpClient, string inputImagePath)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
+        
+        // Generate output path by adding ".rotated" suffix to the original filename
         _outputImagePath = inputImagePath.Replace(Path.GetExtension(inputImagePath), ".rotated" + Path.GetExtension(inputImagePath));
-
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
+    /// <summary>
+    /// Rotates the image asynchronously using the PDF4ME API
+    /// </summary>
+    /// <returns>Path to the rotated image file, or null if rotation failed</returns>
     public async Task<string?> RotateImageAsync()
     {
-        try
+        // Read the image file and convert it to base64 for API transmission
+        byte[] imageBytes = await File.ReadAllBytesAsync(_inputImagePath);
+        string imageBase64 = Convert.ToBase64String(imageBytes);
+
+        // Prepare the API request payload with rotation parameters
+        var payload = new
         {
-            // Read and encode the image
-            byte[] imageBytes = await File.ReadAllBytesAsync(_inputImagePath);
-            string imageBase64 = Convert.ToBase64String(imageBytes);
+            docContent = imageBase64,     // Base64 encoded image content
+            docName = Path.GetFileName(_inputImagePath),  // Original filename
+            Backgroundcolor = "#FFFF00",  // Background color for transparent areas (yellow)
+            ProportionateResize = true,   // Maintain aspect ratio during rotation
+            RotationAngle = 40,           // Rotation angle in degrees (40 degrees clockwise)
+            async = true // For big file and too many calls async is recommended to reduce the server load.
+        };
 
-            var payload = new
+        // Serialize payload to JSON and create HTTP content
+        var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+        
+        // Create HTTP request message for the rotation operation
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/RotateImage");
+        httpRequest.Content = content;
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        
+        // Send the rotation request to the API
+        var response = await _httpClient.SendAsync(httpRequest);
+
+        // Handle immediate success response (200 OK)
+        if ((int)response.StatusCode == 200)
+        {
+            // Read the rotated image content from the response
+            byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
+            
+            // Save the rotated image to the output path
+            await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
+            return _outputImagePath;
+        }
+        // Handle asynchronous processing response (202 Accepted)
+        else if ((int)response.StatusCode == 202)
+        {
+            // Extract the polling URL from response headers
+            string? locationUrl = response.Headers.Location?.ToString();
+            if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
+                locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
+            if (string.IsNullOrEmpty(locationUrl))
             {
-                docContent = imageBase64,
-                docName = Path.GetFileName(_inputImagePath),
-                Backgroundcolor = "#FFFF00",
-                ProportionateResize = true,
-                RotationAngle = 40,
-                async = true
-            };
-
-            var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(API_URL, content);
-
-            if ((int)response.StatusCode == 200)
-            {
-                byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
-                await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
-                return _outputImagePath;
+                Console.WriteLine("No 'Location' header found in the response.");
+                return null;
             }
-            else if ((int)response.StatusCode == 202)
+            
+            // Poll for completion with retry logic
+            int maxRetries = 10;
+            int retryDelay = 10; // seconds
+            
+            for (int attempt = 0; attempt < maxRetries; attempt++)
             {
-                string? locationUrl = response.Headers.Location?.ToString();
-                if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
-                    locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
-
-                if (string.IsNullOrEmpty(locationUrl))
+                // Wait before polling
+                await Task.Delay(retryDelay * 1000);
+                
+                // Create polling request
+                using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                var pollResponse = await _httpClient.SendAsync(pollRequest);
+                
+                // Handle successful completion
+                if ((int)pollResponse.StatusCode == 200)
                 {
-                    Console.WriteLine("No 'Location' header found in the response.");
+                    byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
+                    await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
+                    return _outputImagePath;
+                }
+                // Continue polling if still processing
+                else if ((int)pollResponse.StatusCode == 202)
+                {
+                    continue;
+                }
+                // Handle polling errors
+                else
+                {
+                    Console.WriteLine($"Polling error: {(int)pollResponse.StatusCode}");
+                    Console.WriteLine(await pollResponse.Content.ReadAsStringAsync());
                     return null;
                 }
-
-                int maxRetries = 10;
-                int retryDelay = 10; // seconds
-
-                for (int attempt = 0; attempt < maxRetries; attempt++)
-                {
-                    await Task.Delay(retryDelay * 1000);
-                    var pollResponse = await _httpClient.GetAsync(locationUrl);
-
-                    if ((int)pollResponse.StatusCode == 200)
-                    {
-                        byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
-                        await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
-                        return _outputImagePath;
-                    }
-                    else if ((int)pollResponse.StatusCode == 202)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Polling error: {(int)pollResponse.StatusCode}");
-                        Console.WriteLine(await pollResponse.Content.ReadAsStringAsync());
-                        return null;
-                    }
-                }
-                Console.WriteLine("Timeout: Image rotation did not complete after multiple retries.");
-                return null;
             }
-            else
-            {
-                Console.WriteLine($"Initial request failed: {(int)response.StatusCode}");
-                Console.WriteLine(await response.Content.ReadAsStringAsync());
-                return null;
-            }
+            
+            // Timeout if rotation doesn't complete within retry limit
+            Console.WriteLine("Timeout: Image rotation did not complete after multiple retries.");
+            return null;
         }
-        catch (Exception ex)
+        // Handle other error responses
+        else
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            Console.WriteLine($"Initial request failed: {(int)response.StatusCode}");
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
             return null;
         }
     }

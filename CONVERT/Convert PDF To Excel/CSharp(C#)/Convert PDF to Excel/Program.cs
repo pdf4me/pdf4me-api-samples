@@ -20,9 +20,11 @@ public class Program
     {
         // Path to the input PDF file - update this to your PDF file location
         string pdfPath = "sample.pdf";
+        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the converter with the HTTP client and PDF path
         var converter = new PdfToExcelConverter(httpClient, pdfPath);
@@ -44,32 +46,14 @@ public class Program
 /// </summary>
 public class PdfToExcelConverter
 {
-    // API Configuration
-    /// <summary>
-    /// The PDF4ME API endpoint for PDF to Excel conversion
-    /// </summary>
-    private const string API_URL = "https://api.pdf4me.com/api/v2/ConvertPdfToExcel";
-    
-    /// <summary>
-    /// API key for authentication - replace with your actual API key from PDF4ME dashboard
-    /// Get your key from: https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    // Configuration constants
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 
     // File paths
-    /// <summary>
-    /// Path to the input PDF file
-    /// </summary>
     private readonly string _inputPdfPath;
-    
-    /// <summary>
-    /// Path where the output Excel file will be saved
-    /// </summary>
     private readonly string _outputExcelPath;
 
-    /// <summary>
-    /// HTTP client for making API requests
-    /// </summary>
+    // HTTP client for API communication
     private readonly HttpClient _httpClient;
 
     /// <summary>
@@ -84,15 +68,10 @@ public class PdfToExcelConverter
         
         // Generate output path by replacing .pdf extension with .xlsx
         _outputExcelPath = inputPdfPath.Replace(".pdf", ".xlsx");
-
-        // Configure HTTP client headers for API authentication and content negotiation
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
     /// <summary>
-    /// Converts the PDF file to Excel format asynchronously
-    /// Handles both immediate responses (200) and asynchronous processing (202)
+    /// Converts the PDF file to Excel format asynchronously using HttpRequestMessage pattern
     /// </summary>
     /// <returns>Path to the generated Excel file, or null if conversion failed</returns>
     public async Task<string?> ConvertPdfToExcelAsync()
@@ -111,14 +90,19 @@ public class PdfToExcelConverter
             mergeAllSheets = false,        // Whether to merge all sheets into one
             outputFormat = "yes",          // Enable output formatting
             ocrWhenNeeded = "yes",         // Enable OCR when text extraction is needed
-            async = true             // Enable asynchronous processing
+            async = true             // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
         
+        // Create HTTP request message
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertPdfToExcel");
+        httpRequest.Content = content;
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        
         // Send the conversion request to the API
-        var response = await _httpClient.PostAsync(API_URL, content);
+        var response = await _httpClient.SendAsync(httpRequest);
 
         // Handle immediate success response (200)
         if ((int)response.StatusCode == 200)
@@ -152,8 +136,10 @@ public class PdfToExcelConverter
                 // Wait before next poll
                 await Task.Delay(retryDelay * 1000);
                 
-                // Check conversion status
-                var pollResponse = await _httpClient.GetAsync(locationUrl);
+                // Create polling request
+                using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                 // Handle successful completion (200)
                 if ((int)pollResponse.StatusCode == 200)

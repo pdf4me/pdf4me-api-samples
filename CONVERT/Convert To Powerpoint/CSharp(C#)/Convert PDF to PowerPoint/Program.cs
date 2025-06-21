@@ -20,9 +20,11 @@ public class Program
     {
         // Path to the PDF file to be converted
         string pdfPath = "sample.pdf";  // Use the local sample.pdf file
+        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the PDF to PowerPoint converter
         var converter = new PdfToPowerPointConverter(httpClient, pdfPath);
@@ -44,8 +46,7 @@ public class Program
 public class PdfToPowerPointConverter
 {
     // Configuration constants
-    private const string API_URL = "https://api.pdf4me.com/api/v2/ConvertPdfToPowerPoint";
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 
     // File paths
     private readonly string _inputPdfPath;
@@ -66,14 +67,10 @@ public class PdfToPowerPointConverter
         
         // Generate output PowerPoint path by replacing PDF extension with PPTX
         _outputPowerPointPath = inputPdfPath.Replace(".pdf", ".pptx");
-
-        // Set up HTTP headers for API authentication and content type
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
     /// <summary>
-    /// Converts the PDF file to PowerPoint format asynchronously
+    /// Converts the PDF file to PowerPoint format asynchronously using HttpRequestMessage pattern
     /// </summary>
     /// <returns>Path to the generated PowerPoint file, or null if conversion failed</returns>
     public async Task<string?> ConvertPdfToPowerPointAsync()
@@ -92,14 +89,19 @@ public class PdfToPowerPointConverter
             ocrWhenNeeded = "true",           // Enable OCR when needed
             outputFormat = "true",            // Output format setting
             mergeAllSheets = true,            // Merge all sheets into one
-            async = true               // Enable asynchronous processing
+            async = true // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
         
+        // Create HTTP request message
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertPdfToPowerPoint");
+        httpRequest.Content = content;
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        
         // Send the conversion request to the API
-        var response = await _httpClient.PostAsync(API_URL, content);
+        var response = await _httpClient.SendAsync(httpRequest);
 
         // Handle immediate success response (200 OK)
         if ((int)response.StatusCode == 200)
@@ -134,8 +136,10 @@ public class PdfToPowerPointConverter
                 // Wait before polling
                 await Task.Delay(retryDelay * 1000);
                 
-                // Poll the status URL
-                var pollResponse = await _httpClient.GetAsync(locationUrl);
+                // Create polling request
+                using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)

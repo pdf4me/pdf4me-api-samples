@@ -7,32 +7,34 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for converting image formats using PDF4ME API
+/// Main program class for image format conversion functionality
+/// This program demonstrates how to convert images between different formats using the PDF4ME API
 /// </summary>
 public class Program
 {
     /// <summary>
     /// Main entry point of the application
     /// </summary>
-    /// <param name="args">Command line arguments (not used in this application)</param>
+    /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the input image file - update this to your image file location
-        string imagePath = "sample.jpg";
-        
-        // Target format for conversion - update this to your desired output format (JPG, PNG, GIF, BMP, TIFF, WEBP)
-        string targetFormat = "PNG";
+        // Path to the input image file to be converted
+        string imagePath = "sample.jpg";  // Update this path to your image file location
+        // Target format for conversion
+        string targetFormat = "PNG";  // Update this to your desired output format (JPG, PNG, GIF, BMP, TIFF, WEBP)
+        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the image format converter with the HTTP client, image path, and target format
         var imageFormatConverter = new ImageFormatConverter(httpClient, imagePath, targetFormat);
         
-        // Convert the image format
+        // Perform the image format conversion
         var result = await imageFormatConverter.ConvertImageFormatAsync();
         
-        // Display the results
+        // Display the result
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"Converted image saved to: {result}");
         else
@@ -47,14 +49,9 @@ public class ImageFormatConverter
 {
     // Configuration constants
     /// <summary>
-    /// The PDF4ME API endpoint for image format conversion
-    /// </summary>
-    private const string API_URL = "https://api.pdf4me.com/api/v2/ConvertImageFormat";
-    
-    /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 
     // File paths and format
     /// <summary>
@@ -63,7 +60,7 @@ public class ImageFormatConverter
     private readonly string _inputImagePath;
     
     /// <summary>
-    /// Target format for conversion
+    /// Target format for conversion (JPG, PNG, GIF, BMP, TIFF, WEBP)
     /// </summary>
     private readonly string _targetFormat;
     
@@ -78,7 +75,7 @@ public class ImageFormatConverter
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Initializes a new instance of the ImageFormatConverter class
+    /// Constructor to initialize the image format converter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
@@ -87,132 +84,126 @@ public class ImageFormatConverter
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
-        _targetFormat = targetFormat.ToUpperInvariant();
+        _targetFormat = targetFormat;
         
-        // Generate output path with new format extension
-        string currentExtension = Path.GetExtension(_inputImagePath);
-        string newExtension = GetExtensionFromFormat(_targetFormat);
-        _outputImagePath = _inputImagePath.Replace(currentExtension, newExtension);
-
-        // Set up HTTP client headers for authentication and content type
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        // Generate output path by replacing the original extension with the target format extension
+        string originalExtension = Path.GetExtension(inputImagePath);
+        string targetExtension = "." + targetFormat.ToLowerInvariant();
+        _outputImagePath = inputImagePath.Replace(originalExtension, targetExtension);
     }
 
     /// <summary>
-    /// Converts the specified image file to the target format asynchronously
+    /// Converts the image format asynchronously using the PDF4ME API
     /// </summary>
-    /// <returns>The path to the saved converted image, or null if conversion failed</returns>
+    /// <returns>Path to the converted image file, or null if conversion failed</returns>
     public async Task<string?> ConvertImageFormatAsync()
     {
-        try
+        // Read the image file and convert it to base64 for API transmission
+        byte[] imageBytes = await File.ReadAllBytesAsync(_inputImagePath);
+        string imageBase64 = Convert.ToBase64String(imageBytes);
+
+        // Determine the original image type from file extension
+        string originalImageType = GetImageTypeFromExtension(_inputImagePath);
+
+        // Prepare the API request payload with format conversion parameters
+        var payload = new
         {
-            // Read the image file and convert it to base64 for API transmission
-            byte[] imageBytes = await File.ReadAllBytesAsync(_inputImagePath);
-            string imageBase64 = Convert.ToBase64String(imageBytes);
+            docContent = imageBase64,     // Base64 encoded image content
+            docName = "output",           // Output document name
+            imageType = originalImageType,  // Original image type (JPG, PNG, etc.)
+            convertTo = _targetFormat,    // Target format for conversion
+            async = true // For big file and too many calls async is recommended to reduce the server load.
+        };
 
-            // Determine current image format from file extension
-            string currentFormat = GetFormatFromExtension(_inputImagePath);
+        // Serialize payload to JSON and create HTTP content
+        var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+        
+        // Create HTTP request message for the format conversion operation
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertImageFormat");
+        httpRequest.Content = content;
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        
+        // Send the format conversion request to the API
+        var response = await _httpClient.SendAsync(httpRequest);
 
-            // Prepare the API request payload with format conversion settings
-            var payload = new
-            {
-                docContent = imageBase64,                     // Base64 encoded image content
-                docName = Path.GetFileName(_inputImagePath),  // Original image filename
-                currentImageFormat = currentFormat,           // Current format of the image
-                newImageFormat = _targetFormat,               // Target format for conversion
-                async = true                                  // Enable asynchronous processing
-            };
-
-            // Serialize payload to JSON and create HTTP content
-            var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+        // Handle immediate success response (200 OK)
+        if ((int)response.StatusCode == 200)
+        {
+            // Read the converted image content from the response
+            byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
             
-            // Send the initial request to the API
-            var response = await _httpClient.PostAsync(API_URL, content);
+            // Save the converted image to the output path
+            await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
+            return _outputImagePath;
+        }
+        // Handle asynchronous processing response (202 Accepted)
+        else if ((int)response.StatusCode == 202)
+        {
+            // Extract the polling URL from response headers
+            string? locationUrl = response.Headers.Location?.ToString();
+            if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
+                locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
 
-            // Handle immediate success response (200)
-            if ((int)response.StatusCode == 200)
+            if (string.IsNullOrEmpty(locationUrl))
             {
-                // Read the response as bytes and save to file
-                byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
-                await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
-                return _outputImagePath;
+                Console.WriteLine("No 'Location' header found in the response.");
+                return null;
             }
-            // Handle asynchronous processing response (202)
-            else if ((int)response.StatusCode == 202)
-            {
-                // Extract the polling URL from the Location header
-                string? locationUrl = response.Headers.Location?.ToString();
-                if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
-                    locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
 
-                if (string.IsNullOrEmpty(locationUrl))
+            // Poll for completion with retry logic
+            int maxRetries = 10;
+            int retryDelay = 10; // seconds
+
+            for (int attempt = 0; attempt < maxRetries; attempt++)
+            {
+                // Wait before polling
+                await Task.Delay(retryDelay * 1000);
+                
+                // Create polling request
+                using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                var pollResponse = await _httpClient.SendAsync(pollRequest);
+
+                // Handle successful completion
+                if ((int)pollResponse.StatusCode == 200)
                 {
-                    Console.WriteLine("No 'Location' header found in the response.");
+                    byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
+                    await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
+                    return _outputImagePath;
+                }
+                // Continue polling if still processing
+                else if ((int)pollResponse.StatusCode == 202)
+                {
+                    continue;
+                }
+                // Handle polling errors
+                else
+                {
+                    Console.WriteLine($"Polling error: {(int)pollResponse.StatusCode}");
+                    Console.WriteLine(await pollResponse.Content.ReadAsStringAsync());
                     return null;
                 }
-
-                // Polling configuration
-                int maxRetries = 10;      // Maximum number of polling attempts
-                int retryDelay = 10;      // Delay between polling attempts in seconds
-
-                // Poll the API until processing is complete
-                for (int attempt = 0; attempt < maxRetries; attempt++)
-                {
-                    // Wait before making the next polling request
-                    await Task.Delay(retryDelay * 1000);
-                    
-                    // Make polling request
-                    var pollResponse = await _httpClient.GetAsync(locationUrl);
-
-                    // Handle successful completion
-                    if ((int)pollResponse.StatusCode == 200)
-                    {
-                        // Read the response as bytes and save to file
-                        byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
-                        await File.WriteAllBytesAsync(_outputImagePath, resultBytes);
-                        return _outputImagePath;
-                    }
-                    // Handle still processing
-                    else if ((int)pollResponse.StatusCode == 202)
-                    {
-                        continue;
-                    }
-                    // Handle polling errors
-                    else
-                    {
-                        Console.WriteLine($"Polling error: {(int)pollResponse.StatusCode}");
-                        Console.WriteLine(await pollResponse.Content.ReadAsStringAsync());
-                        return null;
-                    }
-                }
-                
-                // Handle timeout after maximum retries
-                Console.WriteLine("Timeout: Image format conversion did not complete after multiple retries.");
-                return null;
             }
-            // Handle other error responses
-            else
-            {
-                Console.WriteLine($"Initial request failed: {(int)response.StatusCode}");
-                Console.WriteLine(await response.Content.ReadAsStringAsync());
-                return null;
-            }
+            
+            // Timeout if format conversion doesn't complete within retry limit
+            Console.WriteLine("Timeout: Image format conversion did not complete after multiple retries.");
+            return null;
         }
-        catch (Exception ex)
+        // Handle other error responses
+        else
         {
-            // Handle any exceptions during processing
-            Console.WriteLine($"Error: {ex.Message}");
+            Console.WriteLine($"Initial request failed: {(int)response.StatusCode}");
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
             return null;
         }
     }
 
     /// <summary>
-    /// Determines the image format based on the file extension
+    /// Determines the image type based on the file extension
     /// </summary>
     /// <param name="filePath">Path to the image file</param>
-    /// <returns>The image format as a string (JPG, PNG, GIF, BMP, TIFF, WEBP)</returns>
-    private string GetFormatFromExtension(string filePath)
+    /// <returns>The image type as a string (JPG, PNG, GIF, BMP, TIFF, WEBP)</returns>
+    private string GetImageTypeFromExtension(string filePath)
     {
         string extension = Path.GetExtension(filePath).ToUpperInvariant();
         return extension switch
@@ -224,25 +215,6 @@ public class ImageFormatConverter
             ".TIFF" or ".TIF" => "TIFF",
             ".WEBP" => "WEBP",
             _ => "JPG" // Default to JPG if unknown extension
-        };
-    }
-
-    /// <summary>
-    /// Gets the file extension for a given image format
-    /// </summary>
-    /// <param name="format">The image format (JPG, PNG, GIF, BMP, TIFF, WEBP)</param>
-    /// <returns>The corresponding file extension with dot prefix</returns>
-    private string GetExtensionFromFormat(string format)
-    {
-        return format.ToUpperInvariant() switch
-        {
-            "JPG" or "JPEG" => ".jpg",
-            "PNG" => ".png",
-            "GIF" => ".gif",
-            "BMP" => ".bmp",
-            "TIFF" => ".tiff",
-            "WEBP" => ".webp",
-            _ => ".jpg" // Default to JPG if unknown format
         };
     }
 }

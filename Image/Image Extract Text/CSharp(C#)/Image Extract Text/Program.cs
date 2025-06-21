@@ -19,9 +19,11 @@ public class Program
     {
         // Path to the input image file - update this to your image file location
         string imagePath = "sample.jpg";
+        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the text extractor with the HTTP client and image path
         var imageTextExtractor = new ImageTextExtractor(httpClient, imagePath);
@@ -44,14 +46,9 @@ public class ImageTextExtractor
 {
     // Configuration constants
     /// <summary>
-    /// The PDF4ME API endpoint for image text extraction
-    /// </summary>
-    private const string API_URL = "https://api.pdf4me.com/api/v2/ImageExtractText";
-    
-    /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 
     // File paths
     /// <summary>
@@ -73,10 +70,6 @@ public class ImageTextExtractor
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
-
-        // Set up HTTP client headers for authentication and content type
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
     /// <summary>
@@ -96,14 +89,17 @@ public class ImageTextExtractor
             {
                 docName = Path.GetFileName(_inputImagePath),  // Original filename
                 docContent = imageBase64,                     // Base64 encoded image content
-                async = true                                  // Enable asynchronous processing
+                async = true // For big file and too many calls async is recommended to reduce the server load.
             };
 
             // Serialize payload to JSON and create HTTP content
             var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
             
             // Send the initial request to the API
-            var response = await _httpClient.PostAsync(API_URL, content);
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ImageExtractText");
+            httpRequest.Content = content;
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            var response = await _httpClient.SendAsync(httpRequest);
 
             // Log detailed response information for debugging
             Console.WriteLine($"Response Status Code: {(int)response.StatusCode} ({response.StatusCode})");
@@ -156,7 +152,9 @@ public class ImageTextExtractor
                     await Task.Delay(retryDelay * 1000);
                     
                     // Make polling request
-                    var pollResponse = await _httpClient.GetAsync(locationUrl);
+                    using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     Console.WriteLine($"Poll response status: {(int)pollResponse.StatusCode} ({pollResponse.StatusCode})");
 
@@ -204,40 +202,38 @@ public class ImageTextExtractor
     }
 
     /// <summary>
-    /// Parses the JSON response from the API to extract the text content
+    /// Parses the extracted text from the API response JSON
     /// </summary>
-    /// <param name="jsonString">The JSON response string from the API</param>
-    /// <returns>The extracted text or formatted JSON if parsing fails</returns>
+    /// <param name="jsonString">JSON response from the API</param>
+    /// <returns>Formatted extracted text, or the original JSON if parsing fails</returns>
     private string ParseExtractedText(string jsonString)
     {
         try
         {
-            // Parse the JSON response to extract the text content
+            // Parse the JSON response
             using JsonDocument document = JsonDocument.Parse(jsonString);
             
-            // Try to find the extracted text in the response using different possible property names
-            if (document.RootElement.TryGetProperty("text", out var textElement))
+            // Try to extract the text content from the response
+            if (document.RootElement.TryGetProperty("text", out JsonElement textElement))
             {
                 return textElement.GetString() ?? "No text found";
             }
-            else if (document.RootElement.TryGetProperty("extractedText", out var extractedTextElement))
+            else if (document.RootElement.TryGetProperty("result", out JsonElement resultElement))
             {
-                return extractedTextElement.GetString() ?? "No text found";
+                if (resultElement.TryGetProperty("text", out JsonElement nestedTextElement))
+                {
+                    return nestedTextElement.GetString() ?? "No text found";
+                }
             }
-            else if (document.RootElement.TryGetProperty("content", out var contentElement))
-            {
-                return contentElement.GetString() ?? "No text found";
-            }
-            else
-            {
-                // If we can't find a specific text property, return the formatted JSON for debugging
-                return JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
-            }
+            
+            // If we can't find the text in the expected format, return the formatted JSON
+            return JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
         }
-        catch
+        catch (JsonException ex)
         {
-            // If JSON parsing fails, return the original string
-            return jsonString;
+            // If JSON parsing fails, return the original string with an error message
+            Console.WriteLine($"JSON parsing error: {ex.Message}");
+            return $"Error parsing response: {jsonString}";
         }
     }
 }
