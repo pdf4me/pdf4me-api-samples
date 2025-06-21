@@ -21,8 +21,8 @@ import java.util.function.Consumer;
 public class Main {
     
     // API key as in Python
-    private static final String API_KEY = "ZWJhNjMwNDEtZTY4NC00YTViLWE2ZWMtYTliYjIzODEwMjEzOlV1TyU5JkxqTnJMa3AhRzdPWkR0ZVZ6Y3FaTWNpckRM";
-    private static final String API_URL = "https://api-dev.pdf4me.com/api/v2/ConvertJsonToExcel";
+    private static final String API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private static final String API_URL = "https://api.pdf4me.com/api/v2/ConvertJsonToExcel";
     
     // Thread pool for async operations
     private static final ExecutorService executor = Executors.newFixedThreadPool(4);
