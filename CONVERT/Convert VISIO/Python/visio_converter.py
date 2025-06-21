@@ -35,11 +35,12 @@ def convert_visio_to_pdf():
         "OutputFormat": "PDF",               # Desired output format (PDF/JPG/PNG/TIFF)
         "IsPdfCompliant": True,              # Make PDF compliant with standards
         "PageIndex": 0,                      # Start from first page (0-indexed)
-        "PageCount": 5,                      # Number of pages to convert
-        "IncludeHiddenPages": True,          # Include hidden pages in conversion
-        "SaveForegroundPage": True,          # Save foreground elements
-        "SaveToolBar": True,                 # Include toolbar in conversion
-        "AutoFit": True                      # Auto-fit content to page
+        "PageCount": 5,                      # Number of pages to convert (1-100)
+        "IncludeHiddenPages": True,          # Include hidden pages (True/False)
+        "SaveForegroundPage": True,          # Save foreground elements (True/False)
+        "SaveToolBar": True,                 # Include toolbar (True/False)
+        "AutoFit": True,                     # Auto-fit content to page (True/False)
+        "async": True                        # Enable asynchronous processing
     }
 
     # Alternative payload examples for other output formats:

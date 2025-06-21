@@ -38,7 +38,8 @@ def flatten_pdf():
     # This is the minimal payload required for PDF flattening
     payload = {
         "docContent": pdf_base64,        # Base64 encoded PDF document content
-        "docName": "Flatten_output.pdf"  # Name for the output file
+        "docName": "Flatten_output.pdf", # Name for the output file
+        "async": True                    # Enable asynchronous processing
     }
     
     # What PDF flattening does:

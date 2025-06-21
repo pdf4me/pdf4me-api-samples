@@ -14,8 +14,9 @@ def convert_to_pdf():
         file_base64 = base64.b64encode(f.read()).decode("utf-8")
 
     payload = {
-        "docContent": file_base64,
-        "docName": "output"
+        "docContent": file_base64,    # Base64 encoded document content
+        "docName": "output",          # Output PDF file name
+        "async": True                 # Enable asynchronous processing
     }
     #set the headers
     headers = {

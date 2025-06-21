@@ -16,17 +16,18 @@ def convert_json_to_excel():
     json_base64 = base64.b64encode(json_str.encode('utf-8')).decode('utf-8')
 
     payload = {
-        "docContent": json_base64,
-        "docName": "output",
-        "worksheetName": "Sheet1",
-        "isTitleWrapText": True,
-        "isTitleBold": True,
-        "convertNumberAndDate": False,
-        "numberFormat": "11",
-        "dateFormat": "01/01/2025",
-        "ignoreNullValues": False,
-        "firstRow": 1,
-        "firstColumn": 1
+        "docContent": json_base64,           # Base64 encoded JSON content
+        "docName": "output",                 # Output file name
+        "worksheetName": "Sheet1",           # Excel worksheet name
+        "isTitleWrapText": True,             # Wrap text in title cells (True/False)
+        "isTitleBold": True,                 # Bold title row (True/False)
+        "convertNumberAndDate": False,       # Auto-convert numbers and dates (True/False)
+        "numberFormat": "11",                # Number format code (0-49)
+        "dateFormat": "01/01/2025",          # Date format pattern
+        "ignoreNullValues": False,           # Ignore null values (True/False)
+        "firstRow": 1,                       # Starting row number (1-based)
+        "firstColumn": 1,                    # Starting column number (1-based)
+        "async": True                        # Enable asynchronous processing
     }
 
     headers = {

@@ -48,7 +48,8 @@ def convert_html_to_pdf():
         "leftMargin": "40px",             # Left margin spacing
         "rightMargin": "40px",            # Right margin spacing
         "printBackground": True,          # Include background colors and images
-        "displayHeaderFooter": True       # Show header and footer in PDF
+        "displayHeaderFooter": True,      # Show header and footer in PDF
+        "async": True                     # Enable asynchronous processing
     }
     
     # Additional payload options you can customize:

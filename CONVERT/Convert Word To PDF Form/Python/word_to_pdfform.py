@@ -37,7 +37,8 @@ def convert_word_to_pdf_form():
     # This is the minimal payload required for Word to PDF form conversion
     payload = {
         "docContent": word_base64,    # Base64 encoded Word document content
-        "docName": "output.pdf"       # Name for the output PDF file
+        "docName": "output.pdf",      # Name for the output PDF file
+        "async": True                 # Enable asynchronous processing
     }
 
     # Step 4: Set up HTTP headers for the API request

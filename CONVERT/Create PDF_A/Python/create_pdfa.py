@@ -39,9 +39,10 @@ def create_pdf_a():
     payload = {
         "docContent": pdf_base64,     # Base64 encoded PDF document content
         "docName": "output",          # Name for the output file
-        "compliance": "PdfA1b",       # PDF/A compliance level (PdfA1b = Level B basic conformance)
-        "allowUpgrade": True,         # Allow upgrading to higher compliance if needed
-        "allowDowngrade": True        # Allow downgrading to lower compliance if necessary
+        "compliance": "PdfA1b",       # PDF/A level: PdfA1a/PdfA1b/PdfA2a/PdfA2b/PdfA2u/PdfA3a/PdfA3b/PdfA3u
+        "allowUpgrade": True,         # Allow upgrading to higher compliance (True/False)
+        "allowDowngrade": True,       # Allow downgrading to lower compliance (True/False)
+        "async": True                 # Enable asynchronous processing
     }
     
     # Available PDF/A compliance options:

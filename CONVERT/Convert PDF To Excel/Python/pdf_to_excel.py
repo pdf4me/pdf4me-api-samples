@@ -43,7 +43,7 @@ def convert_pdf_to_excel():
         "language": "English",       # OCR language for text recognition in images/scanned PDFs
         "outputFormat": True,        # Preserve original formatting when possible
         "ocrWhenNeeded": True,       # Use OCR (Optical Character Recognition) for scanned PDFs
-        "Is Asynchronus": "yes"      # Request asynchronous processing (experimental parameter)
+        "async": True                # Enable asynchronous processing
     }
     
     # About PDF to Excel conversion features:

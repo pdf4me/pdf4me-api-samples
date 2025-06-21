@@ -43,7 +43,7 @@ def convert_pdf_to_powerpoint():
         "ocrWhenNeeded": True,       # Use OCR (Optical Character Recognition) for scanned PDFs
         "outputFormat": True,        # Preserve original formatting when possible
         "mergeAllSheets": True,      # Combine content appropriately for presentation format
-        "Is Asynchronus": "yes"      # Request asynchronous processing (experimental parameter)
+        "async": True                # Enable asynchronous processing
     }
     
     # About PDF to PowerPoint conversion features:

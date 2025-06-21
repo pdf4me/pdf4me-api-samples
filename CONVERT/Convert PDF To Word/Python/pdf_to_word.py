@@ -43,7 +43,7 @@ def convert_pdf_to_word():
         "mergeAllSheets": True,      # Combine multiple pages into single document flow
         "outputFormat": True,        # Preserve original formatting when possible
         "ocrWhenNeeded": True,       # Use OCR (Optical Character Recognition) for scanned PDFs
-        "Is Asynchronus": "yes"      # Request asynchronous processing (experimental parameter)
+        "async": True                # Enable asynchronous processing
     }
     
     # About PDF to Word conversion features:
