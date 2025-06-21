@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Convert VISIO", "Convert VISIO\Convert VISIO.csproj", "{01289560-A968-449D-9476-22913320C84B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01289560-A968-449D-9476-22913320C84B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01289560-A968-449D-9476-22913320C84B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01289560-A968-449D-9476-22913320C84B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01289560-A968-449D-9476-22913320C84B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
