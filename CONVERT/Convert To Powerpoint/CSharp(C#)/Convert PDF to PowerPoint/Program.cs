@@ -92,7 +92,7 @@ public class PdfToPowerPointConverter
             ocrWhenNeeded = "true",           // Enable OCR when needed
             outputFormat = "true",            // Output format setting
             mergeAllSheets = true,            // Merge all sheets into one
-            async = "true"                    // Enable asynchronous processing
+            async = true               // Enable asynchronous processing
         };
 
         // Serialize payload to JSON and create HTTP content

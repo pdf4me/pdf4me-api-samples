@@ -92,7 +92,7 @@ public class PdfToWordConverter
             mergeAllSheets = true,            // Merge all sheets into one
             outputFormat = "xyz",             // Output format setting
             ocrWhenNeeded = "true",           // Enable OCR when needed
-            async = "true"                    // Enable asynchronous processing
+            async = true                // Enable asynchronous processing
         };
 
         // Serialize payload to JSON and create HTTP content

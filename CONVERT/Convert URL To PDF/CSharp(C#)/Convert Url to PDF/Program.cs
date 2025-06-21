@@ -65,7 +65,7 @@ public class UrlToPdfConverter
             bottomMargin = "40px",
             printBackground = true,
             displayHeaderFooter = true,
-            async = "true"
+            async = true
         };
 
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");

@@ -87,7 +87,7 @@ public class WordToPdfFormConverter
         {
             docContent = wordBase64,           // Base64 encoded Word content
             docName = "output.pdf",            // Output document name
-            async = "true"                     // Enable asynchronous processing
+            async = true                   // Enable asynchronous processing
         };
 
         // Serialize payload to JSON and create HTTP content

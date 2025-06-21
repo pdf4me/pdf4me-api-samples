@@ -52,7 +52,7 @@ public class ToPdfConverter
         {
             docContent = fileBase64,
             docName = "output",
-            async = "true"
+            async = true
         };
 
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");

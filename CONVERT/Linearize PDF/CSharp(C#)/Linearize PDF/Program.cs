@@ -88,7 +88,7 @@ public class PdfLinearizer
             docContent = pdfBase64,           // Base64 encoded PDF content
             docName = "output.pdf",           // Output document name
             optimizeProfile = "web",          // Optimization profile for web delivery
-            async = "true"                    // Enable asynchronous processing
+            async = true                  // Enable asynchronous processing
         };
 
         // Serialize payload to JSON and create HTTP content

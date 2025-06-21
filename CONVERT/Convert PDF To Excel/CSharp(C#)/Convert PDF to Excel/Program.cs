@@ -111,7 +111,7 @@ public class PdfToExcelConverter
             mergeAllSheets = false,        // Whether to merge all sheets into one
             outputFormat = "yes",          // Enable output formatting
             ocrWhenNeeded = "yes",         // Enable OCR when text extraction is needed
-            async = "true"                 // Enable asynchronous processing
+            async = true             // Enable asynchronous processing
         };
 
         // Serialize payload to JSON and create HTTP content

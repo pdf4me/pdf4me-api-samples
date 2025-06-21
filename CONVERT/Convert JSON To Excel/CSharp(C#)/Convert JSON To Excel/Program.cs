@@ -96,7 +96,7 @@ public class JsonToExcelConverter
             ignoreNullValues = false,          // Include null values
             firstRow = 1,                      // Starting row
             firstColumn = 1,                   // Starting column
-            async = "true"                     // Enable asynchronous processing
+            async = true                     // Enable asynchronous processing
         };
 
         // Serialize payload to JSON and create HTTP content

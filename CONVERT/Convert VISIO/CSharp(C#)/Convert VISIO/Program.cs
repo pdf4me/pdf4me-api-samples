@@ -108,7 +108,7 @@ public class VisioToPdfConverter
             TiffCompression = "string",         // TIFF compression
             SaveToolBar = true,                 // Save toolbar
             AutoFit = true,                     // Auto-fit setting
-            async = "true"                      // Enable asynchronous processing
+            async = true                   // Enable asynchronous processing
         };
 
         // Serialize payload to JSON and create HTTP content

@@ -90,7 +90,7 @@ public class PdfACreator
             compliance = "PdfA1b",            // PDF-A compliance level
             allowUpgrade = true,              // Allow upgrading to higher compliance
             allowDowngrade = true,            // Allow downgrading to lower compliance
-            async = "true"                    // Enable asynchronous processing
+            async = true                 // Enable asynchronous processing
         };
 
         // Serialize payload to JSON and create HTTP content
