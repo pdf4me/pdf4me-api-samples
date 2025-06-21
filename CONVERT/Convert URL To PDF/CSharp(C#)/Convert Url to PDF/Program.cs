@@ -12,52 +12,60 @@ public class Program
     {
         string pdfPath = "sample.pdf";  // Update this path to your PDF file location
         using HttpClient httpClient = new HttpClient();
-        var converter = new PdfToExcelConverter(httpClient, pdfPath);
-        var result = await converter.ConvertPdfToExcelAsync();
+        var converter = new UrlToPdfConverter(httpClient, pdfPath);
+        var result = await converter.ConvertUrlToPdfAsync();
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Excel file saved to: {result}");
+            Console.WriteLine($"PDF file saved to: {result}");
         else
-            Console.WriteLine("PDF to Excel conversion failed.");
+            Console.WriteLine("URL to PDF conversion failed.");
     }
 }
 
-public class PdfToExcelConverter
+public class UrlToPdfConverter
 {
     // Configuration constants
-    private const string API_URL = "https://api.pdf4me.com/api/v2/ConvertPdfToExcel";
-    // Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private const string API_URL = "https://api-dev.pdf4me.com/api/v2/ConvertUrlToPdf";
+    private const string API_KEY = "ZWJhNjMwNDEtZTY4NC00YTViLWE2ZWMtYTliYjIzODEwMjEzOlV1TyU5JkxqTnJMa3AhRzdPWkR0ZVZ6Y3FaTWNpckRM";
 
     // File paths
     private readonly string _inputPdfPath;
-    private readonly string _outputExcelPath;
+    private readonly string _outputPdfPath;
 
     private readonly HttpClient _httpClient;
 
-    public PdfToExcelConverter(HttpClient httpClient, string inputPdfPath)
+    public UrlToPdfConverter(HttpClient httpClient, string inputPdfPath)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
-        _outputExcelPath = inputPdfPath.Replace(".pdf", ".xlsx");
+        _outputPdfPath = inputPdfPath.Replace(".pdf", ".url2pdf.pdf");
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
-    public async Task<string?> ConvertPdfToExcelAsync()
+    public async Task<string?> ConvertUrlToPdfAsync()
     {
         byte[] pdfBytes = await File.ReadAllBytesAsync(_inputPdfPath);
         string pdfBase64 = Convert.ToBase64String(pdfBytes);
 
         var payload = new
         {
+            webUrl = "https://www.google.com",
+            authType = "NoAuth",
+            username = "userName",
+            password = "1234",
             docContent = pdfBase64,
             docName = "output.pdf",
-            qualityType = "Draft",
-            language = "English",
-            mergeAllSheets = false,
-            outputFormat = "yes",
-            ocrWhenNeeded = "yes"
+            layout = "landscape",
+            format = "A4",
+            scale = 0.8,
+            topMargin = "40px",
+            leftMargin = "40px",
+            rightMargin = "40px",
+            bottomMargin = "40px",
+            printBackground = true,
+            displayHeaderFooter = true,
+            async = "true"
         };
 
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
@@ -66,8 +74,8 @@ public class PdfToExcelConverter
         if ((int)response.StatusCode == 200)
         {
             byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
-            await File.WriteAllBytesAsync(_outputExcelPath, resultBytes);
-            return _outputExcelPath;
+            await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
+            return _outputPdfPath;
         }
         else if ((int)response.StatusCode == 202)
         {
@@ -92,8 +100,8 @@ public class PdfToExcelConverter
                 if ((int)pollResponse.StatusCode == 200)
                 {
                     byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
-                    await File.WriteAllBytesAsync(_outputExcelPath, resultBytes);
-                    return _outputExcelPath;
+                    await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
+                    return _outputPdfPath;
                 }
                 else if ((int)pollResponse.StatusCode == 202)
                 {
@@ -106,7 +114,7 @@ public class PdfToExcelConverter
                     return null;
                 }
             }
-            Console.WriteLine("Timeout: PDF to Excel conversion did not complete after multiple retries.");
+            Console.WriteLine("Timeout: URL to PDF conversion did not complete after multiple retries.");
             return null;
         }
         else

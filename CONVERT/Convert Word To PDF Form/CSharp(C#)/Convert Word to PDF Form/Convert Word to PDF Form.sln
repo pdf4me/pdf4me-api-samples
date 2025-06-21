@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Convert Word to PDF Form", "Convert Word to PDF Form\Convert Word to PDF Form.csproj", "{69A8F4E3-D4D0-48D2-A77D-A38560617AF2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69A8F4E3-D4D0-48D2-A77D-A38560617AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69A8F4E3-D4D0-48D2-A77D-A38560617AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69A8F4E3-D4D0-48D2-A77D-A38560617AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69A8F4E3-D4D0-48D2-A77D-A38560617AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
