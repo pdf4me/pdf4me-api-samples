@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Convert PDF to Excel", "Convert PDF to Excel\Convert PDF to Excel.csproj", "{CD680BB0-4B88-4556-9975-E4A0EDFB6395}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD680BB0-4B88-4556-9975-E4A0EDFB6395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD680BB0-4B88-4556-9975-E4A0EDFB6395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD680BB0-4B88-4556-9975-E4A0EDFB6395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD680BB0-4B88-4556-9975-E4A0EDFB6395}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
