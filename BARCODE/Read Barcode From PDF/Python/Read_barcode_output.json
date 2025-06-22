@@ -1,0 +1,38 @@
+{
+  "barcodes": [
+    {
+      "barcodeType": "QRCode",
+      "value": "PDF4me Barcode Sample",
+      "top": 2852,
+      "left": 1827,
+      "right": 2186,
+      "bottom": 3211,
+      "page": 1
+    },
+    {
+      "barcodeType": "QRCode",
+      "value": "PDF4me Barcode Sample",
+      "top": 2852,
+      "left": 1827,
+      "right": 2186,
+      "bottom": 3211,
+      "page": 2
+    },
+    {
+      "barcodeType": "QRCode",
+      "value": "PDF4me Barcode Sample",
+      "top": 2852,
+      "left": 1827,
+      "right": 2186,
+      "bottom": 3211,
+      "page": 3
+    }
+  ],
+  "barcodeData": null,
+  "billingData": null,
+  "inDocMetadata": null,
+  "traceId": "c865cb81-38e7-45a2-be1c-8f9d2d7b660d",
+  "jobId": null,
+  "statusUrl": null,
+  "subscriptionUsage": null
+}
