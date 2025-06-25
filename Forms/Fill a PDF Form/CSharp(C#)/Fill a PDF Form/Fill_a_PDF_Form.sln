@@ -1,5 +1,5 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fill a PDF Form", "Fill a PDF Form\Fill a PDF Form.csproj", "{363CC173-1FA0-496C-BA74-A81870194BB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fill a PDF Form", "Fill_a_PDF_Form.csproj", "{363CC173-1FA0-496C-BA74-A81870194BB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
