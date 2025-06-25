@@ -15,7 +15,7 @@ import java.util.Base64;
 import java.util.concurrent.*;
 
 public class Main {
-    private static final String API_KEY = "get your api key from https://pdf4me.com/";
+    private static final String API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     private static final String API_URL = "https://api.pdf4me.com/api/v2/ConvertPdfToExcel";
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     private static final HttpClient httpClient = HttpClient.newHttpClient();
