@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -20,14 +23,12 @@ public class Program
     {
         string pdfPath = "sample.pdf";  // Update this path to your PDF file location
         
-        const string BASE_URL = "https://api.pdf4me.com/";
-        
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the page rotator with the HTTP client and PDF path
-        var pageRotator = new RotatePage(httpClient, pdfPath);
+        var pageRotator = new RotatePage(httpClient, pdfPath, API_KEY);
         
         // Rotate specific pages in the PDF
         Console.WriteLine("=== Rotating Specific Pages in PDF ===");
@@ -50,7 +51,7 @@ public class RotatePage
     /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private readonly string _apiKey;
     // File paths
     /// <summary>
     /// Path to the input PDF file to be processed
@@ -72,10 +73,12 @@ public class RotatePage
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public RotatePage(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public RotatePage(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
+        _apiKey = apiKey;
         _outputPdfPath = inputPdfPath.Replace(".pdf", ".page_rotated.pdf");
     }
 
@@ -130,7 +133,7 @@ public class RotatePage
             // Create HTTP request message for the page rotation operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/RotatePage");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the page rotation request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -170,7 +173,7 @@ public class RotatePage
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion
