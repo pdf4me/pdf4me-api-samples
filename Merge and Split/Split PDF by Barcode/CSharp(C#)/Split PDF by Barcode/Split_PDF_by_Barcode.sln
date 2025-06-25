@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Split PDF by Barcode", "Split PDF by Barcode\Split PDF by Barcode.csproj", "{8ED4352B-288A-4115-8D69-C2A6B670BC0A}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Split PDF by Barcode", "Split_PDF_by_Barcode.csproj", "{8ED4352B-288A-4115-8D69-C2A6B670BC0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

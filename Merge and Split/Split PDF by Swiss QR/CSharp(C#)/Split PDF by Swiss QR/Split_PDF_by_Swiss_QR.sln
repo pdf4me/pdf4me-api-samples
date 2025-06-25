@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Split PDF by Swiss QR", "Split PDF by Swiss QR\Split PDF by Swiss QR.csproj", "{13A04F2A-B641-40C8-9F5C-915BE0A3F14D}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Split PDF by Swiss QR", "Split_PDF_by_Swiss_QR.csproj", "{13A04F2A-B641-40C8-9F5C-915BE0A3F14D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

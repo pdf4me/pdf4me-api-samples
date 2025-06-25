@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Split PDF by Text", "Split PDF by Text\Split PDF by Text.csproj", "{2D1F0348-7F99-40C3-AC60-27F93492C161}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Split PDF by Text", "Split_PDF_by_Text.csproj", "{2D1F0348-7F99-40C3-AC60-27F93492C161}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merge two PDF files one over another as Overlay", "Merge two PDF files one over another as Overlay\Merge two PDF files one over another as Overlay.csproj", "{B70A01D6-92C9-4F3F-86BA-DEBA53D21C63}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merge two PDF files one over another as Overlay", "Merge_two_PDF_files_one_over_another_as_Overlay.csproj", "{B70A01D6-92C9-4F3F-86BA-DEBA53D21C63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

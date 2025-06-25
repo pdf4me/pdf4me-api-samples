@@ -5,13 +5,15 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 /// <summary>
-/// Main program class for PDF overlay functionality
-/// This program demonstrates how to merge two PDF files one over another as overlay using the PDF4ME API
+/// Main program class for PDF merging functionality
+/// This program demonstrates how to merge multiple PDF files into a single PDF using the PDF4ME API
 /// </summary>
 public class Program
 {
+
     public static readonly string BASE_URL = "https://api.pdf4me.com/";
     public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     /// <summary>
@@ -21,31 +23,34 @@ public class Program
     public static async Task Main(string[] args)
     {
         // Update these paths to your PDF file locations
-        string basePdfPath = "sample.pdf";      // Update this path to your base PDF file
-        string layerPdfPath = "sample.pdf";    // Update this path to your overlay PDF file
+        List<string> pdfPaths = new List<string>
+        {
+            "sample.pdf",    // Update this path to your first PDF file
+            "sample.pdf"    // Update this path to your second PDF file
+        };
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the PDF overlayer with the HTTP client and PDF paths
-        var pdfOverlayer = new PdfOverlayer(httpClient, basePdfPath, layerPdfPath, API_KEY);
+        // Initialize the PDF merger with the HTTP client, PDF paths, and API key
+        var pdfMerger = new PdfMerger(httpClient, pdfPaths, API_KEY);
         
-        // Perform the PDF overlay operation
-        var result = await pdfOverlayer.OverlayPdfsAsync();
+        // Perform the PDF merging operation
+        var result = await pdfMerger.MergePdfsAsync();
         
         // Display the result
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Overlayed PDF saved to: {result}");
+            Console.WriteLine($"Merged PDF saved to: {result}");
         else
-            Console.WriteLine("PDF overlay failed.");
+            Console.WriteLine("PDF merging failed.");
     }
 }
 
 /// <summary>
-/// Class responsible for overlaying PDF files using the PDF4ME API
+/// Class responsible for merging multiple PDF files using the PDF4ME API
 /// </summary>
-public class PdfOverlayer
+public class PdfMerger
 {
     // Configuration constants
     /// <summary>
@@ -55,17 +60,12 @@ public class PdfOverlayer
 
     // File paths
     /// <summary>
-    /// Path to the base PDF file
+    /// List of input PDF file paths to be merged
     /// </summary>
-    private readonly string _basePdfPath;
+    private readonly List<string> _inputPdfPaths;
     
     /// <summary>
-    /// Path to the layer PDF file that will be overlaid
-    /// </summary>
-    private readonly string _layerPdfPath;
-    
-    /// <summary>
-    /// Path where the overlaid PDF will be saved
+    /// Path where the merged PDF will be saved
     /// </summary>
     private readonly string _outputPdfPath;
 
@@ -75,78 +75,69 @@ public class PdfOverlayer
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Constructor to initialize the PDF overlayer
+    /// Constructor to initialize the PDF merger
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
-    /// <param name="basePdfPath">Path to the base PDF file</param>
-    /// <param name="layerPdfPath">Path to the layer PDF file</param>
+    /// <param name="inputPdfPaths">List of paths to the input PDF files</param>
     /// <param name="apiKey">API key for authentication</param>
-    public PdfOverlayer(HttpClient httpClient, string basePdfPath, string layerPdfPath, string apiKey)
+    public PdfMerger(HttpClient httpClient, List<string> inputPdfPaths, string apiKey)
     {
         _httpClient = httpClient;
-        _basePdfPath = basePdfPath;
-        _layerPdfPath = layerPdfPath;
+        _inputPdfPaths = inputPdfPaths;
         _apiKey = apiKey;
-        _outputPdfPath = basePdfPath.Replace(".pdf", ".overlayed.pdf");
+        _outputPdfPath = Path.Combine(Path.GetDirectoryName(inputPdfPaths[0]) ?? "/Users", "merged_output.pdf");
     }
 
     /// <summary>
-    /// Overlays two PDF files asynchronously using the PDF4ME API
+    /// Merges multiple PDF files asynchronously using the PDF4ME API
     /// </summary>
-    /// <returns>Path to the overlaid PDF file, or null if overlay failed</returns>
-    public async Task<string?> OverlayPdfsAsync()
+    /// <returns>Path to the merged PDF file, or null if merging failed</returns>
+    public async Task<string?> MergePdfsAsync()
     {
         try
         {
-            // Validate that both PDF files exist
-            if (!File.Exists(_basePdfPath))
+            // Read and encode all PDF files
+            List<string> pdfBase64Contents = new List<string>();
+            
+            foreach (string pdfPath in _inputPdfPaths)
             {
-                Console.WriteLine($"Base PDF file not found: {_basePdfPath}");
-                return null;
+                if (!File.Exists(pdfPath))
+                {
+                    Console.WriteLine($"PDF file not found: {pdfPath}");
+                    return null;
+                }
+                
+                byte[] pdfBytes = await File.ReadAllBytesAsync(pdfPath);
+                string pdfBase64 = Convert.ToBase64String(pdfBytes);
+                pdfBase64Contents.Add(pdfBase64);
             }
-
-            if (!File.Exists(_layerPdfPath))
-            {
-                Console.WriteLine($"Layer PDF file not found: {_layerPdfPath}");
-                return null;
-            }
-
-            // Read and encode the base PDF
-            byte[] basePdfBytes = await File.ReadAllBytesAsync(_basePdfPath);
-            string basePdfBase64 = Convert.ToBase64String(basePdfBytes);
-
-            // Read and encode the layer PDF
-            byte[] layerPdfBytes = await File.ReadAllBytesAsync(_layerPdfPath);
-            string layerPdfBase64 = Convert.ToBase64String(layerPdfBytes);
 
             // Prepare the API request payload
             var payload = new
             {
-                baseDocContent = basePdfBase64,     // Base64 encoded base PDF content
-                baseDocName = "output.pdf",         // Base document name
-                layerDocContent = layerPdfBase64,   // Base64 encoded layer PDF content
-                layerDocName = "output.pdf",        // Layer document name
+                docContent = pdfBase64Contents,     // Base64 encoded PDF contents
+                docName = "output.pdf",             // Output document name
                 async = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             // Serialize payload to JSON and create HTTP content
             var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
             
-            // Create HTTP request message for the overlay operation
-            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/MergeOverlay");
+            // Create HTTP request message for the merging operation
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/Merge");
             httpRequest.Content = content;
             httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
-            // Send the overlay request to the API
+            // Send the merging request to the API
             var response = await _httpClient.SendAsync(httpRequest);
 
             // Handle immediate success response (200 OK)
             if ((int)response.StatusCode == 200)
             {
-                // Read the overlaid PDF content from the response
+                // Read the merged PDF content from the response
                 byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
                 
-                // Save the overlaid PDF to the output path
+                // Save the merged PDF to the output path
                 await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
                 return _outputPdfPath;
             }
@@ -199,8 +190,8 @@ public class PdfOverlayer
                     }
                 }
                 
-                // Timeout if overlay doesn't complete within retry limit
-                Console.WriteLine("Timeout: PDF overlay did not complete after multiple retries.");
+                // Timeout if merging doesn't complete within retry limit
+                Console.WriteLine("Timeout: PDF merging did not complete after multiple retries.");
                 return null;
             }
             // Handle other error responses

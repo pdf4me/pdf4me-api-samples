@@ -15,6 +15,8 @@ using System.Collections.Generic;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -23,14 +25,12 @@ public class Program
     {
         string pdfPath = "sample.pdf";  // Update this path to your PDF file location
         
-        const string BASE_URL = "https://api.pdf4me.com/";
-        
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the PDF splitter with the HTTP client and PDF path
-        var pdfSplitter = new PdfSplitter(httpClient, pdfPath);
+        // Initialize the PDF splitter with the HTTP client, PDF path, and API key
+        var pdfSplitter = new PdfSplitter(httpClient, pdfPath, API_KEY);
         
         // Example 1: Split after every page (RecurringSplitAfterPage)
         Console.WriteLine("=== Example 1: Split after every page ===");
@@ -67,7 +67,7 @@ public class PdfSplitter
     /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private readonly string _apiKey;
 
     // File paths
     /// <summary>
@@ -90,10 +90,12 @@ public class PdfSplitter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfSplitter(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfSplitter(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
+        _apiKey = apiKey;
         _outputDirectory = inputPdfPath.Replace(".pdf", "_split_output");
     }
 
@@ -265,7 +267,7 @@ public class PdfSplitter
             // Create HTTP request message for the splitting operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/SplitPdf");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the splitting request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -309,7 +311,7 @@ public class PdfSplitter
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion
