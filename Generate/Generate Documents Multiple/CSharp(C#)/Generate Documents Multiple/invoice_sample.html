@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice</title>
+  <style>
+    html body{
+      padding: 0;
+      margin:0;
+      font-family: Arial;
+    }
+    .full-width, .cut-here{
+      width:100%;
+      margin:auto;
+      max-width: 900px;
+      position: relative;
+    }
+    table{position: relative;}
+    p{margin:0;line-height: 16px; font-size: 16px;}
+    h2{font-size: 20px;}
+	h4{font-size: 17px;}
+    .smaller-p p{font-size: 15px;}
+    .bordered-cell{border:1px solid #000;}
+    .corner-bordered-cell{border: 1px dotted #555;}
+  </style>
+</head>
+<body>
+<!--HEADER TABLE-->
+<table class="full-width" cellspacing="10" cellpadding="0">
+  <tbody>
+    <tr>
+      <td style="width: 25%; vertical-align: top;">
+        <table class="full-width" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <img style="width: 230px;" src="http://cdn.mcauto-images-production.sendgrid.net/5730e870c409e5af/315705cb-26b4-4bb6-a68d-e60eefc7616d/502x325.png" alt="">
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td style="width: 70%; vertical-align: top;">
+        <table class="full-width" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td><h1 style="text-transform: uppercase;text-align: center; margin:0; font-size: 40px; font-weight: bold"></h1></td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td style="width: 70%;">
+        <table class="full-width" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr style="vertical-align: top;">
+              <td>
+                <table class="full-width" cellspacing="0" cellpadding="0"></table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 70%;">
+        <table class="full-width" cellspacing="0" cellpadding="0">
+          <tbody style="font-weight: bold>">
+		        <tr>
+              <td><p>{{recipient.name}}</p></td>
+            </tr>
+		        <tr>
+              <td><p>{{coText}}</p></td>
+            </tr>
+            <tr>
+              <td><p>{{recipient.postalAddress.street1}}</p></td>
+            </tr>
+		        <tr>
+              <td><p>{{recipient.postalAddress.street2}}</p></td>
+            </tr>
+            <tr>
+              <td><p>{{recipient.postalAddress.zipCode}} {{recipient.postalAddress.city}}</p></td>
+            </tr>
+		        <tr>
+              <td><p>{{recipient.postalAddress.country}}</p></td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td style="width: 45%;"></td>
+      <td style="width: 40%;">
+      <td style="width: 45%;"></td>
+      <td style="width: 40%;">
+        <table class="full-width" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr style="vertical-align: top;">
+              <td>
+                <table class="full-width">
+                  <tbody>
+                    <tr>
+                      <td style="width: 10%;"><p><b><h4>Invoice</h4></b></p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p>Seller</p></td>
+                      <td style="width: 5px;"><p>:</p></td>
+                      <td style="width: calc(60% - 5px);"><p>PDF4me</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p></p></td>
+                      <td style="width: 5px;"><p></p></td>
+                      <td style="width: calc(60% - 5px);"><p>Zurich<p>Switzerland</p></td>
+          
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p>Home Page</p></td>
+                      <td style="width: 5px;"><p>:</p></td>
+                      <td style="width: calc(60% - 5px);"><p>https://dev.pdf4me.com</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p>Telephone</p></td>
+                      <td style="width: 5px;"><p>:</p></td>
+                      <td style="width: calc(60% - 5px);"><p>+41 xx xxx xx xx</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p>IBAN</p></td>
+                      <td style="width: 5px;"><p>:</p></td>
+                      <td style="width: calc(60% - 5px);"><p>xxxx xxxx xx xxxxx</p></td>
+                    </tr> 
+                    <tr>
+                      <td style="width: 40%;"><p>SWIFT</p></td>
+                      <td style="width: 5px;"><p>:</p></td>
+                      <td style="width: calc(60% - 5px);"><p>XXXXXX</p></td>
+                    </tr> 
+                    <tr>
+                      <td style="width: 40%;"><p>Buyer</p></td>
+                      <td style="width: 5px;"><p>:</p></td>
+                      <td style="width: calc(60% - 5px);"><p>{{buyer.name}}</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p></p></td>
+                      <td style="width: 5px;"><p></p></td>
+                      <td style="width: calc(60% - 5px);"><p>{{coTextDelivery}}</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p></p></td>
+                      <td style="width: 5px;"><p></p></td>
+                      <td style="width: calc(60% - 5px);"><p>{{buyer.postalAddress.street1}}</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p></p></td>
+                      <td style="width: 5px;"><p></p></td>
+                      <td style="width: calc(60% - 5px);"><p>{{buyer.postalAddress.street2}}</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p>Due Date</p></td>
+                      <td style="width: 5px;"><p></p></td>
+                      <td style="width: calc(60% - 5px);"><p>{{dueDate}}</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p>Invoice Number</p></td>
+                      <td style="width: 5px;"><p></p></td>
+                      <td style="width: calc(60% - 5px);"><p>{{invoiceNumber}}</p></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;"><p>Issued On</p></td>
+                      <td style="width: 5px;"><p></p></td>
+                      <td style="width: calc(60% - 5px);"><p>{{issuedOn}}</p></td>
+                    </tr>
+                 </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!--INDENTING TABLE-->
+<table class="full-width" cellpadding="0" cellspacing="37">
+  <tbody>
+  <tr>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+<!--CONTENT TABLE-->
+<table class="full-width" cellpadding="0" cellspacing="0">
+  <tbody>
+  <tr>
+    <td style="width: 80%;">
+      <table class="full-width" cellpadding="0" cellspacing="0">
+        <tbody>
+        <tr>
+          <td>
+            <p><h3></h3></p>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+    <td style="width: 20%;">
+    </td>
+  </tr>
+
+  </tbody>
+</table>
+<!--CONTACT DATA TABLE-->
+<br>
+<br>
+
+<table class="full-width">
+  <tbody>
+    <tr>
+  
+      <td style="width: 62%;  vertical-align: top; margin: 20px; padding: 10px;">
+        <table class="full-width" cellspacing="4" cellpadding="2" border="0">
+          <tbody>
+
+          </tbody>
+        </table>
+      </td>
+	
+	    <td style="width: 38%; margin: 20px; padding: 10px">
+
+      </td>
+	
+      <table class="full-width">
+        <tbody>
+          <tr>
+  
+            <td style="margin: 30px; padding: 10px">
+              <table class="full-width" cellspacing="1" cellpadding="2">
+                <tbody>
+
+                  <tr bgcolor="#3660b3" style="color:white;" align="left">
+                          <th><p><b>Product</b></p></th>
+                    <th><p><b>Period</b></p></th>
+                    <th><p><b>Quantity</b></p></th>
+                    <th><p><b>Price</b></p></th>
+                    <th><p><b>VAT</b></p></th>
+                    <th><p><b>Total</b></p></th>
+                      </tr>
+                  <tr>
+                      <td style="border: none"><p> {{#each subInfo}} <div> {{plan}}   </div>  {{/each}}</p>
+                      <td style="border: none"><p>{{periodStart}} - {{periodEnd}}</p>
+                      <td style="border: none" align="center"><p>{{#each subInfo}}  <div> {{quantity}} </div> {{/each}} </p>
+                      <td style="border: none" align="center"><p>{{#each subInfo}} <div>   {{totalPrice}}   </div> {{/each}} </p>
+                      <td style="border: none" align="center"><p>{{#each subInfo}}  <div>  {{vat}}  </div> {{/each}} </p>
+                      <td style="border: none" align="right"><p>{{#each subInfo}} <div>   {{totalPrice}}  </div>  {{/each}} </p>
+                      
+                      </tr>
+          </tbody>
+        </table>
+       </td>
+	
+	    <br>
+	    <br>
+	
+	
+	    <table class="full-width">
+        <tbody>
+          <tr>
+            <td style="width: 60%; vertical-align: top; margin: 20px; padding: 10px">
+              <table class="full-width" cellspacing="1" cellpadding="2">
+                <tbody>
+                </tbody>
+              </table>
+            </td>
+            <td style="width: 40%; margin: 20px; padding: 10px">
+                <table class="full-width" cellspacing="1" cellpadding="2">
+                    <tbody>
+                        <tr>
+                            <td style="border: none"><p><b></b></p></td>
+                            <td style="border: none"><p><b></b></p></td>
+                        </tr>
+                        <tr bgcolor="#3660b3" style="color:white;" >
+                            <td><p><b>Total balance:    </b></p></td>
+                            <td style="border: none" align="right"><p><b>{{totalAmount}}</b></p></td>
+                        </tr>
+
+                    </tbody>
+              
+                </table>
+              </td>
+        <tr>
+
+    <input type="hidden" id="invoiceState" value="{{state}}"  />
+    <script>
+      myFunction();
+      var text;
+      function myFunction()
+      {
+        if (invoiceState.value == "Paid")
+        {
+          text = "Paid";
+        }
+        else
+        {
+          text = "Due";
+        }
+        document.getElementById("demo").innerHTML = text;
+      }
+      </script> 
+        </tr>
+    </tbody>
+		
+</table>
+      
+</body>
+</html>

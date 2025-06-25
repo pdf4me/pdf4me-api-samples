@@ -1,0 +1,32 @@
+{
+    "VendorName": "PDF4me",
+    "VendorCity":"Zurich",
+    "VendorCountry":"Switzerland",
+    "VendorZip":"8630",
+    "VendorContact":"123456",
+    "VendorPhone":"+41 44 123 4567",
+    "InvoiceDate":"22-08-2022",
+    "CustomerName":"John Doe",
+    "CustomerCity":"Start City",
+    "CustomerCountry":"US",
+    "CustomerZip":"3214",
+    "products": [
+    {
+      "prodctName": "PDF Converter",
+      "value": 2000,
+      "expires": "01/08/2025"
+    },
+    {
+      "productName": "PDF API",
+      "value": 1250,
+      "expires": "18/02/2029"
+    },
+    {
+      "productName": "PDF Editor",
+      "value": 1999,
+      "expires": "12/12/2027"
+    }
+   ],
+   "comment":"This document is <b>computer generated</b> and does not require a signature.",
+   "invoicePaid": true
+}
