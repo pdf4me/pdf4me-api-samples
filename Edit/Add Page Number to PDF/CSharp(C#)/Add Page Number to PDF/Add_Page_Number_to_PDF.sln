@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Page Number to PDF", "Add Page Number to PDF\Add Page Number to PDF.csproj", "{91DFB8F1-5887-403E-AD36-B9FB697BD89B}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Page Number to PDF", "Add_Page_Number_to_PDF.csproj", "{91DFB8F1-5887-403E-AD36-B9FB697BD89B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

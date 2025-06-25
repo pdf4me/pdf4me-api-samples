@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Image Stamp to PDF", "Add Image Stamp to PDF\Add Image Stamp to PDF.csproj", "{7375AE7A-A20D-49F1-A5F4-29758578730E}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Image Stamp to PDF", "Add_Image_Stamp_to_PDF.csproj", "{7375AE7A-A20D-49F1-A5F4-29758578730E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

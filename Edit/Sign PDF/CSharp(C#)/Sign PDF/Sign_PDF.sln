@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sign PDF", "Sign PDF\Sign PDF.csproj", "{A8C583C1-780C-459B-88C4-24BB6EA00E51}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sign PDF", "Sign_PDF.csproj", "{A8C583C1-780C-459B-88C4-24BB6EA00E51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

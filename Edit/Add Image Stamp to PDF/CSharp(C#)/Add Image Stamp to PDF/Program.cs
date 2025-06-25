@@ -30,8 +30,8 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the image stamp adder with the HTTP client and file paths
-        var imageStampAdder = new PdfImageStampAdder(httpClient, pdfPath, imagePath);
+        // Initialize the image stamp adder with the HTTP client, file paths, and API key
+        var imageStampAdder = new PdfImageStampAdder(httpClient, pdfPath, imagePath, API_KEY);
         
         // Add image stamp to the PDF document
         Console.WriteLine("=== Adding Image Stamp to PDF Document ===");
@@ -74,12 +74,18 @@ public class PdfImageStampAdder
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the image stamp adder
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
     /// <param name="inputImagePath">Path to the input image file</param>
-    public PdfImageStampAdder(HttpClient httpClient, string inputPdfPath, string inputImagePath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfImageStampAdder(HttpClient httpClient, string inputPdfPath, string inputImagePath, string apiKey)
     {
         // Store the HTTP client for API requests
         _httpClient = httpClient;
@@ -87,6 +93,9 @@ public class PdfImageStampAdder
         // Store input file paths
         _inputPdfPath = inputPdfPath;
         _inputImagePath = inputImagePath;
+        
+        // Store API key
+        _apiKey = apiKey;
         
         // Generate output file path in the same directory as input PDF
         string outputFileName = Path.GetFileNameWithoutExtension(inputPdfPath) + ".with_image_stamp.pdf";
@@ -184,7 +193,7 @@ public class PdfImageStampAdder
             // Create HTTP request message for the image stamp addition operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ImageStamp");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the image stamp addition request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -224,7 +233,7 @@ public class PdfImageStampAdder
                     
                     // Create polling request to check processing status
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

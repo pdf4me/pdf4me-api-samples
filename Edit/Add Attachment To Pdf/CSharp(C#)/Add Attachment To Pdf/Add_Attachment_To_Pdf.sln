@@ -1,5 +1,5 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Attachment To Pdf", "Add Attachment To Pdf.csproj", "{6D1DB6EC-6B93-45B2-9CFA-ED86DAAFABE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Attachment To Pdf", "Add_Attachment_To_Pdf.csproj", "{6D1DB6EC-6B93-45B2-9CFA-ED86DAAFABE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

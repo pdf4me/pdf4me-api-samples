@@ -44,8 +44,8 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the text stamp adder with the HTTP client and PDF file path
-        var textStampAdder = new PdfTextStampAdder(httpClient, pdfPath);
+        // Initialize the text stamp adder with the HTTP client, PDF file path, and API key
+        var textStampAdder = new PdfTextStampAdder(httpClient, pdfPath, API_KEY);
         
         // Add text stamp to the PDF document
         Console.WriteLine("=== Adding Text Stamp to PDF Document ===");
@@ -83,17 +83,26 @@ public class PdfTextStampAdder
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the text stamp adder
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfTextStampAdder(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfTextStampAdder(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         // Store the HTTP client for API requests
         _httpClient = httpClient;
         
         // Store input PDF file path
         _inputPdfPath = inputPdfPath;
+        
+        // Store API key
+        _apiKey = apiKey;
         
         // Generate output file path in the same directory as input PDF
         string outputFileName = Path.GetFileNameWithoutExtension(inputPdfPath) + ".with_text_stamp.pdf";
@@ -178,7 +187,7 @@ public class PdfTextStampAdder
             // Create HTTP request message for the text stamp addition operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/Stamp");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the text stamp addition request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -219,7 +228,7 @@ public class PdfTextStampAdder
                     
                     // Create polling request to check processing status
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

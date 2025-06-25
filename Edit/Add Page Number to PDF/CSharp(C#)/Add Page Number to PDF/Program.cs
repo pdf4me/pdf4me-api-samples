@@ -28,8 +28,8 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the page number adder with the HTTP client and PDF file path
-        var pageNumberAdder = new PdfPageNumberAdder(httpClient, pdfPath);
+        // Initialize the page number adder with the HTTP client, PDF file path, and API key
+        var pageNumberAdder = new PdfPageNumberAdder(httpClient, pdfPath, API_KEY);
         
         // Add page numbers to the PDF document
         Console.WriteLine("=== Adding Page Numbers to PDF Document ===");
@@ -67,17 +67,26 @@ public class PdfPageNumberAdder
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the page number adder
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfPageNumberAdder(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfPageNumberAdder(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         // Store the HTTP client for API requests
         _httpClient = httpClient;
         
         // Store input PDF file path
         _inputPdfPath = inputPdfPath;
+        
+        // Store API key
+        _apiKey = apiKey;
         
         // Generate output file path in the same directory as input PDF
         string outputFileName = Path.GetFileNameWithoutExtension(inputPdfPath) + ".with_page_numbers.pdf";
@@ -160,7 +169,7 @@ public class PdfPageNumberAdder
             // Create HTTP request message for the page number addition operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/AddPageNumbers");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the page number addition request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -201,7 +210,7 @@ public class PdfPageNumberAdder
                     
                     // Create polling request to check processing status
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

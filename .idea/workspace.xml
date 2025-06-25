@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8611d23d-571d-43eb-a6a9-a21ab9d9a55d" name="Changes" comment="" />
+    <list default="true" id="8611d23d-571d-43eb-a6a9-a21ab9d9a55d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Attachment To Pdf/CSharp(C#)/Add Attachment To Pdf/Add_Attachment_To_Pdf.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Attachment To Pdf/CSharp(C#)/Add Attachment To Pdf/Add_Attachment_To_Pdf.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Attachment To Pdf/CSharp(C#)/Add Attachment To Pdf/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Attachment To Pdf/CSharp(C#)/Add Attachment To Pdf/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add HTML Header Footer to PDF/CSharp(C#)/Add HTML Header Footer to PDF/Add_HTML_Header_Footer_to_PDF.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add HTML Header Footer to PDF/CSharp(C#)/Add HTML Header Footer to PDF/Add_HTML_Header_Footer_to_PDF.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add HTML Header Footer to PDF/CSharp(C#)/Add HTML Header Footer to PDF/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add HTML Header Footer to PDF/CSharp(C#)/Add HTML Header Footer to PDF/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Image Stamp to PDF/CSharp(C#)/Add Image Stamp to PDF/Add_Image_Stamp_to_PDF.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Image Stamp to PDF/CSharp(C#)/Add Image Stamp to PDF/Add_Image_Stamp_to_PDF.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Image Stamp to PDF/CSharp(C#)/Add Image Stamp to PDF/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Image Stamp to PDF/CSharp(C#)/Add Image Stamp to PDF/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Margin to PDF/CSharp(C#)/Add Margin to PDF/Add_Margin_to_PDF.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Margin to PDF/CSharp(C#)/Add Margin to PDF/Add_Margin_to_PDF.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Margin to PDF/CSharp(C#)/Add Margin to PDF/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Margin to PDF/CSharp(C#)/Add Margin to PDF/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Page Number to PDF/CSharp(C#)/Add Page Number to PDF/Add_Page_Number_to_PDF.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Page Number to PDF/CSharp(C#)/Add Page Number to PDF/Add_Page_Number_to_PDF.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Page Number to PDF/CSharp(C#)/Add Page Number to PDF/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Page Number to PDF/CSharp(C#)/Add Page Number to PDF/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Text Stamp to PDF/CSharp(C#)/Add Text Stamp to PDF/Add_Text_Stamp_to_PDF.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Text Stamp to PDF/CSharp(C#)/Add Text Stamp to PDF/Add_Text_Stamp_to_PDF.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Add Text Stamp to PDF/CSharp(C#)/Add Text Stamp to PDF/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Text Stamp to PDF/CSharp(C#)/Add Text Stamp to PDF/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Sign PDF/CSharp(C#)/Sign PDF/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Sign PDF/CSharp(C#)/Sign PDF/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Edit/Sign PDF/CSharp(C#)/Sign PDF/Sign_PDF.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Sign PDF/CSharp(C#)/Sign PDF/Sign_PDF.sln" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="sk/convert" />
+        <entry key="$PROJECT_DIR$" value="sk/edit" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -35,10 +51,10 @@
     <setting file="file://$PROJECT_DIR$/CONVERT/Flatten PDF/CSharp(C#)/Flatten PDF/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CONVERT/Linearize PDF/CSharp(C#)/Linearize PDF/Program.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -49,18 +65,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;sk/edit&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="8611d23d-571d-43eb-a6a9-a21ab9d9a55d" name="Changes" comment="" />
@@ -70,6 +87,8 @@
       <updated>1750836922395</updated>
       <workItem from="1750836924396" duration="1744000" />
       <workItem from="1750842110135" duration="5213000" />
+      <workItem from="1750851177915" duration="115000" />
+      <workItem from="1750851298248" duration="659000" />
     </task>
     <task id="LOCAL-00001" summary="Convert">
       <option name="closed" value="true" />

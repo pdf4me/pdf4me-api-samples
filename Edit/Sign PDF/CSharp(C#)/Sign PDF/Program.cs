@@ -31,8 +31,8 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the PDF signer with the HTTP client and file paths
-        var pdfSigner = new PdfSigner(httpClient, pdfPath, imagePath);
+        // Initialize the PDF signer with the HTTP client, file paths, and API key
+        var pdfSigner = new PdfSigner(httpClient, pdfPath, imagePath, API_KEY);
         
         // Sign the PDF document
         Console.WriteLine("=== Signing PDF Document ===");
@@ -74,12 +74,18 @@ public class PdfSigner
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the PDF signer
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
     /// <param name="inputImagePath">Path to the signature image file</param>
-    public PdfSigner(HttpClient httpClient, string inputPdfPath, string inputImagePath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfSigner(HttpClient httpClient, string inputPdfPath, string inputImagePath, string apiKey)
     {
         // Store the HTTP client for API requests
         _httpClient = httpClient;
@@ -87,6 +93,9 @@ public class PdfSigner
         // Store input file paths
         _inputPdfPath = inputPdfPath;
         _inputImagePath = inputImagePath;
+        
+        // Store API key
+        _apiKey = apiKey;
         
         // Generate output file path in the same directory as input PDF
         string outputFileName = Path.GetFileNameWithoutExtension(inputPdfPath) + ".signed.pdf";
@@ -167,7 +176,7 @@ public class PdfSigner
             // Create HTTP request message for the PDF signing operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ImageStamp");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the PDF signing request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -208,7 +217,7 @@ public class PdfSigner
                     
                     // Create polling request to check processing status
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

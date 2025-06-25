@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Text Stamp to PDF", "Add Text Stamp to PDF \Add Text Stamp to PDF.csproj", "{F9333DAE-6151-4BB4-982B-B40477B1F965}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Text Stamp to PDF", "Add_Text_Stamp_to_PDF.csproj", "{F9333DAE-6151-4BB4-982B-B40477B1F965}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

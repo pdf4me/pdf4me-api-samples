@@ -28,8 +28,8 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the HTML header/footer adder with the HTTP client and PDF file path
-        var htmlHeaderFooterAdder = new PdfHtmlHeaderFooterAdder(httpClient, pdfPath);
+        // Initialize the HTML header/footer adder with the HTTP client, PDF file path, and API key
+        var htmlHeaderFooterAdder = new PdfHtmlHeaderFooterAdder(httpClient, pdfPath, API_KEY);
         
         // Add HTML header/footer to the PDF document
         Console.WriteLine("=== Adding HTML Header/Footer to PDF Document ===");
@@ -68,17 +68,26 @@ public class PdfHtmlHeaderFooterAdder
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the HTML header/footer adder
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfHtmlHeaderFooterAdder(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfHtmlHeaderFooterAdder(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         // Store the HTTP client for API requests
         _httpClient = httpClient;
         
         // Store input PDF file path
         _inputPdfPath = inputPdfPath;
+        
+        // Store API key
+        _apiKey = apiKey;
         
         // Generate output file path in the current directory
         string outputFileName = Path.GetFileNameWithoutExtension(inputPdfPath) + ".with_html_header_footer.pdf";
@@ -147,7 +156,7 @@ public class PdfHtmlHeaderFooterAdder
             // Create HTTP request message for the HTML header/footer addition operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/AddHtmlHeaderFooter");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the HTML header/footer addition request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -188,7 +197,7 @@ public class PdfHtmlHeaderFooterAdder
                     
                     // Create polling request to check processing status
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

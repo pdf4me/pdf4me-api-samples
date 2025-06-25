@@ -29,8 +29,8 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the attachment adder with the HTTP client and PDF file path
-        var attachmentAdder = new PdfAttachmentAdder(httpClient, pdfPath);
+        // Initialize the attachment adder with the HTTP client, PDF file path, and API key
+        var attachmentAdder = new PdfAttachmentAdder(httpClient, pdfPath, API_KEY);
         
         // Add attachment to the PDF document
         Console.WriteLine("=== Adding Attachment to PDF Document ===");
@@ -69,17 +69,26 @@ public class PdfAttachmentAdder
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the attachment adder
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfAttachmentAdder(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfAttachmentAdder(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         // Store the HTTP client for API requests
         _httpClient = httpClient;
         
         // Store input PDF file path
         _inputPdfPath = inputPdfPath;
+        
+        // Store API key
+        _apiKey = apiKey;
         
         // Generate output file path in the current directory
         string outputFileName = Path.GetFileNameWithoutExtension(inputPdfPath) + ".with_attachment.pdf";
@@ -166,7 +175,7 @@ public class PdfAttachmentAdder
             // Create HTTP request message for the attachment addition operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/AddAttachmentToPdf");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the attachment addition request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -207,7 +216,7 @@ public class PdfAttachmentAdder
                     
                     // Create polling request to check processing status
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

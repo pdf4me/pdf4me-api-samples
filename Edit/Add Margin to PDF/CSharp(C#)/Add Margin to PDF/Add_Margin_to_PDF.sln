@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Margin to PDF", "Add Margin to PDF\Add Margin to PDF.csproj", "{05E6CBBD-A1EE-4E70-B107-9297789CDBE5}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Margin to PDF", "Add_Margin_to_PDF.csproj", "{05E6CBBD-A1EE-4E70-B107-9297789CDBE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
