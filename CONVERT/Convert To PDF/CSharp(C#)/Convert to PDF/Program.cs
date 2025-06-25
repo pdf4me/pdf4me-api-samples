@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
-    public const string BASE_URL = "https://api.pdf4me.com/";
-    public const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
