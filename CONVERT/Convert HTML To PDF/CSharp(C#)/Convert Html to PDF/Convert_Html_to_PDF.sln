@@ -1,6 +1,5 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Convert Html to PDF", "Convert Html to PDF\Convert Html to PDF.csproj", "{85A7D261-FCC1-466C-AC49-3C2FB8BB181A}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Convert Html to PDF", "Convert_Html_to_PDF.csproj", "{85A7D261-FCC1-466C-AC49-3C2FB8BB181A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

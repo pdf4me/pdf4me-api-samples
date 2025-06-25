@@ -26,7 +26,7 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         // Initialize the PDF-A creator
-        var converter = new PdfACreator(httpClient, pdfPath);
+        var converter = new PdfACreator(httpClient, pdfPath, API_KEY);
         // Perform the conversion
         var result = await converter.CreatePdfAAsync();
         // Display the result
@@ -48,15 +48,18 @@ public class PdfACreator
     private readonly string _outputPdfAPath;
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
     /// <summary>
     /// Constructor to initialize the PDF-A creator
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfACreator(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfACreator(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
+        _apiKey = apiKey;
         // Generate output PDF-A path with a unique suffix
         _outputPdfAPath = inputPdfPath.Replace(".pdf", ".pdfa.pdf");
     }
@@ -84,7 +87,7 @@ public class PdfACreator
         // Create HTTP request message
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/PdfA");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         // Send the conversion request to the API
         var response = await _httpClient.SendAsync(httpRequest);
         // Handle immediate success response (200 OK)
@@ -117,7 +120,7 @@ public class PdfACreator
                 await Task.Delay(retryDelay * 1000);
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)

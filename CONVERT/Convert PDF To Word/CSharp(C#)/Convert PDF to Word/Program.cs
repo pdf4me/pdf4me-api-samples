@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 public class Program
 {
 	public static readonly string BASE_URL = "https://api.pdf4me.com/";
-    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";v
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -27,7 +27,7 @@ public class Program
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the PDF to Word converter
-        var converter = new PdfToWordConverter(httpClient, pdfPath);
+        var converter = new PdfToWordConverter(httpClient, pdfPath, API_KEY);
         
         // Perform the conversion
         var result = await converter.ConvertPdfToWordAsync();
@@ -52,16 +52,19 @@ public class PdfToWordConverter
 
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
 
     /// <summary>
     /// Constructor to initialize the PDF to Word converter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfToWordConverter(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfToWordConverter(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
+        _apiKey = apiKey;
         
         // Generate output Word path by replacing PDF extension with DOCX
         _outputWordPath = inputPdfPath.Replace(".pdf", ".docx");
@@ -96,7 +99,7 @@ public class PdfToWordConverter
         // Create HTTP request message
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertPdfToWord");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         
         // Send the conversion request to the API
         var response = await _httpClient.SendAsync(httpRequest);
@@ -136,7 +139,7 @@ public class PdfToWordConverter
                 
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                 // Handle successful completion

@@ -25,7 +25,7 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         // Initialize the Word to PDF Form converter
-        var converter = new WordToPdfFormConverter(httpClient, wordPath);
+        var converter = new WordToPdfFormConverter(httpClient, wordPath, API_KEY);
         // Perform the conversion
         var result = await converter.ConvertWordToPdfFormAsync();
         // Display the result
@@ -46,15 +46,18 @@ public class WordToPdfFormConverter
     private readonly string _outputPdfPath;
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
     /// <summary>
     /// Constructor to initialize the Word to PDF Form converter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputWordPath">Path to the input Word file</param>
-    public WordToPdfFormConverter(HttpClient httpClient, string inputWordPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public WordToPdfFormConverter(HttpClient httpClient, string inputWordPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputWordPath = inputWordPath;
+        _apiKey = apiKey;
         // Generate output PDF path by replacing Word extensions with PDF
         _outputPdfPath = inputWordPath.Replace(".docx", ".pdf").Replace(".doc", ".pdf");
     }
@@ -79,7 +82,7 @@ public class WordToPdfFormConverter
         // Create HTTP request message
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertWordToPdfForm");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         // Send the conversion request to the API
         var response = await _httpClient.SendAsync(httpRequest);
         // Handle immediate success response (200 OK)
@@ -112,7 +115,7 @@ public class WordToPdfFormConverter
                 await Task.Delay(retryDelay * 1000);
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)

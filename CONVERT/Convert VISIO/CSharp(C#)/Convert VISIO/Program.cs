@@ -26,7 +26,7 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         // Initialize the VISIO to PDF converter
-        var converter = new VisioToPdfConverter(httpClient, visioPath);
+        var converter = new VisioToPdfConverter(httpClient, visioPath, API_KEY);
         // Perform the conversion
         var result = await converter.ConvertVisioToPdfAsync();
         // Display the result
@@ -48,15 +48,18 @@ public class VisioToPdfConverter
     private readonly string _outputPdfPath;
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
     /// <summary>
     /// Constructor to initialize the VISIO to PDF converter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputVisioPath">Path to the input VISIO file</param>
-    public VisioToPdfConverter(HttpClient httpClient, string inputVisioPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public VisioToPdfConverter(HttpClient httpClient, string inputVisioPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputVisioPath = inputVisioPath;
+        _apiKey = apiKey;
         // Generate output PDF path by replacing VISIO extensions with PDF
         _outputPdfPath = inputVisioPath.Replace(".vsdx", ".pdf").Replace(".vsd", ".pdf");
     }
@@ -102,7 +105,7 @@ public class VisioToPdfConverter
         // Create HTTP request message
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertVisio?schemaVal=PDF");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         // Send the conversion request to the API
         var response = await _httpClient.SendAsync(httpRequest);
         // Handle immediate success response (200 OK)
@@ -135,7 +138,7 @@ public class VisioToPdfConverter
                 await Task.Delay(retryDelay * 1000);
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)

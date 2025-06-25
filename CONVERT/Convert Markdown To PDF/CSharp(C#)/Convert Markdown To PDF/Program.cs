@@ -31,7 +31,7 @@ public class Program
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the Markdown to PDF converter
-        var converter = new MarkdownToPdfConverter(httpClient, pdfPath, zipPath);
+        var converter = new MarkdownToPdfConverter(httpClient, pdfPath, zipPath, API_KEY);
         
         // Perform the conversion
         var result = await converter.ConvertMarkdownToPdfAsync();
@@ -57,6 +57,7 @@ public class MarkdownToPdfConverter
 
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
 
     /// <summary>
     /// Constructor to initialize the Markdown to PDF converter
@@ -64,11 +65,13 @@ public class MarkdownToPdfConverter
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF template file</param>
     /// <param name="inputZipPath">Path to the ZIP file containing Markdown content</param>
-    public MarkdownToPdfConverter(HttpClient httpClient, string inputPdfPath, string inputZipPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public MarkdownToPdfConverter(HttpClient httpClient, string inputPdfPath, string inputZipPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
         _inputZipPath = inputZipPath;
+        _apiKey = apiKey;
         
         // Generate output PDF path with a unique suffix
         _outputPdfPath = inputPdfPath.Replace(".pdf", ".md2pdf.pdf");
@@ -103,7 +106,7 @@ public class MarkdownToPdfConverter
         // Create HTTP request message
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertMdToPdf");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         
         // Send the conversion request to the API
         var response = await _httpClient.SendAsync(httpRequest);
@@ -143,7 +146,7 @@ public class MarkdownToPdfConverter
                 
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                 // Handle successful completion

@@ -26,7 +26,7 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         // Initialize the PDF linearizer
-        var linearizer = new PdfLinearizer(httpClient, pdfPath);
+        var linearizer = new PdfLinearizer(httpClient, pdfPath, API_KEY);
         // Perform the linearization
         var result = await linearizer.LinearizePdfAsync();
         // Display the result
@@ -48,15 +48,18 @@ public class PdfLinearizer
     private readonly string _outputPdfPath;
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
     /// <summary>
     /// Constructor to initialize the PDF linearizer
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfLinearizer(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfLinearizer(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
+        _apiKey = apiKey;
         // Generate output PDF path with a unique suffix
         _outputPdfPath = inputPdfPath.Replace(".pdf", ".linearized.pdf");
     }
@@ -82,7 +85,7 @@ public class PdfLinearizer
         // Create HTTP request message
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/LinearizePdf");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         // Send the conversion request to the API
         var response = await _httpClient.SendAsync(httpRequest);
         // Handle immediate success response (200 OK)
@@ -115,7 +118,7 @@ public class PdfLinearizer
                 await Task.Delay(retryDelay * 1000);
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)

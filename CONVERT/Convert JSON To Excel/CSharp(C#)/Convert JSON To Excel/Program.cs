@@ -28,7 +28,7 @@ public class Program
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the JSON to Excel converter
-        var converter = new JsonToExcelConverter(httpClient, jsonPath);
+        var converter = new JsonToExcelConverter(httpClient, jsonPath, API_KEY);
         
         // Perform the conversion
         var result = await converter.ConvertJsonToExcelAsync();
@@ -46,24 +46,25 @@ public class Program
 /// </summary>
 public class JsonToExcelConverter
 {
-
-
     // File paths
     private readonly string _inputJsonPath;
     private readonly string _outputExcelPath;
 
     // HTTP client for API communication
     private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
 
     /// <summary>
     /// Constructor to initialize the JSON to Excel converter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputJsonPath">Path to the input JSON file</param>
-    public JsonToExcelConverter(HttpClient httpClient, string inputJsonPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public JsonToExcelConverter(HttpClient httpClient, string inputJsonPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputJsonPath = inputJsonPath;
+        _apiKey = apiKey;
         
         // Generate output Excel path by replacing JSON extension with XLSX
         _outputExcelPath = inputJsonPath.Replace(".json", ".xlsx");
@@ -103,7 +104,7 @@ public class JsonToExcelConverter
         // Create HTTP request message
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertJsonToExcel");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         
         // Send the conversion request to the API
         var response = await _httpClient.SendAsync(httpRequest);
@@ -143,7 +144,7 @@ public class JsonToExcelConverter
                 
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                 // Handle successful completion
