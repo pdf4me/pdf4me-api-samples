@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protect Document", "Protect Document\Protect Document.csproj", "{B246C0D5-B8CA-40DE-BB8B-1A7DEA0E7343}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B246C0D5-B8CA-40DE-BB8B-1A7DEA0E7343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B246C0D5-B8CA-40DE-BB8B-1A7DEA0E7343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B246C0D5-B8CA-40DE-BB8B-1A7DEA0E7343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B246C0D5-B8CA-40DE-BB8B-1A7DEA0E7343}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
