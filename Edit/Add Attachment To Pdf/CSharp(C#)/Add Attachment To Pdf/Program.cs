@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 /// This program demonstrates how to add attachments to PDF documents using the PDF4ME API
 /// </summary>
 public class Program
-{
+{   
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -21,8 +24,6 @@ public class Program
         // Define file path for input PDF document
         string pdfPath = "sample.pdf";  // Update this path to your PDF file location
         
-        // API base URL for PDF4ME service
-        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
@@ -50,9 +51,6 @@ public class PdfAttachmentAdder
 {
     // Configuration constants
     /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     
     // File paths
     /// <summary>
