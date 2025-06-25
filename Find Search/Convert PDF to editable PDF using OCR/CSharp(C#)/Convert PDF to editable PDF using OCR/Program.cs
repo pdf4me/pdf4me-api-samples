@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+<<<<<<< HEAD
+=======
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+>>>>>>> 17e5988a47972c3033354e0deef9416f2e0c13b0
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -19,9 +24,13 @@ public class Program
     public static async Task Main(string[] args)
     {
         string pdfPath = "sample.pdf";  // Update this path to your PDF file location
+<<<<<<< HEAD
         
         const string BASE_URL = "https://api.pdf4me.com/";
         
+=======
+
+>>>>>>> 17e5988a47972c3033354e0deef9416f2e0c13b0
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
@@ -47,10 +56,13 @@ public class Program
 public class PdfOcrConverter
 {
     // Configuration constants
+<<<<<<< HEAD
     /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
     private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+=======
+>>>>>>> 17e5988a47972c3033354e0deef9416f2e0c13b0
 
     // File paths
     /// <summary>
