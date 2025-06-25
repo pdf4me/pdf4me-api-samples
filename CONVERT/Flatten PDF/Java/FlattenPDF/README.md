@@ -54,7 +54,7 @@ java -cp src Main
 
 Update the API key in `src/Main.java`:
 ```java
-private static final String API_KEY = "your-api-key-here";
+private static final String API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 ```
 
 ## API Endpoint
