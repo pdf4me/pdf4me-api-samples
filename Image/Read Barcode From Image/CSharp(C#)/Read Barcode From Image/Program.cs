@@ -7,36 +7,38 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for Barcode reading from images
+/// Main program class for reading barcodes from images functionality
 /// This program demonstrates how to read barcodes from images using the PDF4ME API
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
     /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the image file to read barcodes from
+        // Path to the input image file to read barcodes from
         string imagePath = "sample.jpg";  // Update this path to your image file location
-        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the barcode reader
-        var barcodeReader = new BarcodeReader(httpClient, imagePath);
+        // Initialize the barcode reader with the HTTP client, image path, and API key
+        var barcodeReader = new BarcodeReader(httpClient, imagePath, API_KEY);
         
-        // Read barcodes from the image
-        var result = await barcodeReader.ReadBarcodesFromImageAsync();
+        // Perform the barcode reading operation
+        var result = await barcodeReader.ReadBarcodeAsync();
         
         // Display the result
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Barcode data:\n{result}");
+            Console.WriteLine($"Barcode data saved to: {result}");
         else
-            Console.WriteLine("Failed to read barcodes from image.");
+            Console.WriteLine("Barcode reading failed.");
     }
 }
 
@@ -46,12 +48,25 @@ public class Program
 public class BarcodeReader
 {
     // Configuration constants
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
 
     // File paths
+    /// <summary>
+    /// Path to the input image file
+    /// </summary>
     private readonly string _inputImagePath;
+    
+    /// <summary>
+    /// Path where the barcode data will be saved
+    /// </summary>
+    private readonly string _outputDataPath;
 
-    // HTTP client for API communication
+    /// <summary>
+    /// HTTP client for making API requests
+    /// </summary>
     private readonly HttpClient _httpClient;
 
     /// <summary>
@@ -59,17 +74,23 @@ public class BarcodeReader
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
-    public BarcodeReader(HttpClient httpClient, string inputImagePath)
+    /// <param name="apiKey">API key for authentication</param>
+    public BarcodeReader(HttpClient httpClient, string inputImagePath, string apiKey)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
+        _apiKey = apiKey;
+        
+        // Generate output path for the barcode data
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(_inputImagePath);
+        _outputDataPath = $"{fileNameWithoutExtension}_barcode_data.json";
     }
 
     /// <summary>
-    /// Reads barcodes from the image asynchronously using HttpRequestMessage pattern
+    /// Reads barcodes from the specified image asynchronously
     /// </summary>
-    /// <returns>Formatted JSON string containing barcode data, or null if reading failed</returns>
-    public async Task<string?> ReadBarcodesFromImageAsync()
+    /// <returns>Barcode data as JSON string, or null if reading failed</returns>
+    public async Task<string?> ReadBarcodeAsync()
     {
         try
         {
@@ -95,7 +116,7 @@ public class BarcodeReader
             // Create HTTP request message
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ReadBarcodesfromImage");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the barcode reading request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -132,7 +153,7 @@ public class BarcodeReader
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -22,14 +25,13 @@ public class Program
         string imagePath = "sample.jpg";
         // Text to be used as watermark
         string watermarkText = "CONFIDENTIAL";  // Update this to your desired watermark text
-        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the text watermarker with the HTTP client, image path, and watermark text
-        var textWatermarker = new TextWatermarker(httpClient, imagePath, watermarkText);
+        // Initialize the text watermarker with the HTTP client, image path, watermark text, and API key
+        var textWatermarker = new TextWatermarker(httpClient, imagePath, watermarkText, API_KEY);
         
         // Add text watermark to the image
         var result = await textWatermarker.AddTextWatermarkAsync();
@@ -47,12 +49,6 @@ public class Program
 /// </summary>
 public class TextWatermarker
 {
-    // Configuration constants
-    /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-    
     // File paths and watermark text
     /// <summary>
     /// Path to the input image file
@@ -75,16 +71,23 @@ public class TextWatermarker
     private readonly HttpClient _httpClient;
     
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+    
+    /// <summary>
     /// Constructor to initialize the text watermarker
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
     /// <param name="watermarkText">Text to be used as watermark</param>
-    public TextWatermarker(HttpClient httpClient, string inputImagePath, string watermarkText)
+    /// <param name="apiKey">API key for authentication</param>
+    public TextWatermarker(HttpClient httpClient, string inputImagePath, string watermarkText, string apiKey)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
         _watermarkText = watermarkText;
+        _apiKey = apiKey;
         
         // Generate output path by adding ".textwatermarked" suffix to the original filename
         _outputImagePath = inputImagePath.Replace(Path.GetExtension(inputImagePath), ".textwatermarked" + Path.GetExtension(inputImagePath));
@@ -123,7 +126,7 @@ public class TextWatermarker
         // Create HTTP request message for the text watermark operation
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/AddTextWatermarkToImage");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         
         // Send the text watermarking request to the API
         var response = await _httpClient.SendAsync(httpRequest);
@@ -162,7 +165,7 @@ public class TextWatermarker
                 
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
                 
                 // Handle successful completion

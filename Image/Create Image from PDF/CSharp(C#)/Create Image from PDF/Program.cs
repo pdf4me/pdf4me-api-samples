@@ -7,49 +7,46 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for creating images from PDF files using PDF4ME API
+/// Main program class for PDF to image conversion functionality
+/// This program demonstrates how to convert PDF pages to images using the PDF4ME API
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
-    /// <param name="args">Command line arguments (not used in this application)</param>
+    /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the input PDF file - update this to your PDF file location
-        string pdfPath = "sample.pdf";
+        // Path to the input PDF file to be converted to images
+        string pdfPath = "sample.pdf";  // Update this path to your PDF file location
         
         // Create HTTP client for API communication
-        const string BASE_URL = "https://api.pdf4me.com/";
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the PDF to image converter with the HTTP client and PDF path
-        var pdfToImageConverter = new PdfToImageConverter(httpClient, pdfPath);
+        // Initialize the PDF to image converter with the HTTP client, PDF path, and API key
+        var pdfToImageConverter = new PdfToImageConverter(httpClient, pdfPath, API_KEY);
         
-        // Create images from the PDF
-        var result = await pdfToImageConverter.CreateImagesFromPdfAsync();
+        // Perform the PDF to image conversion operation
+        var result = await pdfToImageConverter.ConvertPdfToImagesAsync();
         
-        // Display the results
+        // Display the result
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Images created and saved to: {result}");
+            Console.WriteLine($"Images saved to: {result}");
         else
             Console.WriteLine("PDF to image conversion failed.");
     }
 }
 
 /// <summary>
-/// Class responsible for creating images from PDF files using the PDF4ME API
+/// Class responsible for converting PDF pages to images using the PDF4ME API
 /// </summary>
 public class PdfToImageConverter
 {
-    // Configuration constants
-    /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-
     // File paths
     /// <summary>
     /// Path to the input PDF file
@@ -57,7 +54,7 @@ public class PdfToImageConverter
     private readonly string _inputPdfPath;
     
     /// <summary>
-    /// Directory where the output images will be saved
+    /// Path where the output images will be saved
     /// </summary>
     private readonly string _outputDirectory;
 
@@ -67,24 +64,33 @@ public class PdfToImageConverter
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Initializes a new instance of the PdfToImageConverter class
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
+    /// Constructor to initialize the PDF to image converter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfToImageConverter(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public PdfToImageConverter(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
+        _apiKey = apiKey;
         
-        // Get the directory of the input PDF file for output location
-        _outputDirectory = Path.GetDirectoryName(inputPdfPath) ?? "/Users/";
+        // Create output directory for the images
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(_inputPdfPath);
+        _outputDirectory = $"{fileNameWithoutExtension}_images";
+        Directory.CreateDirectory(_outputDirectory);
     }
 
     /// <summary>
-    /// Creates images from the specified PDF file asynchronously
+    /// Converts PDF pages to images asynchronously using the PDF4ME API
     /// </summary>
-    /// <returns>The path to the saved image, or null if conversion failed</returns>
-    public async Task<string?> CreateImagesFromPdfAsync()
+    /// <returns>Path to the output directory containing the images, or null if conversion failed</returns>
+    public async Task<string?> ConvertPdfToImagesAsync()
     {
         try
         {
@@ -116,7 +122,7 @@ public class PdfToImageConverter
             // Send the initial request to the API
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/CreateImages");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             var response = await _httpClient.SendAsync(httpRequest);
 
             // Handle immediate success response (200)
@@ -154,7 +160,7 @@ public class PdfToImageConverter
                     
                     // Make polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

@@ -7,36 +7,38 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for EXIF-based Image Rotation
+/// Main program class for rotating images by EXIF data functionality
 /// This program demonstrates how to rotate images based on their EXIF orientation data using the PDF4ME API
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
     /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the image file to rotate based on EXIF data
+        // Path to the input image file to be rotated based on EXIF data
         string imagePath = "sample.jpg";  // Update this path to your image file location
-        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the EXIF-based image rotator
-        var exifImageRotator = new ExifImageRotator(httpClient, imagePath);
+        // Initialize the EXIF image rotator with the HTTP client, image path, and API key
+        var exifImageRotator = new ExifImageRotator(httpClient, imagePath, API_KEY);
         
-        // Rotate the image based on EXIF orientation data
-        var result = await exifImageRotator.RotateImageByExifDataAsync();
+        // Perform the EXIF-based image rotation operation
+        var result = await exifImageRotator.RotateImageByExifAsync();
         
         // Display the result
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"Image rotated by EXIF data saved to: {result}");
         else
-            Console.WriteLine("Failed to rotate image by EXIF data.");
+            Console.WriteLine("EXIF-based image rotation failed.");
     }
 }
 
@@ -46,34 +48,48 @@ public class Program
 public class ExifImageRotator
 {
     // Configuration constants
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
 
     // File paths
+    /// <summary>
+    /// Path to the input image file
+    /// </summary>
     private readonly string _inputImagePath;
+    
+    /// <summary>
+    /// Path where the EXIF-rotated image will be saved
+    /// </summary>
     private readonly string _outputImagePath;
 
-    // HTTP client for API communication
+    /// <summary>
+    /// HTTP client for making API requests
+    /// </summary>
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Constructor to initialize the EXIF-based image rotator
+    /// Constructor to initialize the EXIF image rotator
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
-    public ExifImageRotator(HttpClient httpClient, string inputImagePath)
+    /// <param name="apiKey">API key for authentication</param>
+    public ExifImageRotator(HttpClient httpClient, string inputImagePath, string apiKey)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
+        _apiKey = apiKey;
         
-        // Generate output image path with a unique suffix to indicate EXIF-based rotation
+        // Generate output path by adding ".exifrotated" suffix to the original filename
         _outputImagePath = inputImagePath.Replace(Path.GetExtension(inputImagePath), ".exifrotated" + Path.GetExtension(inputImagePath));
     }
 
     /// <summary>
-    /// Rotates the image based on EXIF orientation data asynchronously using HttpRequestMessage pattern
+    /// Rotates the image based on EXIF orientation data asynchronously
     /// </summary>
-    /// <returns>Path to the generated rotated image file, or null if processing failed</returns>
-    public async Task<string?> RotateImageByExifDataAsync()
+    /// <returns>Path to the EXIF-rotated image file, or null if rotation failed</returns>
+    public async Task<string?> RotateImageByExifAsync()
     {
         // Read the image file and convert to base64
         byte[] imageBytes = await File.ReadAllBytesAsync(_inputImagePath);
@@ -97,7 +113,7 @@ public class ExifImageRotator
         // Create HTTP request message
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/RotateImageByExifData");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         
         // Send the EXIF-based rotation request to the API
         var response = await _httpClient.SendAsync(httpRequest);
@@ -137,7 +153,7 @@ public class ExifImageRotator
                 
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                 // Handle successful completion

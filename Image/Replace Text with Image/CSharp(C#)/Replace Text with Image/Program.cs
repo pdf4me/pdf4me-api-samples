@@ -7,61 +7,80 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for Text to Image replacement in PDFs
-/// This program demonstrates how to replace text in PDF documents with images using the PDF4ME API
+/// Main program class for replacing text with images functionality
+/// This program demonstrates how to replace text in PDFs with images using the PDF4ME API
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
     /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the PDF file to perform text replacement in
+        // Path to the input PDF file
         string pdfPath = "sample.pdf";  // Update this path to your PDF file location
-        
-        // Path to the replacement image file
-        string imagePath = "sample.png";  // Update this path to your replacement image location
-        
+        // Path to the image file to replace text with
+        string imagePath = "sample.png";  // Update this path to your image file location
         // Text to be replaced with the image
-        string replaceText = "enter_input_text";  // Update this to the text you want to replace
-        
-        const string BASE_URL = "https://api.pdf4me.com/";
+        string replaceText = "PDF4ME";  // Update this to the text you want to replace
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the text replacer
-        var textReplacer = new TextReplacer(httpClient, pdfPath, imagePath, replaceText);
+        // Initialize the text replacer with the HTTP client, PDF path, image path, replace text, and API key
+        var textReplacer = new TextReplacer(httpClient, pdfPath, imagePath, replaceText, API_KEY);
         
-        // Replace text with image in the PDF
+        // Perform the text replacement operation
         var result = await textReplacer.ReplaceTextWithImageAsync();
         
         // Display the result
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"PDF with text replaced by image saved to: {result}");
+            Console.WriteLine($"PDF with text replaced saved to: {result}");
         else
-            Console.WriteLine("Failed to replace text with image.");
+            Console.WriteLine("Text replacement failed.");
     }
 }
 
 /// <summary>
-/// Class responsible for replacing text in PDF documents with images using the PDF4ME API
+/// Class responsible for replacing text with images in PDFs using the PDF4ME API
 /// </summary>
 public class TextReplacer
 {
     // Configuration constants
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
 
     // File paths and parameters
+    /// <summary>
+    /// Path to the input PDF file
+    /// </summary>
     private readonly string _inputPdfPath;
+    
+    /// <summary>
+    /// Path to the replacement image file
+    /// </summary>
     private readonly string _replacementImagePath;
+    
+    /// <summary>
+    /// Text to be replaced with the image
+    /// </summary>
     private readonly string _replaceText;
+    
+    /// <summary>
+    /// Path where the modified PDF will be saved
+    /// </summary>
     private readonly string _outputPdfPath;
 
-    // HTTP client for API communication
+    /// <summary>
+    /// HTTP client for making API requests
+    /// </summary>
     private readonly HttpClient _httpClient;
 
     /// <summary>
@@ -71,15 +90,17 @@ public class TextReplacer
     /// <param name="inputPdfPath">Path to the input PDF file</param>
     /// <param name="replacementImagePath">Path to the replacement image file</param>
     /// <param name="replaceText">Text to be replaced with the image</param>
-    public TextReplacer(HttpClient httpClient, string inputPdfPath, string replacementImagePath, string replaceText)
+    /// <param name="apiKey">API key for authentication</param>
+    public TextReplacer(HttpClient httpClient, string inputPdfPath, string replacementImagePath, string replaceText, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
         _replacementImagePath = replacementImagePath;
         _replaceText = replaceText;
+        _apiKey = apiKey;
         
-        // Generate output PDF path with a unique suffix to indicate text replacement
-        _outputPdfPath = inputPdfPath.Replace(".pdf", ".replaced.pdf");
+        // Generate output path by adding ".replaced" suffix to the original filename
+        _outputPdfPath = inputPdfPath.Replace(Path.GetExtension(inputPdfPath), ".replaced" + Path.GetExtension(inputPdfPath));
     }
 
     /// <summary>
@@ -117,7 +138,7 @@ public class TextReplacer
             // Create HTTP request message
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ReplaceTextWithImage");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the text replacement request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -157,7 +178,7 @@ public class TextReplacer
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

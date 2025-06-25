@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -22,14 +25,13 @@ public class Program
         string imagePath = "sample.jpg";  // Update this path to your image file location
         // Orientation type for flipping: "Vertical" or "Horizontal"
         string orientationType = "Vertical";  // Update this to "Vertical" or "Horizontal"
-        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the image flipper with the HTTP client, image path, and orientation
-        var imageFlipper = new ImageFlipper(httpClient, imagePath, orientationType);
+        // Initialize the image flipper with the HTTP client, image path, orientation, and API key
+        var imageFlipper = new ImageFlipper(httpClient, imagePath, orientationType, API_KEY);
         
         // Perform the image flipping operation
         var result = await imageFlipper.FlipImageAsync();
@@ -47,12 +49,6 @@ public class Program
 /// </summary>
 public class ImageFlipper
 {
-    // Configuration constants
-    /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-
     // File paths and orientation
     /// <summary>
     /// Path to the input image file
@@ -75,16 +71,23 @@ public class ImageFlipper
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the image flipper
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
     /// <param name="orientationType">Orientation type: "Vertical" or "Horizontal"</param>
-    public ImageFlipper(HttpClient httpClient, string inputImagePath, string orientationType)
+    /// <param name="apiKey">API key for authentication</param>
+    public ImageFlipper(HttpClient httpClient, string inputImagePath, string orientationType, string apiKey)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
         _orientationType = orientationType;
+        _apiKey = apiKey;
         
         // Generate output path by adding ".flipped" suffix to the original filename
         _outputImagePath = inputImagePath.Replace(Path.GetExtension(inputImagePath), ".flipped" + Path.GetExtension(inputImagePath));
@@ -117,7 +120,7 @@ public class ImageFlipper
             // Create HTTP request message for the flip operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/FlipImage");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the flipping request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -157,7 +160,7 @@ public class ImageFlipper
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

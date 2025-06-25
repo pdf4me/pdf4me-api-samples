@@ -7,35 +7,38 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for extracting text from images using PDF4ME API
+/// Main program class for extracting text from images functionality
+/// This program demonstrates how to extract text from images using the PDF4ME API
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
-    /// <param name="args">Command line arguments (not used in this application)</param>
+    /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the input image file - update this to your image file location
-        string imagePath = "sample.jpg";
-        const string BASE_URL = "https://api.pdf4me.com/";
+        // Path to the input image file to extract text from
+        string imagePath = "sample.png";  // Update this path to your image file location
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the text extractor with the HTTP client and image path
-        var imageTextExtractor = new ImageTextExtractor(httpClient, imagePath);
+        // Initialize the image text extractor with the HTTP client, image path, and API key
+        var imageTextExtractor = new ImageTextExtractor(httpClient, imagePath, API_KEY);
         
-        // Extract text from the image
-        var result = await imageTextExtractor.ExtractTextFromImageAsync();
+        // Perform the text extraction operation
+        var result = await imageTextExtractor.ExtractTextAsync();
         
-        // Display the results
+        // Display the result
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Extracted text:\n{result}");
+            Console.WriteLine($"Extracted text saved to: {result}");
         else
-            Console.WriteLine("Failed to extract text from image.");
+            Console.WriteLine("Text extraction failed.");
     }
 }
 
@@ -46,15 +49,20 @@ public class ImageTextExtractor
 {
     // Configuration constants
     /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
+    /// API key for authentication
     /// </summary>
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private readonly string _apiKey;
 
     // File paths
     /// <summary>
     /// Path to the input image file
     /// </summary>
     private readonly string _inputImagePath;
+    
+    /// <summary>
+    /// Path where the extracted text will be saved
+    /// </summary>
+    private readonly string _outputTextPath;
 
     /// <summary>
     /// HTTP client for making API requests
@@ -62,21 +70,27 @@ public class ImageTextExtractor
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Initializes a new instance of the ImageTextExtractor class
+    /// Constructor to initialize the image text extractor
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
-    public ImageTextExtractor(HttpClient httpClient, string inputImagePath)
+    /// <param name="apiKey">API key for authentication</param>
+    public ImageTextExtractor(HttpClient httpClient, string inputImagePath, string apiKey)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
+        _apiKey = apiKey;
+        
+        // Generate output path for the extracted text
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(_inputImagePath);
+        _outputTextPath = $"{fileNameWithoutExtension}_extracted_text.txt";
     }
 
     /// <summary>
     /// Extracts text from the specified image file asynchronously
     /// </summary>
     /// <returns>The extracted text, or null if extraction failed</returns>
-    public async Task<string?> ExtractTextFromImageAsync()
+    public async Task<string?> ExtractTextAsync()
     {
         try
         {
@@ -98,7 +112,7 @@ public class ImageTextExtractor
             // Send the initial request to the API
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ImageExtractText");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             var response = await _httpClient.SendAsync(httpRequest);
 
             // Log detailed response information for debugging
@@ -153,7 +167,7 @@ public class ImageTextExtractor
                     
                     // Make polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     Console.WriteLine($"Poll response status: {(int)pollResponse.StatusCode} ({pollResponse.StatusCode})");

@@ -7,36 +7,38 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for Image Metadata extraction
+/// Main program class for extracting image metadata functionality
 /// This program demonstrates how to extract metadata from images using the PDF4ME API
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
     /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the image file to extract metadata from
-        string imagePath = "sample.jpg";  // Update this path to your image file location
-        const string BASE_URL = "https://api.pdf4me.com/";
+        // Path to the input image file to extract metadata from
+        string imagePath = "sample.png";  // Update this path to your image file location
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the image metadata extractor
-        var imageMetadataExtractor = new ImageMetadataExtractor(httpClient, imagePath);
+        // Initialize the image metadata extractor with the HTTP client, image path, and API key
+        var imageMetadataExtractor = new ImageMetadataExtractor(httpClient, imagePath, API_KEY);
         
-        // Extract metadata from the image
-        var result = await imageMetadataExtractor.GetImageMetadataAsync();
+        // Perform the metadata extraction operation
+        var result = await imageMetadataExtractor.ExtractMetadataAsync();
         
         // Display the result
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Image metadata:\n{result}");
+            Console.WriteLine($"Metadata extracted and saved to: {result}");
         else
-            Console.WriteLine("Failed to extract image metadata.");
+            Console.WriteLine("Metadata extraction failed.");
     }
 }
 
@@ -46,7 +48,7 @@ public class Program
 public class ImageMetadataExtractor
 {
     // Configuration constants
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private readonly string _apiKey;
 
     // File paths
     private readonly string _inputImagePath;
@@ -59,17 +61,19 @@ public class ImageMetadataExtractor
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
-    public ImageMetadataExtractor(HttpClient httpClient, string inputImagePath)
+    /// <param name="apiKey">API key for authentication</param>
+    public ImageMetadataExtractor(HttpClient httpClient, string inputImagePath, string apiKey)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
+        _apiKey = apiKey;
     }
 
     /// <summary>
-    /// Extracts metadata from the image asynchronously using HttpRequestMessage pattern
+    /// Extracts metadata from the specified image asynchronously
     /// </summary>
-    /// <returns>Formatted JSON string containing image metadata, or null if extraction failed</returns>
-    public async Task<string?> GetImageMetadataAsync()
+    /// <returns>Extracted metadata as JSON string, or null if extraction failed</returns>
+    public async Task<string?> ExtractMetadataAsync()
     {
         try
         {
@@ -95,7 +99,7 @@ public class ImageMetadataExtractor
             // Create HTTP request message
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/GetImageMetadata");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the metadata extraction request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -132,7 +136,7 @@ public class ImageMetadataExtractor
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

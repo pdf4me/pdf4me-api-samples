@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -20,14 +23,13 @@ public class Program
     {
         // Path to the input image file to be compressed
         string imagePath = "sample.jpg";  // Update this path to your image file location
-        const string BASE_URL = "https://api.pdf4me.com/";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the image compressor with the HTTP client and image path
-        var imageCompressor = new ImageCompressor(httpClient, imagePath);
+        // Initialize the image compressor with the HTTP client, image path, and API key
+        var imageCompressor = new ImageCompressor(httpClient, imagePath, API_KEY);
         
         // Perform the image compression operation
         var result = await imageCompressor.CompressImageAsync();
@@ -45,12 +47,6 @@ public class Program
 /// </summary>
 public class ImageCompressor
 {
-    // Configuration constants
-    /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-
     // File paths
     /// <summary>
     /// Path to the input image file
@@ -68,14 +64,21 @@ public class ImageCompressor
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the image compressor
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
-    public ImageCompressor(HttpClient httpClient, string inputImagePath)
+    /// <param name="apiKey">API key for authentication</param>
+    public ImageCompressor(HttpClient httpClient, string inputImagePath, string apiKey)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
+        _apiKey = apiKey;
         
         // Generate output path by adding ".compressed" suffix to the original filename
         _outputImagePath = inputImagePath.Replace(Path.GetExtension(inputImagePath), ".compressed" + Path.GetExtension(inputImagePath));
@@ -106,7 +109,7 @@ public class ImageCompressor
         // Create HTTP request message for the compression operation
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/CompressImage");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         
         // Send the compression request to the API
         var response = await _httpClient.SendAsync(httpRequest);
@@ -146,7 +149,7 @@ public class ImageCompressor
                 
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                 // Handle successful completion

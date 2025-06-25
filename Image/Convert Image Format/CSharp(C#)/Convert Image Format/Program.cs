@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -21,17 +24,16 @@ public class Program
         // Path to the input image file to be converted
         string imagePath = "sample.jpg";  // Update this path to your image file location
         // Target format for conversion
-        string targetFormat = "PNG";  // Update this to your desired output format (JPG, PNG, GIF, BMP, TIFF, WEBP)
-        const string BASE_URL = "https://api.pdf4me.com/";
+        string targetFormat = "png";  // Update this to your desired output format (e.g., "png", "jpg", "gif", "bmp", "tiff")
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the image format converter with the HTTP client, image path, and target format
-        var imageFormatConverter = new ImageFormatConverter(httpClient, imagePath, targetFormat);
+        // Initialize the image format converter with the HTTP client, image path, target format, and API key
+        var imageFormatConverter = new ImageFormatConverter(httpClient, imagePath, targetFormat, API_KEY);
         
-        // Perform the image format conversion
+        // Perform the image format conversion operation
         var result = await imageFormatConverter.ConvertImageFormatAsync();
         
         // Display the result
@@ -47,20 +49,14 @@ public class Program
 /// </summary>
 public class ImageFormatConverter
 {
-    // Configuration constants
-    /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-
-    // File paths and format
+    // File paths and target format
     /// <summary>
     /// Path to the input image file
     /// </summary>
     private readonly string _inputImagePath;
     
     /// <summary>
-    /// Target format for conversion (JPG, PNG, GIF, BMP, TIFF, WEBP)
+    /// Target format for conversion
     /// </summary>
     private readonly string _targetFormat;
     
@@ -75,21 +71,27 @@ public class ImageFormatConverter
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for authentication
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the image format converter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
     /// <param name="targetFormat">Target format for conversion</param>
-    public ImageFormatConverter(HttpClient httpClient, string inputImagePath, string targetFormat)
+    /// <param name="apiKey">API key for authentication</param>
+    public ImageFormatConverter(HttpClient httpClient, string inputImagePath, string targetFormat, string apiKey)
     {
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
         _targetFormat = targetFormat;
+        _apiKey = apiKey;
         
-        // Generate output path by replacing the original extension with the target format extension
-        string originalExtension = Path.GetExtension(inputImagePath);
-        string targetExtension = "." + targetFormat.ToLowerInvariant();
-        _outputImagePath = inputImagePath.Replace(originalExtension, targetExtension);
+        // Generate output path with the new format extension
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(_inputImagePath);
+        _outputImagePath = $"{fileNameWithoutExtension}.{_targetFormat.ToLower()}";
     }
 
     /// <summary>
@@ -121,7 +123,7 @@ public class ImageFormatConverter
         // Create HTTP request message for the format conversion operation
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertImageFormat");
         httpRequest.Content = content;
-        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         
         // Send the format conversion request to the API
         var response = await _httpClient.SendAsync(httpRequest);
@@ -161,7 +163,7 @@ public class ImageFormatConverter
                 
                 // Create polling request
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                 // Handle successful completion
