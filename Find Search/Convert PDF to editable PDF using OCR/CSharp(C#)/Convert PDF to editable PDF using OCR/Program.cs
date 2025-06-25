@@ -12,11 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
-<<<<<<< HEAD
-=======
     public static readonly string BASE_URL = "https://api.pdf4me.com/";
     public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
->>>>>>> 17e5988a47972c3033354e0deef9416f2e0c13b0
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -24,19 +22,13 @@ public class Program
     public static async Task Main(string[] args)
     {
         string pdfPath = "sample.pdf";  // Update this path to your PDF file location
-<<<<<<< HEAD
-        
-        const string BASE_URL = "https://api.pdf4me.com/";
-        
-=======
 
->>>>>>> 17e5988a47972c3033354e0deef9416f2e0c13b0
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the OCR converter with the HTTP client and PDF path
-        var ocrConverter = new PdfOcrConverter(httpClient, pdfPath);
+        var ocrConverter = new PdfOcrConverter(httpClient, pdfPath, API_KEY);
         
         // Convert PDF to editable PDF using OCR
         Console.WriteLine("=== Converting PDF to Editable PDF using OCR ===");
@@ -56,13 +48,6 @@ public class Program
 public class PdfOcrConverter
 {
     // Configuration constants
-<<<<<<< HEAD
-    /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-=======
->>>>>>> 17e5988a47972c3033354e0deef9416f2e0c13b0
 
     // File paths
     /// <summary>
@@ -81,15 +66,22 @@ public class PdfOcrConverter
     private readonly HttpClient _httpClient;
 
     /// <summary>
+    /// API key for making API requests
+    /// </summary>
+    private readonly string _apiKey;
+
+    /// <summary>
     /// Constructor to initialize the OCR converter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfOcrConverter(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for making API requests</param>
+    public PdfOcrConverter(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
         _outputPdfPath = inputPdfPath.Replace(".pdf", ".ocr.pdf");
+        _apiKey = apiKey;
     }
 
     /// <summary>
@@ -146,7 +138,7 @@ public class PdfOcrConverter
             // Create HTTP request message for the OCR conversion operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ConvertOcrPdf");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the OCR conversion request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -186,7 +178,7 @@ public class PdfOcrConverter
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion
