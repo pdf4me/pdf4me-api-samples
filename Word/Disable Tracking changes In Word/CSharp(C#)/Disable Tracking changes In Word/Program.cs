@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -20,14 +23,12 @@ public class Program
     {
         string docxPath = "sample.docx";  // Update this path to your DOCX file location
         
-        const string BASE_URL = "https://api.pdf4me.com/";
-        
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the Word tracking changes disabler with the HTTP client and DOCX path
-        var trackingDisabler = new DisableTrackingChangesInWord(httpClient, docxPath);
+        var trackingDisabler = new DisableTrackingChangesInWord(httpClient, docxPath, API_KEY);
         
         // Disable tracking changes in the Word document
         Console.WriteLine("=== Disabling Tracking Changes in Word Document ===");
@@ -50,7 +51,7 @@ public class DisableTrackingChangesInWord
     /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private readonly string _apiKey;
 
     // File paths
     /// <summary>
@@ -73,11 +74,13 @@ public class DisableTrackingChangesInWord
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputDocxPath">Path to the input DOCX file</param>
-    public DisableTrackingChangesInWord(HttpClient httpClient, string inputDocxPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public DisableTrackingChangesInWord(HttpClient httpClient, string inputDocxPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputDocxPath = inputDocxPath;
         _outputDocxPath = inputDocxPath.Replace(".docx", ".tracking_disabled.docx");
+        _apiKey = apiKey;
     }
 
     /// <summary>
@@ -129,7 +132,7 @@ public class DisableTrackingChangesInWord
             // Create HTTP request message for the tracking changes disable operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/DisableTrackingChangesInWord");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the tracking changes disable request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -169,7 +172,7 @@ public class DisableTrackingChangesInWord
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion
