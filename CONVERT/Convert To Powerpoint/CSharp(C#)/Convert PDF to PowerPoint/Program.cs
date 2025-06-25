@@ -21,7 +21,8 @@ public class Program
         // Path to the PDF file to be converted
         string pdfPath = "sample.pdf";  // Use the local sample.pdf file
         const string BASE_URL = "https://api.pdf4me.com/";
-        
+         // Configuration constants
+   		 private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
@@ -45,8 +46,7 @@ public class Program
 /// </summary>
 public class PdfToPowerPointConverter
 {
-    // Configuration constants
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+  
 
     // File paths
     private readonly string _inputPdfPath;

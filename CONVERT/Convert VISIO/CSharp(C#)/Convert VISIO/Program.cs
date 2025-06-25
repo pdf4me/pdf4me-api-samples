@@ -21,6 +21,8 @@ public class Program
         // Path to the VISIO file to be converted
         string visioPath = "sample.vsdx";  // Use the local sample.vsdx file
         const string BASE_URL = "https://api.pdf4me.com/";
+   		 // Configuration constants
+   		 private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
@@ -41,8 +43,7 @@ public class Program
 /// </summary>
 public class VisioToPdfConverter
 {
-    // Configuration constants
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+
     // File paths
     private readonly string _inputVisioPath;
     private readonly string _outputPdfPath;
