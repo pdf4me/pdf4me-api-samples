@@ -1,0 +1,32 @@
+=== Extracted Content from PDF Attachments ===
+Extraction Date: 2025-06-24 04:06:26
+
+File: sample.txt
+Content:
+----------------------------------------
+Sample Text Document
+====================
+
+This is a sample text file that will be attached to the PDF document.
+
+Document Information:
+- Created: 2024
+- Purpose: Sample attachment for PDF4ME API testing
+- Format: Plain text
+
+Content Details:
+This text file contains sample content that demonstrates how to attach files to PDF documents using the PDF4ME API. The attachment will be embedded within the PDF and can be extracted by PDF readers that support file attachments.
+
+Features:
+- Text-based content
+- Multiple paragraphs
+- Structured information
+- Demonstrates file attachment functionality
+
+This sample file is used to test the "Add Attachment To Pdf" functionality in the PDF4ME API integration.
+
+End of Sample Document
+====================== 
+
+========================================
+
