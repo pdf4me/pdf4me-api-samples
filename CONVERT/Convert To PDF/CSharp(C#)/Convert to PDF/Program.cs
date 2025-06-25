@@ -20,7 +20,8 @@ public class Program
     {
         string filePath = "sample.txt";  // Using a file in the current directory
         const string BASE_URL = "https://api.pdf4me.com/";
-        
+        // Configuration constants
+        private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
@@ -39,8 +40,6 @@ public class Program
 /// </summary>
 public class ToPdfConverter
 {
-    // Configuration constants
-    private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
 
     // File paths
     private readonly string _inputFilePath;
