@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public const string BASE_URL = "https://api.pdf4me.com/";
+    public const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -23,10 +25,7 @@ public class Program
         
         // Path to the ZIP file containing Markdown content
         string zipPath = "sample.zip";  // Use the local sample.zip file
-        
-        const string BASE_URL = "https://api.pdf4me.com/";
-        // Configuration constants
-        private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+        // Validate input files
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);

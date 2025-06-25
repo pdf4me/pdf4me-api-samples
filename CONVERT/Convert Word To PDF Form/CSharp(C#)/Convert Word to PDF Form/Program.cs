@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 /// This program demonstrates how to convert Word files to PDF form format using the PDF4ME API
 /// </summary>
 public class Program
-{
+{	public const string BASE_URL = "https://api.pdf4me.com/";
+    public const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -20,9 +21,6 @@ public class Program
     {
         // Path to the Word file to be converted
         string wordPath = "sample.docx";  // Use the local sample.docx file
-        const string BASE_URL = "https://api.pdf4me.com/";
-        // Configuration constants
-        private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);

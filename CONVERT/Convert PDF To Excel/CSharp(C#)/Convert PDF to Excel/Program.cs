@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public const string BASE_URL = "https://api.pdf4me.com/";
+    public const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
     /// <summary>
     /// Entry point of the application
     /// Converts a PDF file to Excel format using the PDF4ME API
@@ -20,9 +22,6 @@ public class Program
     {
         // Path to the input PDF file - update this to your PDF file location
         string pdfPath = "sample.pdf";
-        const string BASE_URL = "https://api.pdf4me.com/";
-        // Configuration constants
-        private const string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
