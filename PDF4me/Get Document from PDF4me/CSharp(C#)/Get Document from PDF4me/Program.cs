@@ -7,8 +7,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for PDF optimization functionality
-/// This program demonstrates how to optimize PDF files using the PDF4ME API
+/// Main program class for PDF splitting by Swiss QR functionality
+/// This program demonstrates how to split PDF files by Swiss QR barcode using the PDF4ME API
 /// </summary>
 public class Program
 {
@@ -26,28 +26,32 @@ public class Program
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the PDF optimizer with the HTTP client and PDF path
-        var pdfOptimizer = new PdfOptimizer(httpClient, pdfPath);
+        // Initialize the PDF barcode splitter with the HTTP client and PDF path
+        var pdfBarcodeSplitter = new PdfBarcodeSplitter(httpClient, pdfPath);
         
-        // Example: Optimize PDF with web profile
-        Console.WriteLine("=== Optimizing PDF ===");
-        var result = await pdfOptimizer.OptimizePdfAsync(
-            optimizeProfile: "Web",
-            async: true
+        // Example: Split PDF by QR code barcode (Swiss QR or regular QR)
+        Console.WriteLine("=== Splitting PDF by QR Code Barcode ===");
+        var result = await pdfBarcodeSplitter.SplitByBarcodeAsync(
+            barcodeString: "hello",
+            barcodeFilter: "startsWith",
+            barcodeType: "qrcode",
+            splitBarcodePage: "before",
+            combinePagesWithSameConsecutiveBarcodes: true,
+            pdfRenderDpi: "1"
         );
         
         // Display the result
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Optimized PDF saved to: {result}");
+            Console.WriteLine($"Split PDFs saved to: {result}");
         else
-            Console.WriteLine("PDF optimization failed.");
+            Console.WriteLine("PDF splitting by barcode failed.");
     }
 }
 
 /// <summary>
-/// Class responsible for optimizing PDF files using the PDF4ME API
+/// Class responsible for splitting PDF files by Swiss QR barcode using the PDF4ME API
 /// </summary>
-public class PdfOptimizer
+public class PdfBarcodeSplitter
 {
     // Configuration constants
     /// <summary>
@@ -57,14 +61,14 @@ public class PdfOptimizer
 
     // File paths
     /// <summary>
-    /// Path to the input PDF file to be optimized
+    /// Path to the input PDF file to be split
     /// </summary>
     private readonly string _inputPdfPath;
     
     /// <summary>
-    /// Path where the optimized PDF file will be saved
+    /// Directory where split PDF files will be saved
     /// </summary>
-    private readonly string _outputPdfPath;
+    private readonly string _outputDirectory;
 
     /// <summary>
     /// HTTP client for making API requests
@@ -72,26 +76,34 @@ public class PdfOptimizer
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Constructor to initialize the PDF optimizer
+    /// Constructor to initialize the PDF barcode splitter
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public PdfOptimizer(HttpClient httpClient, string inputPdfPath)
+    public PdfBarcodeSplitter(HttpClient httpClient, string inputPdfPath)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
-        _outputPdfPath = inputPdfPath.Replace(".pdf", ".optimized.pdf");
+        _outputDirectory = Path.Combine(Path.GetDirectoryName(inputPdfPath) ?? "/Users", "swiss_qr_split_output");
     }
 
     /// <summary>
-    /// Optimizes PDF asynchronously using the PDF4ME API
+    /// Splits PDF by Swiss QR barcode asynchronously using the PDF4ME API
     /// </summary>
-    /// <param name="optimizeProfile">Optimization profile (e.g., "Web", "Print", "Screen")</param>
-    /// <param name="async">Whether to use asynchronous processing for large files</param>
-    /// <returns>Path to the optimized PDF file, or null if optimization failed</returns>
-    public async Task<string?> OptimizePdfAsync(
-        string optimizeProfile = "Web",
-        bool async = true)
+    /// <param name="barcodeString">The barcode string to search for</param>
+    /// <param name="barcodeFilter">Filter type for barcode matching (e.g., "startsWith", "contains", "equals")</param>
+    /// <param name="barcodeType">Type of barcode (e.g., "qrcode", "code128", "code39")</param>
+    /// <param name="splitBarcodePage">Where to split relative to barcode ("before", "after")</param>
+    /// <param name="combinePagesWithSameConsecutiveBarcodes">Whether to combine pages with same consecutive barcodes</param>
+    /// <param name="pdfRenderDpi">DPI for PDF rendering</param>
+    /// <returns>Path to the split PDF files archive, or null if splitting failed</returns>
+    public async Task<string?> SplitByBarcodeAsync(
+        string barcodeString,
+        string barcodeFilter = "startsWith",
+        string barcodeType = "qrcode",
+        string splitBarcodePage = "before",
+        bool combinePagesWithSameConsecutiveBarcodes = true,
+        string pdfRenderDpi = "1")
     {
         try
         {
@@ -109,48 +121,57 @@ public class PdfOptimizer
             {
                 docContent = pdfBase64,                             // Base64 encoded PDF content
                 docName = "output.pdf",                             // Output document name
-                optimizeProfile = optimizeProfile,                  // Optimization profile
+                barcodeString = barcodeString,                      // Barcode string to search for
+                barcodeFilter = barcodeFilter,                      // Filter type for barcode matching
+                barcodeType = barcodeType,                          // Type of barcode
+                splitBarcodePage = splitBarcodePage,                // Where to split relative to barcode
+                combinePagesWithSameConsecutiveBarcodes = combinePagesWithSameConsecutiveBarcodes,  // Combine pages with same consecutive barcodes
+                pdfRenderDpi = pdfRenderDpi,                        // DPI for PDF rendering
                 async = true                                        // For big files and too many calls async is recommended to reduce the server load
             };
 
-            return await ExecuteOptimizationAsync(payload);
+            return await ExecuteBarcodeSplitAsync(payload);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in OptimizePdfAsync: {ex.Message}");
+            Console.WriteLine($"Error in SplitByBarcodeAsync: {ex.Message}");
             return null;
         }
     }
 
     /// <summary>
-    /// Executes the PDF optimization operation asynchronously
+    /// Executes the PDF splitting by Swiss QR barcode operation asynchronously
     /// </summary>
     /// <param name="payload">API request payload</param>
-    /// <returns>Path to the optimized PDF file, or null if optimization failed</returns>
-    private async Task<string?> ExecuteOptimizationAsync(object payload)
+    /// <returns>Path to the split PDF files archive, or null if splitting failed</returns>
+    private async Task<string?> ExecuteBarcodeSplitAsync(object payload)
     {
         try
         {
             // Serialize payload to JSON and create HTTP content
             var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
             
-            // Create HTTP request message for the optimization operation
-            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/Optimize");
+            // Create HTTP request message for the Swiss QR barcode splitting operation
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/SplitPdfByBarcode_old");
             httpRequest.Content = content;
             httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
             
-            // Send the optimization request to the API
+            // Send the Swiss QR barcode splitting request to the API
             var response = await _httpClient.SendAsync(httpRequest);
 
             // Handle immediate success response (200 OK)
             if ((int)response.StatusCode == 200)
             {
-                // Read the optimized PDF content from the response
+                // Read the split PDF content from the response
                 byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
+                string outputPath = Path.Combine(_outputDirectory, "swiss_qr_split_result.zip");
                 
-                // Save the optimized PDF to the output path
-                await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
-                return _outputPdfPath;
+                // Ensure output directory exists
+                Directory.CreateDirectory(_outputDirectory);
+                
+                // Save the split PDF archive to the output path
+                await File.WriteAllBytesAsync(outputPath, resultBytes);
+                return outputPath;
             }
             // Handle asynchronous processing response (202 Accepted)
             else if ((int)response.StatusCode == 202)
@@ -184,8 +205,13 @@ public class PdfOptimizer
                     if ((int)pollResponse.StatusCode == 200)
                     {
                         byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
-                        await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
-                        return _outputPdfPath;
+                        string outputPath = Path.Combine(_outputDirectory, "swiss_qr_split_result.zip");
+                        
+                        // Ensure output directory exists
+                        Directory.CreateDirectory(_outputDirectory);
+                        
+                        await File.WriteAllBytesAsync(outputPath, resultBytes);
+                        return outputPath;
                     }
                     // Continue polling if still processing
                     else if ((int)pollResponse.StatusCode == 202)
@@ -201,8 +227,8 @@ public class PdfOptimizer
                     }
                 }
                 
-                // Timeout if optimization doesn't complete within retry limit
-                Console.WriteLine("Timeout: PDF optimization did not complete after multiple retries.");
+                // Timeout if splitting doesn't complete within retry limit
+                Console.WriteLine("Timeout: PDF splitting by barcode did not complete after multiple retries.");
                 return null;
             }
             // Handle other error responses
@@ -215,7 +241,7 @@ public class PdfOptimizer
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in ExecuteOptimizationAsync: {ex.Message}");
+            Console.WriteLine($"Error in ExecuteBarcodeSplitAsync: {ex.Message}");
             return null;
         }
     }

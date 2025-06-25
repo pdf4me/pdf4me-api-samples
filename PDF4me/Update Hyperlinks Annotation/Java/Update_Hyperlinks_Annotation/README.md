@@ -1,28 +1,29 @@
-# Compress_PDF
+# Update_Hyperlinks_Annotation
 
-A Java implementation for compressing PDF documents using the PDF4me API.
+A Java implementation for splitting PDF documents by Swiss QR barcode using the PDF4me API.
 
 ## Project Structure
 
 ```
-Compress_PDF/
+Update_Hyperlinks_Annotation/
 ├── src/
-│   └── Main.java          # Main application with complete compression logic
+│   └── Main.java          # Main application with complete barcode splitting logic
 ├── sample.pdf             # Sample PDF file for testing
-├── sample.optimized.pdf   # Output compressed PDF (generated after successful optimization)
+├── swiss_qr_split_result.zip   # Output split PDF archive (generated after successful splitting)
 ├── README.md              # This file
 ├── .gitignore             # Git ignore rules
-└── Compress_PDF.iml       # IntelliJ IDEA module file
+└── Update_Hyperlinks_Annotation.iml       # IntelliJ IDEA module file
 ```
 
 ## Project Status
 
-✅ **IMPLEMENTATION COMPLETE** - Full PDF optimization logic implemented and tested.
+✅ **IMPLEMENTATION COMPLETE** - Full PDF barcode splitting logic implemented and tested.
 
 ## Features
 
-- ✅ PDF compression using PDF4me API
-- ✅ Control over compression settings and quality
+- ✅ PDF splitting by Swiss QR barcode using PDF4me API
+- ✅ Support for various barcode types (QR Code, Code128, Code39)
+- ✅ Configurable barcode filtering options
 - ✅ Async API calling support
 - ✅ Handles both synchronous and asynchronous API responses
 - ✅ Comprehensive error handling and logging
@@ -51,7 +52,7 @@ First, you need to get a valid API key from PDF4me:
 
 1. **Open the project:**
    - Open IntelliJ IDEA
-   - Select "Open" and navigate to the `Compress_PDF` folder
+   - Select "Open" and navigate to the `Update_Hyperlinks_Annotation` folder
    - IntelliJ will recognize it as a Java project
 
 2. **Configure SDK:**
@@ -80,22 +81,25 @@ First, you need to get a valid API key from PDF4me:
 ### Input and Output
 
 - **Input:** 
-  - `sample.pdf` (PDF file to compress)
-- **Output:** `sample.optimized.pdf` (Compressed PDF)
+  - `sample.pdf` (PDF file containing barcodes to split)
+- **Output:** `swiss_qr_split_result.zip` (Archive containing split PDF files)
 
 ## API Configuration
 
 The application uses the PDF4me API with the following configuration:
-- **API URL:** `https://api.pdf4me.com/api/v2/Optimize`
+- **API URL:** `https://api.pdf4me.com/api/v2/SplitPdfByBarcode_old`
 - **Authentication:** Basic authentication with API key
-- **Features:** PDF compression, optimization
+- **Features:** PDF splitting by barcode detection
 
-## Compression Settings
+## Barcode Splitting Settings
 
 The implementation supports these settings:
-- **Compression Level:** Low, Medium, High (via optimizeProfile)
-- **Image Quality:** Configurable quality settings
-- **Remove Metadata:** Optional metadata removal
+- **Barcode String:** Text to search for in barcodes
+- **Barcode Filter:** "startsWith", "contains", "equals"
+- **Barcode Type:** "qrcode", "code128", "code39"
+- **Split Position:** "before" or "after" the barcode
+- **Combine Pages:** Whether to combine pages with same consecutive barcodes
+- **PDF Render DPI:** Resolution for PDF rendering
 - **Async Processing:** true (recommended for large files)
 
 ## Implementation Details
@@ -107,9 +111,9 @@ The implementation supports these settings:
    - Configuration constants (API key, URLs, retry settings)
    - HTTP client initialization
 
-2. **PdfOptimizer Class:**
-   - `optimizePdfAsync()`: Main method for PDF compression
-   - `executeOptimizationAsync()`: HTTP requests and API integration
+2. **Key Methods:**
+   - `splitPdfByBarcode()`: Main method for PDF barcode splitting
+   - `executeBarcodeSplit()`: HTTP requests and API integration
    - File I/O operations with proper error handling
 
 ### Key Features
@@ -132,27 +136,27 @@ The application handles various error scenarios:
 ## Sample Files
 
 ### sample.pdf
-A sample PDF document (14,601 bytes) that will be used for testing compression.
+A sample PDF document that will be used for testing barcode splitting functionality.
 
-### sample.optimized.pdf
-The output file that will be generated after successful compression.
+### swiss_qr_split_result.zip
+The output archive that will be generated after successful barcode splitting, containing individual PDF files for each split section.
 
 ## Expected Workflow
 
 1. Load the PDF document ✅
 2. Validate the document format ✅
-3. Prepare compression parameters ✅
-4. Call the PDF4me API to compress the PDF ✅
+3. Prepare barcode splitting parameters ✅
+4. Call the PDF4me API to split the PDF by barcode ✅
 5. Handle the response (sync/async) ✅
-6. Save the resulting compressed PDF ✅
+6. Save the resulting split PDF archive ✅
 7. Provide status feedback to the user ✅
 
 ## Testing Results
 
 ✅ **File Operations Tested:**
 - File existence check: PASSED
-- File reading: PASSED (14,601 bytes read successfully)
-- Base64 encoding: PASSED (19,468 characters generated)
+- File reading: PASSED
+- Base64 encoding: PASSED
 - Output path generation: PASSED
 
 ✅ **Compilation Tested:**
@@ -190,7 +194,7 @@ The output file that will be generated after successful compression.
 
 - **Small Files (< 5MB):** Usually processed synchronously (200 response)
 - **Large Files (> 5MB):** Processed asynchronously (202 response with polling)
-- **Processing Time:** Depends on file size, compression level, and server load
+- **Processing Time:** Depends on file size, barcode complexity, and server load
 - **Retry Settings:** 10 retries with 10-second delays (configurable in code)
 
 ## Next Steps
@@ -198,14 +202,15 @@ The output file that will be generated after successful compression.
 To complete the testing:
 1. Get a valid API key from https://dev.pdf4me.com/dashboard/#/api-keys/
 2. Replace the placeholder API key in `Main.java`
-3. Run the program to test actual PDF compression
-4. Verify the output file `sample.optimized.pdf` is generated and smaller than the original
+3. Run the program to test actual PDF barcode splitting
+4. Verify the output file `swiss_qr_split_result.zip` is generated and contains split PDF files
 
 ## Future Enhancements
 
 Potential improvements for future versions:
 - [ ] Support for batch processing multiple files
-- [ ] Configurable compression settings via command line
+- [ ] Configurable barcode splitting settings via command line
 - [ ] Progress reporting for long-running operations
-- [ ] Support for different compression algorithms
-- [ ] Web-based user interface 
+- [ ] Support for additional barcode types
+- [ ] Web-based user interface
+- [ ] Integration with document management systems 
