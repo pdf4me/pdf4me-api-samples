@@ -1,0 +1,19 @@
+This is a sample attachment file for testing the Add Attachment to PDF functionality.
+
+File Information:
+- Type: Text Document
+- Purpose: Testing attachment feature
+- Created: 2024
+- Description: This file will be attached to a PDF document to demonstrate the attachment functionality.
+
+Content Details:
+This attachment contains sample text that will be embedded into a PDF document using the PDF4Me API. The attachment will be accessible through the PDF viewer's attachment panel.
+
+Features to be tested:
+1. File attachment to PDF
+2. Attachment metadata handling
+3. File size validation
+4. Multiple attachment support
+5. Different file type support
+
+This is just a prototype sample file. The actual implementation will handle various file types and provide more sophisticated attachment management capabilities. 
