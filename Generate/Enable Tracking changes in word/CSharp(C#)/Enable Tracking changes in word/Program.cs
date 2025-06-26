@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -20,14 +23,12 @@ public class Program
     {
         string wordPath = "sample.docx";  // Update this path to your Word file location
         
-        const string BASE_URL = "https://api.pdf4me.com/";
-        
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the Word tracking enabler with the HTTP client and Word file path
-        var trackingEnabler = new WordTrackingEnabler(httpClient, wordPath);
+        var trackingEnabler = new WordTrackingEnabler(httpClient, wordPath, API_KEY);
         
         // Enable tracking changes in the Word document
         Console.WriteLine("=== Enabling Tracking Changes in Word Document ===");
@@ -50,7 +51,7 @@ public class WordTrackingEnabler
     /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/ ";
+    private readonly string _apiKey;
 
     // File paths
     /// <summary>
@@ -73,11 +74,13 @@ public class WordTrackingEnabler
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputWordPath">Path to the input Word document file</param>
-    public WordTrackingEnabler(HttpClient httpClient, string inputWordPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public WordTrackingEnabler(HttpClient httpClient, string inputWordPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputWordPath = inputWordPath;
         _outputWordPath = inputWordPath.Replace(".docx", ".tracking.docx").Replace(".doc", ".tracking.doc");
+        _apiKey = apiKey;
     }
 
     /// <summary>
@@ -129,7 +132,7 @@ public class WordTrackingEnabler
             // Create HTTP request message for the tracking changes enablement operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/EnableTrackingChangesInWord");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the tracking changes enablement request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -169,7 +172,7 @@ public class WordTrackingEnabler
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

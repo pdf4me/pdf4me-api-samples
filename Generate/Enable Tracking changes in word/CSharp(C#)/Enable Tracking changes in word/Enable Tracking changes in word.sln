@@ -1,0 +1,15 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enable Tracking changes in word", "Enable Tracking changes in word.csproj", "{3623C360-150B-4CEC-AAD3-9A1F3DC32F2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3623C360-150B-4CEC-AAD3-9A1F3DC32F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3623C360-150B-4CEC-AAD3-9A1F3DC32F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3623C360-150B-4CEC-AAD3-9A1F3DC32F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3623C360-150B-4CEC-AAD3-9A1F3DC32F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

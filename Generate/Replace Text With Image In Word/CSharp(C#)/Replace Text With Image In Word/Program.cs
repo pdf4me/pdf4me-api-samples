@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -21,14 +24,12 @@ public class Program
         string docxPath = "sample.docx";  // Update this path to your DOCX file location
         string imagePath = "sample.png";   // Update this path to your image file location
         
-        const string BASE_URL = "https://api.pdf4me.com/";
-        
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the text replacer with the HTTP client, DOCX file path, and image path
-        var textReplacer = new ReplaceTextWithImageInWord(httpClient, docxPath, imagePath);
+        var textReplacer = new ReplaceTextWithImageInWord(httpClient, docxPath, imagePath, API_KEY);
         
         // Replace text with image in the Word document
         Console.WriteLine("=== Replacing Text with Image in Word Document ===");
@@ -51,7 +52,7 @@ public class ReplaceTextWithImageInWord
     /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    private readonly string _apiKey;
 
     // File paths
     /// <summary>
@@ -80,12 +81,14 @@ public class ReplaceTextWithImageInWord
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputDocxPath">Path to the input Word document file</param>
     /// <param name="inputImagePath">Path to the input image file</param>
-    public ReplaceTextWithImageInWord(HttpClient httpClient, string inputDocxPath, string inputImagePath)
+    /// <param name="apiKey">API key for authentication</param>
+    public ReplaceTextWithImageInWord(HttpClient httpClient, string inputDocxPath, string inputImagePath, string apiKey)
     {
         _httpClient = httpClient;
         _inputDocxPath = inputDocxPath;
         _inputImagePath = inputImagePath;
         _outputDocxPath = inputDocxPath.Replace(".docx", ".modified.docx");
+        _apiKey = apiKey;
     }
 
     /// <summary>
@@ -123,8 +126,8 @@ public class ReplaceTextWithImageInWord
                 ImageFileContent = imageBase64,    // Base64 encoded image content
                 IsFirstPageSkip = false,           // Whether to skip the first page
                 PageNumbers = "1",                 // Page numbers to process
-                SearchText = "PDF4me",             // Text to search and replace
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                SearchText = "Djokovic",           // Text to search and replace
+                async = true                       // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteTextReplacementAsync(payload);
@@ -151,7 +154,7 @@ public class ReplaceTextWithImageInWord
             // Create HTTP request message for the text replacement operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/ReplaceTextWithImageInWord");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the text replacement request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -191,7 +194,7 @@ public class ReplaceTextWithImageInWord
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion

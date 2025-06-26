@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
+    
     /// <summary>
     /// Main entry point of the application
     /// Sets up the HTTP client, initializes the document generator, and processes the document
@@ -24,14 +27,12 @@ public class Program
         string docxPath = "sample.docx";  // Update this path to your DOCX file location
         
         // API base URL for PDF4ME service
-        const string BASE_URL = "https://api.pdf4me.com/";
-        
         // Create HTTP client for API communication with the base URL
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the document generator with the HTTP client and DOCX file path
-        var documentGenerator = new DocumentMultipleGenerator(httpClient, docxPath);
+        var documentGenerator = new DocumentMultipleGenerator(httpClient, docxPath, API_KEY);
         
         // Generate DOCX document using the template and JSON data
         Console.WriteLine("=== Generating DOCX Document ===");
@@ -56,7 +57,7 @@ public class DocumentMultipleGenerator
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// This key is used for Basic Authentication with the PDF4ME API
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/ ";
+    private readonly string _apiKey;
 
     // File paths
     /// <summary>
@@ -80,11 +81,13 @@ public class DocumentMultipleGenerator
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputDocxPath">Path to the input DOCX file</param>
-    public DocumentMultipleGenerator(HttpClient httpClient, string inputDocxPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public DocumentMultipleGenerator(HttpClient httpClient, string inputDocxPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputDocxPath = inputDocxPath;
         _outputDocxPath = inputDocxPath.Replace(".pdf", ".generated.pdf"); // Legacy field
+        _apiKey = apiKey;
     }
 
     /// <summary>
@@ -170,7 +173,7 @@ public class DocumentMultipleGenerator
             // Create HTTP request message for the multiple document generation operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/GenerateDocumentMultiple");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the multiple document generation request to the PDF4ME API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -280,7 +283,7 @@ public class DocumentMultipleGenerator
                     
                     // Create polling request to check if document generation is complete
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion of document generation

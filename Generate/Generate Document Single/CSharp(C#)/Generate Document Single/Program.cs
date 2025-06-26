@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 /// </summary>
 public class Program
 {
+    public static readonly string BASE_URL = "https://api.pdf4me.com/";
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -20,14 +23,12 @@ public class Program
     {
         string templatePath = "invoice_sample.html";  // Use the PDF invoice template
         
-        const string BASE_URL = "https://api.pdf4me.com/";
-        
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
         // Initialize the document generator with the HTTP client and template path
-        var documentGenerator = new DocumentSingleGenerator(httpClient, templatePath);
+        var documentGenerator = new DocumentSingleGenerator(httpClient, templatePath, API_KEY  );
         
         // Generate the document
         Console.WriteLine("=== Generating Single Document ===");
@@ -50,7 +51,7 @@ public class DocumentSingleGenerator
     /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
-    private const string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/ ";
+    private readonly string _apiKey;
 
     // File paths
     /// <summary>
@@ -73,11 +74,13 @@ public class DocumentSingleGenerator
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputPdfPath">Path to the input PDF file</param>
-    public DocumentSingleGenerator(HttpClient httpClient, string inputPdfPath)
+    /// <param name="apiKey">API key for authentication</param>
+    public DocumentSingleGenerator(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
         _inputPdfPath = inputPdfPath;
         _outputPdfPath = inputPdfPath.Replace(".html", ".generated.html");
+        _apiKey = apiKey;
     }
 
     /// <summary>
@@ -142,7 +145,7 @@ public class DocumentSingleGenerator
             // Create HTTP request message for the document generation operation
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/GenerateDocumentSingle");
             httpRequest.Content = content;
-            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
             // Send the document generation request to the API
             var response = await _httpClient.SendAsync(httpRequest);
@@ -182,7 +185,7 @@ public class DocumentSingleGenerator
                     
                     // Create polling request
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
-                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", API_KEY);
+                    pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
 
                     // Handle successful completion
