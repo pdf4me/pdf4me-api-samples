@@ -43,7 +43,7 @@ private static final String API_KEY = "your-api-key-here";
 
 The project uses the development API endpoint by default:
 ```java
-private static final String BASE_URL = "https://api-dev.pdf4me.com/";
+private static final String BASE_URL = "https://api.pdf4me.com/";
 ```
 
 ## Usage
