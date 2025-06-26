@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< sk/edit
     <list default="true" id="8611d23d-571d-43eb-a6a9-a21ab9d9a55d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Edit/Add Attachment To Pdf/CSharp(C#)/Add Attachment To Pdf/Add_Attachment_To_Pdf.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Add Attachment To Pdf/CSharp(C#)/Add Attachment To Pdf/Add_Attachment_To_Pdf.sln" afterDir="false" />
@@ -21,6 +22,9 @@
       <change beforePath="$PROJECT_DIR$/Edit/Sign PDF/CSharp(C#)/Sign PDF/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Sign PDF/CSharp(C#)/Sign PDF/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Edit/Sign PDF/CSharp(C#)/Sign PDF/Sign_PDF.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Edit/Sign PDF/CSharp(C#)/Sign PDF/Sign_PDF.sln" afterDir="false" />
     </list>
+=======
+    <list default="true" id="c8a6df93-ea62-40c9-9eb2-d11d12a16f94" name="Changes" comment="" />
+>>>>>>> main
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,12 +33,17 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
+<<<<<<< sk/edit
         <entry key="$PROJECT_DIR$" value="sk/edit" />
+=======
+        <entry key="$PROJECT_DIR$" value="Skm/Word" />
+>>>>>>> main
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+<<<<<<< sk/edit
     <setting file="mock:///Users/shakti/Work/PDF4ME/pdf4me-api-samples/CONVERT/Convert HTML To PDF/CSharp(C#)/Convert Html to PDF/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/shakti/Work/PDF4ME/pdf4me-api-samples/CONVERT/Convert HTML To PDF/CSharp(C#)/Convert Html to PDF/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CONVERT/Convert HTML To PDF/CSharp(C#)/Convert Html to PDF/Program.cs" root0="SKIP_HIGHLIGHTING" />
@@ -61,10 +70,24 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2yzUVnSDErW0XnJqDM9YBrk5v1P" />
+=======
+    <setting file="mock:///Users/shakti/Work/PDF4ME/pdf4me-api-samples/PDF/Get PDF Metadata/CSharp(C#)/Get PDF Metadata/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/PDF/Get PDF Metadata/CSharp(C#)/Get PDF Metadata/bin/Debug/net8.0/Get_PDF_Metadata.deps.json" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/PDF/Get PDF Metadata/CSharp(C#)/Get PDF Metadata/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/shakti/Work/PDF4ME/pdf4me-api-samples/PDF/Repair PDF Document/CSharp(C#)/Repair PDF Document/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/shakti/Work/PDF4ME/pdf4me-api-samples/Security/Protect Document/CSharp(C#)/Protect Document/Program.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="2z0qLXRijXmCMxcNi1V6EVyPaXj" />
+>>>>>>> main
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< sk/edit
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -123,6 +146,55 @@
       <updated>1750845711551</updated>
     </task>
     <option name="localTasksCounter" value="5" />
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Barcode",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c8a6df93-ea62-40c9-9eb2-d11d12a16f94" name="Changes" comment="" />
+      <created>1750878283276</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750878283276</updated>
+      <workItem from="1750878284964" duration="1354000" />
+    </task>
+    <task id="LOCAL-00001" summary="PDF final C#">
+      <option name="closed" value="true" />
+      <created>1750878391084</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1750878391084</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Security final C#">
+      <option name="closed" value="true" />
+      <created>1750878963242</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750878963242</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Word final C#">
+      <option name="closed" value="true" />
+      <created>1750879121176</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1750879121176</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+>>>>>>> main
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,11 +215,18 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+<<<<<<< sk/edit
     <MESSAGE value="Convert" />
     <MESSAGE value="Convert changes" />
     <MESSAGE value="Convert changes for api key" />
     <MESSAGE value="static changes" />
     <option name="LAST_COMMIT_MESSAGE" value="static changes" />
+=======
+    <MESSAGE value="PDF final C#" />
+    <MESSAGE value="Security final C#" />
+    <MESSAGE value="Word final C#" />
+    <option name="LAST_COMMIT_MESSAGE" value="Word final C#" />
+>>>>>>> main
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
