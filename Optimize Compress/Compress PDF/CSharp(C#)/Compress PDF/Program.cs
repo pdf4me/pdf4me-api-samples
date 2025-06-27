@@ -22,7 +22,7 @@ public class Program
     /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        string pdfPath = "sample.pdf";  // Update this path to your PDF file location
+        string pdfPath = "./sample.pdf";  // Updated path to the sample PDF file in the project directory
         
         
         // Create HTTP client for API communication
