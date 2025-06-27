@@ -5,68 +5,63 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 /// <summary>
-/// Main program class for PDF merging functionality
-/// This program demonstrates how to merge multiple PDF files into a single PDF using the PDF4ME API
+/// Main program class for PDF page extraction functionality
+/// This program demonstrates how to extract pages from PDF files using the PDF4ME API
 /// </summary>
 public class Program
 {
     public static readonly string BASE_URL = "https://api.pdf4me.com/";
     public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/";
+    
     /// <summary>
     /// Main entry point of the application
     /// </summary>
     /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        // Update these paths to your PDF file locations
-        List<string> pdfPaths = new List<string>
-        {
-            "sample.pdf",    // Update this path to your first PDF file
-            "sample.pdf"    // Update this path to your second PDF file
-        };
+        string pdfPath = "sample.pdf";  // Update this path to your PDF file location
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the PDF merger with the HTTP client, PDF paths, and API key
-        var pdfMerger = new PdfMerger(httpClient, pdfPaths, API_KEY);
+        // Initialize the page extractor with the HTTP client and PDF path
+        var pageExtractor = new ExtractPages(httpClient, pdfPath, API_KEY);
         
-        // Perform the PDF merging operation
-        var result = await pdfMerger.MergePdfsAsync();
+        // Extract pages from the PDF
+        Console.WriteLine("=== Extracting Pages from PDF ===");
+        var result = await pageExtractor.ExtractPagesAsync();
         
         // Display the result
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Merged PDF saved to: {result}");
+            Console.WriteLine($"Extracted pages saved to: {result}");
         else
-            Console.WriteLine("PDF merging failed.");
+            Console.WriteLine("Page extraction failed.");
     }
 }
 
 /// <summary>
-/// Class responsible for merging multiple PDF files using the PDF4ME API
+/// Class responsible for extracting pages from PDF files using the PDF4ME API
 /// </summary>
-public class PdfMerger
+public class ExtractPages
 {
     // Configuration constants
     /// <summary>
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
     private readonly string _apiKey;
-
     // File paths
     /// <summary>
-    /// List of input PDF file paths to be merged
+    /// Path to the input PDF file to be processed
     /// </summary>
-    private readonly List<string> _inputPdfPaths;
+    private readonly string _inputPdfPath;
     
     /// <summary>
-    /// Path where the merged PDF will be saved
+    /// Path where the extracted pages will be saved
     /// </summary>
-    private readonly string _outputPdfPath;
+    private readonly string _outputPath;
 
     /// <summary>
     /// HTTP client for making API requests
@@ -74,71 +69,83 @@ public class PdfMerger
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Constructor to initialize the PDF merger
+    /// Constructor to initialize the page extractor
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
-    /// <param name="inputPdfPaths">List of paths to the input PDF files</param>
+    /// <param name="inputPdfPath">Path to the input PDF file</param>
     /// <param name="apiKey">API key for authentication</param>
-    public PdfMerger(HttpClient httpClient, List<string> inputPdfPaths, string apiKey)
+    public ExtractPages(HttpClient httpClient, string inputPdfPath, string apiKey)
     {
         _httpClient = httpClient;
-        _inputPdfPaths = inputPdfPaths;
+        _inputPdfPath = inputPdfPath;
         _apiKey = apiKey;
-        _outputPdfPath = Path.Combine(Path.GetDirectoryName(inputPdfPaths[0]) ?? "/Users", "merged_output.pdf");
+        _outputPath = inputPdfPath.Replace(".pdf", ".extracted");
     }
 
     /// <summary>
-    /// Merges multiple PDF files asynchronously using the PDF4ME API
+    /// Extracts pages from PDF asynchronously using the PDF4ME API
     /// </summary>
-    /// <returns>Path to the merged PDF file, or null if merging failed</returns>
-    public async Task<string?> MergePdfsAsync()
+    /// <returns>Path to the extracted pages, or null if extraction failed</returns>
+    public async Task<string?> ExtractPagesAsync()
     {
         try
         {
-            // Read and encode all PDF files
-            List<string> pdfBase64Contents = new List<string>();
-            
-            foreach (string pdfPath in _inputPdfPaths)
+            if (!File.Exists(_inputPdfPath))
             {
-                if (!File.Exists(pdfPath))
-                {
-                    Console.WriteLine($"PDF file not found: {pdfPath}");
-                    return null;
-                }
-                
-                byte[] pdfBytes = await File.ReadAllBytesAsync(pdfPath);
-                string pdfBase64 = Convert.ToBase64String(pdfBytes);
-                pdfBase64Contents.Add(pdfBase64);
+                Console.WriteLine($"PDF file not found: {_inputPdfPath}");
+                return null;
             }
+
+            byte[] pdfBytes = await File.ReadAllBytesAsync(_inputPdfPath);
+            string pdfBase64 = Convert.ToBase64String(pdfBytes);
 
             // Prepare the API request payload
             var payload = new
             {
-                docContent = pdfBase64Contents,     // Base64 encoded PDF contents
+                docContent = pdfBase64,             // Base64 encoded PDF content
                 docName = "output.pdf",             // Output document name
+                pageNumbers = "1-3",                // Page numbers to extract (range or comma-separated)
                 async = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
+            return await ExecutePageExtractionAsync(payload);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in ExtractPagesAsync: {ex.Message}");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Executes the page extraction operation asynchronously
+    /// </summary>
+    /// <param name="payload">API request payload</param>
+    /// <returns>Path to the extracted pages, or null if extraction failed</returns>
+    private async Task<string?> ExecutePageExtractionAsync(object payload)
+    {
+        try
+        {
             // Serialize payload to JSON and create HTTP content
             var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
             
-            // Create HTTP request message for the merging operation
-            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/Merge");
+            // Create HTTP request message for the page extraction operation
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/Extract");
             httpRequest.Content = content;
             httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
             
-            // Send the merging request to the API
+            // Send the page extraction request to the API
             var response = await _httpClient.SendAsync(httpRequest);
 
             // Handle immediate success response (200 OK)
             if ((int)response.StatusCode == 200)
             {
-                // Read the merged PDF content from the response
+                // Read the extracted pages content from the response
                 byte[] resultBytes = await response.Content.ReadAsByteArrayAsync();
                 
-                // Save the merged PDF to the output path
-                await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
-                return _outputPdfPath;
+                // Save the extracted pages to the output path
+                await File.WriteAllBytesAsync(_outputPath, resultBytes);
+                return _outputPath;
             }
             // Handle asynchronous processing response (202 Accepted)
             else if ((int)response.StatusCode == 202)
@@ -172,8 +179,8 @@ public class PdfMerger
                     if ((int)pollResponse.StatusCode == 200)
                     {
                         byte[] resultBytes = await pollResponse.Content.ReadAsByteArrayAsync();
-                        await File.WriteAllBytesAsync(_outputPdfPath, resultBytes);
-                        return _outputPdfPath;
+                        await File.WriteAllBytesAsync(_outputPath, resultBytes);
+                        return _outputPath;
                     }
                     // Continue polling if still processing
                     else if ((int)pollResponse.StatusCode == 202)
@@ -189,8 +196,8 @@ public class PdfMerger
                     }
                 }
                 
-                // Timeout if merging doesn't complete within retry limit
-                Console.WriteLine("Timeout: PDF merging did not complete after multiple retries.");
+                // Timeout if extraction doesn't complete within retry limit
+                Console.WriteLine("Timeout: Page extraction did not complete after multiple retries.");
                 return null;
             }
             // Handle other error responses
@@ -203,7 +210,7 @@ public class PdfMerger
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            Console.WriteLine($"Error in ExecutePageExtractionAsync: {ex.Message}");
             return null;
         }
     }

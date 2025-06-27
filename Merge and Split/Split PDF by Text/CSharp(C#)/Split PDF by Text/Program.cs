@@ -56,6 +56,7 @@ public class PdfTextSplitter
     /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
     private readonly string _apiKey;
+
     // File paths
     /// <summary>
     /// Path to the input PDF file to be split
