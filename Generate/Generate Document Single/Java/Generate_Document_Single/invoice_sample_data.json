@@ -1,0 +1,44 @@
+{
+  "recipient":   {
+    "name": "Test AG",
+    "postalAddress": {
+      "street1": "Test Street1",
+      "street2": "Test Street2",
+      "zipCode": "8000",
+      "city": "Zurich",
+      "country": "Switzerland"
+    }
+  },
+  "coText" : "cotext",
+  "buyer": { 
+    "name": "buyer name",
+    "postalAddress": {
+    "street1": "Test Street1",
+    "street2": "Test Street2"
+    }
+
+    },
+    "coTextDelivery": "Delivery text",
+    "dueDate" : "2025-04-30",
+    "invoiceNumber" : "123456",
+    "issuedOn" : "2025-04-01",
+    "subInfo": [
+        {
+          "plan": "PDF4me base 1000",
+          "quantity": 1,
+          "price": 35,
+          "vat": 2.83,
+          "totalPrice": 37.83
+        },
+        {
+          "plan": "Call Package 2000",
+          "quantity": 1,
+          "price": 80,
+          "vat": 6.48,
+          "totalPrice": 86.48
+        }
+     ],
+      "totalAmount": 124.31,
+      "periodStart": "2025-03-01",
+      "periodEnd": "2025-03-31"
+}

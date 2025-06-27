@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample HTML to PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .highlight {
+            background-color: #f9f9a7;
+            padding: 10px;
+            border-left: 5px solid #f1c40f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Sample Document</h1>
+
+    <p>This is a sample HTML file to test HTML to PDF conversion tools.</p>
+
+    <div class="highlight">
+        <strong>Note:</strong> This section is highlighted to test background and borders in PDF.
+    </div>
+
+    <h2>Data Table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Apples</td>
+                <td>5</td>
+                <td>$2.50</td>
+            </tr>
+            <tr>
+                <td>Bananas</td>
+                <td>7</td>
+                <td>$3.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <footer style="margin-top: 40px;">
+        <p>Generated on <script>document.write(new Date().toLocaleDateString());</script></p>
+    </footer>
+
+</body>
+</html>

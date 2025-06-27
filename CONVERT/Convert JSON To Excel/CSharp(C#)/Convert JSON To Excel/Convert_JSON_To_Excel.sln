@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Convert JSON To Excel", "Convert JSON To Excel\Convert JSON To Excel.csproj", "{0F8937FE-E479-48F4-BD3D-614B6298B44E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F8937FE-E479-48F4-BD3D-614B6298B44E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F8937FE-E479-48F4-BD3D-614B6298B44E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F8937FE-E479-48F4-BD3D-614B6298B44E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F8937FE-E479-48F4-BD3D-614B6298B44E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
