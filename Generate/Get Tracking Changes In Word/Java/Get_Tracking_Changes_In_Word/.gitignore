@@ -1,0 +1,8 @@
+*.class
+.idea/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+Thumbs.db
+*.tracking_changes.json 

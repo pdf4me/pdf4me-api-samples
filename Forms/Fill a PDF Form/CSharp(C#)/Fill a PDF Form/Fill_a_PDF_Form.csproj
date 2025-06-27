@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>Fill_a_PDF_Form</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        
+        <!-- Project Metadata -->
+        <Title>PDF4ME - Fill a PDF Form</Title>
+        <Description>Sample application demonstrating how to fill PDF forms with data using the PDF4ME API</Description>
+        <Authors>PDF4ME</Authors>
+        <Company>PDF4ME</Company>
+        <Product>PDF4ME API Samples</Product>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+        
+        <!-- Build Configuration -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        
+        <!-- Runtime Configuration -->
+        <SelfContained>false</SelfContained>
+        <PublishSingleFile>false</PublishSingleFile>
+    </PropertyGroup>
+
+</Project>
