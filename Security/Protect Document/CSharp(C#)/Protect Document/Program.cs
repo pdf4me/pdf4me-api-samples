@@ -21,12 +21,12 @@ public class Program
     /// <param name="args">Command line arguments (not used in this example)</param>
     public static async Task Main(string[] args)
     {
-        string pdfPath = "sample.pdf";  // Update this path to your PDF file location
-        
+        string pdfPath = "./sample.pdf";  // Updated path to the sample PDF file in the project directory
+
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
-        
+
         // Initialize the document protector with the HTTP client and PDF path
         var documentProtector = new ProtectDocument(httpClient, pdfPath, API_KEY);
         
@@ -47,10 +47,7 @@ public class Program
 /// </summary>
 public class ProtectDocument
 {
-    // Configuration constants
-    /// <summary>
-    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
-    /// </summary>
+    // API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     private readonly string _apiKey;
 
     // File paths
@@ -198,8 +195,8 @@ public class ProtectDocument
                     }
                 }
                 
-                // Timeout if processing doesn't complete within retry limit
-                Console.WriteLine("Timeout: Document protection did not complete after multiple retries.");
+                // Timeout if protection doesn't complete within retry limit
+                Console.WriteLine("Timeout: PDF protection did not complete after multiple retries.");
                 return null;
             }
             // Handle other error responses
