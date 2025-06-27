@@ -1,0 +1,12 @@
+[
+    {"name": "Brainiac", "age": 30, "city": "New York", "salary": 75000, "department": "Engineering", "hire_date": "2020-01-15"},
+    {"name": "Carlos bromdoar", "age": 25, "city": "Los Angeles", "salary": 65000, "department": "Marketing", "hire_date": "2021-03-20"},
+    {"name": "Bob Johnson", "age": 35, "city": "Chicago", "salary": 80000, "department": "Sales", "hire_date": "2019-11-10"},
+    {"name": "Alice Brown", "age": 28, "city": "Houston", "salary": 70000, "department": "HR", "hire_date": "2022-06-05"},
+    {"name": "Charlie Wilson", "age": 32, "city": "Phoenix", "salary": 72000, "department": "Engineering", "hire_date": "2021-09-12"},
+    {"name": "Diana Miller", "age": 29, "city": "Philadelphia", "salary": 68000, "department": "Finance", "hire_date": "2023-01-08"},
+    {"name": "Eva Garcia", "age": 31, "city": "San Antonio", "salary": 71000, "department": "Operations", "hire_date": "2020-08-22"},
+    {"name": "Frank Davis", "age": 27, "city": "San Diego", "salary": 69000, "department": "Engineering", "hire_date": "2022-04-14"},
+    {"name": "Grace Lee", "age": 33, "city": "Dallas", "salary": 76000, "department": "Marketing", "hire_date": "2021-12-03"},
+    {"name": "Henry Taylor", "age": 26, "city": "San Jose", "salary": 85000, "department": "Engineering", "hire_date": "2023-07-18"}
+] 

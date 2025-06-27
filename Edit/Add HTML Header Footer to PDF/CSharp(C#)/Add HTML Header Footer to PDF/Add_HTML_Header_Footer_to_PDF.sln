@@ -1,0 +1,15 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add HTML Header Footer to PDF", "Add_HTML_Header_Footer_to_PDF.csproj", "{8BACD8D2-2256-4AC9-AE14-59305A3BCF6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BACD8D2-2256-4AC9-AE14-59305A3BCF6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BACD8D2-2256-4AC9-AE14-59305A3BCF6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BACD8D2-2256-4AC9-AE14-59305A3BCF6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BACD8D2-2256-4AC9-AE14-59305A3BCF6A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
