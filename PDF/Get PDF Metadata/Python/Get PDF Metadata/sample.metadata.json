@@ -1,0 +1,21 @@
+{
+  "title": "sample",
+  "subject": null,
+  "pageCount": 2,
+  "author": null,
+  "creator": null,
+  "producer": "Skia/PDF m139 Google Docs Renderer",
+  "creationDate": "0001-01-01T00:00:00+00:00",
+  "modDate": "0001-01-01T00:00:00+00:00",
+  "size": 14601,
+  "isEncrypted": false,
+  "isLinearized": false,
+  "pdfCompliance": null,
+  "isSigned": false,
+  "documentId": "00000000-0000-0000-0000-000000000000",
+  "pdfVersion": "1.4",
+  "keywords": null,
+  "pageHeightInMM": 279,
+  "pageWidthInMM": 216,
+  "orientation": "Potrait"
+}
