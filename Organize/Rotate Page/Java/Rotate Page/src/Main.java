@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.Base64;
 
 public class Main {
-    private static final String API_KEY = "Please get the API key from https://dev.pdf4me.com/dashboard/#/api-keysZWJhNjMwNDEtZTY4NC00YTViLWE2ZWMtYTliYjIzODEwMjEzOlV1TyU5JkxqTnJMa3AhRzdPWkR0ZVZ6Y3FaTWNpckRM";
+    private static final String API_KEY = "Please get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
     private static final String BASE_URL = "https://api.pdf4me.com/";
     private static final HttpClient httpClient = HttpClient.newHttpClient();
 
