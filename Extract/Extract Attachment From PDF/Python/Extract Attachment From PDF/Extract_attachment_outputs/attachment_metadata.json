@@ -1,0 +1,15 @@
+{
+  "documents": null,
+  "outputDocuments": [
+    {
+      "fileName": "sample.txt",
+      "streamFile": "[Base64 content removed - 5468 characters]",
+      "barcodeText": null,
+      "docText": null
+    }
+  ],
+  "traceId": null,
+  "jobId": null,
+  "statusUrl": null,
+  "subscriptionUsage": null
+}

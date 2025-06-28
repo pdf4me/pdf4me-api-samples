@@ -1,0 +1,6 @@
+Extracted Barcode Text
+======================
+Source filename: sample.txt
+Extracted on: 2025-06-25 22:06:47
+
+null
