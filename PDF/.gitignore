@@ -1,0 +1,47 @@
+# Build artifacts
+bin/
+obj/
+out/
+target/
+
+# IDE files
+.vs/
+.vscode/
+.idea/
+*.iml
+*.sln.iml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+
+# NuGet packages
+packages/
+*.nupkg
+
+# Node modules (if any)
+node_modules/
+
+# Compiled files
+*.class
+*.dll
+*.exe
+*.pdb
+*.cache
+
+# Backup files
+*~
+*.bak
+*.backup 
