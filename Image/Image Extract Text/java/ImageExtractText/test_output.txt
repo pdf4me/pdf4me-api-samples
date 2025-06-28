@@ -1,0 +1,1 @@
+Sample extracted text from the image would appear here when the API is working properly.
