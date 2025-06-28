@@ -7,22 +7,21 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for image cropping functionality
+/// Main program class for cropping images
 /// This program demonstrates how to crop images using the PDF4ME API
 /// </summary>
 public class Program
 {
     public static readonly string BASE_URL = "https://api.pdf4me.com/";
-    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-    
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
-    /// <param name="args">Command line arguments (not used in this example)</param>
+    /// <param name="args">Command line arguments (not used in this application)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the input image file to be cropped
-        string imagePath = "sample.jpg";  // Update this path to your image file location
+        // Path to the input image file - update this to your image file location
+        string imagePath = "sample.jpg";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
@@ -31,10 +30,10 @@ public class Program
         // Initialize the image cropper with the HTTP client, image path, and API key
         var imageCropper = new ImageCropper(httpClient, imagePath, API_KEY);
         
-        // Perform the image cropping operation
+        // Crop the image
         var result = await imageCropper.CropImageAsync();
         
-        // Display the result
+        // Display the results
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"Cropped image saved to: {result}");
         else
@@ -47,6 +46,12 @@ public class Program
 /// </summary>
 public class ImageCropper
 {
+    // Configuration constants
+    /// <summary>
+    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
+    /// </summary>
+    private readonly string _apiKey;
+    
     // File paths
     /// <summary>
     /// Path to the input image file
@@ -62,11 +67,6 @@ public class ImageCropper
     /// HTTP client for making API requests
     /// </summary>
     private readonly HttpClient _httpClient;
-
-    /// <summary>
-    /// API key for authentication
-    /// </summary>
-    private readonly string _apiKey;
 
     /// <summary>
     /// Constructor to initialize the image cropper
@@ -99,23 +99,18 @@ public class ImageCropper
         {
             docContent = imageBase64,     // Base64 encoded image content
             docName = "output",           // Output document name
-            CropType = "Border",          // Type of cropping: Border-based cropping
-            LeftBorder = 10,              // Left border size in pixels
-            RightBorder = 20,             // Right border size in pixels
-            TopBorder = 20,               // Top border size in pixels
-            BottomBorder = 20,            // Bottom border size in pixels
-            UpperLeftX = 10,              // X coordinate of the upper-left corner
-            UpperLeftY = 10,              // Y coordinate of the upper-left corner
-            Width = 50,                   // Width of the cropped area
-            Height = 50,                  // Height of the cropped area
-            async = true                  // For big file and too many calls async is recommended to reduce the server load.
+            X = 100,                      // X coordinate of the top-left corner of the crop area
+            Y = 100,                      // Y coordinate of the top-left corner of the crop area
+            Width = 300,                  // Width of the crop area in pixels
+            Height = 200,                 // Height of the crop area in pixels
+            async = true // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
         
         // Create HTTP request message for the crop operation
-        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/CropImage?schemaVal=Border");
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/v2/CropImage");
         httpRequest.Content = content;
         httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
         
@@ -139,17 +134,16 @@ public class ImageCropper
             string? locationUrl = response.Headers.Location?.ToString();
             if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
                 locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
-
             if (string.IsNullOrEmpty(locationUrl))
             {
                 Console.WriteLine("No 'Location' header found in the response.");
                 return null;
             }
-
+            
             // Poll for completion with retry logic
             int maxRetries = 10;
             int retryDelay = 10; // seconds
-
+            
             for (int attempt = 0; attempt < maxRetries; attempt++)
             {
                 // Wait before polling
@@ -159,7 +153,7 @@ public class ImageCropper
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
                 pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
-
+                
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)
                 {

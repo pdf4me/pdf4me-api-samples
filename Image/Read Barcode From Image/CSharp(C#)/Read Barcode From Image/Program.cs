@@ -7,22 +7,21 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for reading barcodes from images functionality
+/// Main program class for reading barcodes from images
 /// This program demonstrates how to read barcodes from images using the PDF4ME API
 /// </summary>
 public class Program
 {
     public static readonly string BASE_URL = "https://api.pdf4me.com/";
-    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-    
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
-    /// <param name="args">Command line arguments (not used in this example)</param>
+    /// <param name="args">Command line arguments (not used in this application)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the input image file to read barcodes from
-        string imagePath = "sample.jpg";  // Update this path to your image file location
+        // Path to the input image file - update this to your image file location
+        string imagePath = "sample.jpg";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
@@ -31,10 +30,10 @@ public class Program
         // Initialize the barcode reader with the HTTP client, image path, and API key
         var barcodeReader = new BarcodeReader(httpClient, imagePath, API_KEY);
         
-        // Perform the barcode reading operation
-        var result = await barcodeReader.ReadBarcodeAsync();
+        // Read barcodes from the image
+        var result = await barcodeReader.ReadBarcodesFromImageAsync();
         
-        // Display the result
+        // Display the results
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"Barcode data saved to: {result}");
         else
@@ -48,25 +47,12 @@ public class Program
 public class BarcodeReader
 {
     // Configuration constants
-    /// <summary>
-    /// API key for authentication
-    /// </summary>
     private readonly string _apiKey;
 
     // File paths
-    /// <summary>
-    /// Path to the input image file
-    /// </summary>
     private readonly string _inputImagePath;
-    
-    /// <summary>
-    /// Path where the barcode data will be saved
-    /// </summary>
-    private readonly string _outputDataPath;
 
-    /// <summary>
-    /// HTTP client for making API requests
-    /// </summary>
+    // HTTP client for API communication
     private readonly HttpClient _httpClient;
 
     /// <summary>
@@ -80,17 +66,13 @@ public class BarcodeReader
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
         _apiKey = apiKey;
-        
-        // Generate output path for the barcode data
-        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(_inputImagePath);
-        _outputDataPath = $"{fileNameWithoutExtension}_barcode_data.json";
     }
 
     /// <summary>
-    /// Reads barcodes from the specified image asynchronously
+    /// Reads barcodes from the image asynchronously using HttpRequestMessage pattern
     /// </summary>
-    /// <returns>Barcode data as JSON string, or null if reading failed</returns>
-    public async Task<string?> ReadBarcodeAsync()
+    /// <returns>Formatted JSON string containing barcode data, or null if reading failed</returns>
+    public async Task<string?> ReadBarcodesFromImageAsync()
     {
         try
         {
@@ -135,17 +117,16 @@ public class BarcodeReader
                 string? locationUrl = response.Headers.Location?.ToString();
                 if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
                     locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
-
                 if (string.IsNullOrEmpty(locationUrl))
                 {
                     Console.WriteLine("No 'Location' header found in the response.");
                     return null;
                 }
-
+                
                 // Poll for completion with retry logic
                 int maxRetries = 10;
                 int retryDelay = 10; // seconds
-
+                
                 for (int attempt = 0; attempt < maxRetries; attempt++)
                 {
                     // Wait before polling
@@ -155,7 +136,7 @@ public class BarcodeReader
                     using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
                     pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                     var pollResponse = await _httpClient.SendAsync(pollRequest);
-
+                    
                     // Handle successful completion
                     if ((int)pollResponse.StatusCode == 200)
                     {
@@ -176,7 +157,7 @@ public class BarcodeReader
                     }
                 }
                 
-                // Timeout if reading doesn't complete within retry limit
+                // Timeout if barcode reading doesn't complete within retry limit
                 Console.WriteLine("Timeout: Barcode reading did not complete after multiple retries.");
                 return null;
             }
@@ -190,60 +171,55 @@ public class BarcodeReader
         }
         catch (Exception ex)
         {
+            // Handle any exceptions during processing
             Console.WriteLine($"Error: {ex.Message}");
             return null;
         }
     }
 
     /// <summary>
-    /// Determines the image type from the file extension for API compatibility
+    /// Determines the image type from the file extension
     /// </summary>
     /// <param name="filePath">Path to the image file</param>
-    /// <returns>Image type string (jpg, png, gif, bmp, tiff, webp)</returns>
-    private string GetImageTypeFromExtension(string filePath)
+    /// <returns>Image type string (JPG, PNG, etc.)</returns>
+    private static string GetImageTypeFromExtension(string filePath)
     {
-        string extension = Path.GetExtension(filePath).ToLowerInvariant();
+        string extension = Path.GetExtension(filePath).ToUpperInvariant();
         return extension switch
         {
-            ".jpg" or ".jpeg" => "jpg",
-            ".png" => "png",
-            ".gif" => "gif",
-            ".bmp" => "bmp",
-            ".tiff" or ".tif" => "tiff",
-            ".webp" => "webp",
-            _ => "png" // Default to png if unknown extension
+            ".JPG" or ".JPEG" => "JPG",
+            ".PNG" => "PNG",
+            ".GIF" => "GIF",
+            ".BMP" => "BMP",
+            ".TIFF" or ".TIF" => "TIFF",
+            ".WEBP" => "WEBP",
+            _ => "JPG" // Default to JPG for unknown extensions
         };
     }
 
     /// <summary>
-    /// Formats the barcode data JSON response for better readability and handles empty results
+    /// Formats the barcode data JSON for better readability and saves it to a file
     /// </summary>
-    /// <param name="jsonString">Raw JSON string from the API response</param>
-    /// <returns>Pretty-printed JSON string with barcode data, or message if no barcodes found</returns>
+    /// <param name="jsonString">Raw JSON string from the API</param>
+    /// <returns>Path to the saved barcode data file</returns>
     private string FormatBarcodeData(string jsonString)
     {
         try
         {
-            // Parse and pretty-print the JSON for better readability
-            using JsonDocument document = JsonDocument.Parse(jsonString);
+            // Parse and format the JSON for better readability
+            var jsonDocument = JsonDocument.Parse(jsonString);
+            var formattedJson = JsonSerializer.Serialize(jsonDocument, new JsonSerializerOptions { WriteIndented = true });
             
-            // Check if there are any barcodes found
-            if (document.RootElement.TryGetProperty("barcodes", out var barcodesElement) && 
-                barcodesElement.ValueKind == JsonValueKind.Array)
-            {
-                var barcodes = barcodesElement.EnumerateArray();
-                if (!barcodes.Any())
-                {
-                    return "No barcodes found in the image.";
-                }
-            }
+            // Save the formatted JSON to a file
+            string outputPath = Path.Combine(Path.GetDirectoryName(_inputImagePath) ?? ".", "sample_barcode_data.json");
+            File.WriteAllText(outputPath, formattedJson);
             
-            return JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
+            return outputPath;
         }
-        catch
+        catch (Exception ex)
         {
-            // If JSON parsing fails, return the original string
-            return jsonString;
+            Console.WriteLine($"Error formatting JSON: {ex.Message}");
+            return null;
         }
     }
 }

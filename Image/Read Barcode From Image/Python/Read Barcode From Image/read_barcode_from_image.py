@@ -1,0 +1,150 @@
+import os
+import base64
+import requests
+import time
+import json
+
+
+
+def read_barcode_from_image():
+    """
+    Read barcodes from image using PDF4me API
+    Process: Read image → Encode to base64 → Send API request → Poll for completion → Save barcode data
+    This action allows reading various barcode types from images including QR codes, UPC, Code128, etc.
+    """
+    
+    # API Configuration - PDF4me service for reading barcodes from image documents
+    api_key = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys"
+    image_file_path = "sample.jpg"  # Path to the main image file
+    output_path = "Read_barcode_from_image_output.json"  # Output barcode data file name
+    
+    # API endpoint for reading barcodes from image documents
+    base_url = "https://api.pdf4me.com"
+    url = f"{base_url}api/v2/ReadBarcodesfromImage"
+
+    # Check if the input file exists before proceeding
+    if not os.path.exists(image_file_path):
+        print(f"Error: Image file not found at {image_file_path}")
+        return
+
+    # Read the image file and convert it to base64 encoding
+    try:
+        with open(image_file_path, "rb") as f:
+            image_content = f.read()
+        image_base64 = base64.b64encode(image_content).decode('utf-8')
+        print(f"Image file read successfully: {len(image_content)} bytes")
+    except Exception as e:
+        print(f"Error reading image file: {e}")
+        return
+
+    # Prepare the payload (data) to send to the API
+    payload = {
+        "docName": os.path.basename(image_file_path),              # Name of the input image file
+        "docContent": image_base64,                                # Base64 encoded image content
+        "imageType": "jpg",                                        # Image type options: JPG, PNG
+        "async": True                                             # Enable asynchronous processing
+    }
+
+    # Set up HTTP headers for the API request
+    headers = {
+        "Authorization": f"Basic {api_key}",                       # Authentication using provided API key
+        "Content-Type": "application/json"                        # Specify that we're sending JSON data
+    }
+
+    print("Sending barcode reading request to PDF4me API...")
+    
+    # Make the API request to read barcodes from image
+    try:
+        response = requests.post(url, json=payload, headers=headers, verify=False, timeout=300)  # 5 minute timeout
+        
+        # Log detailed response information for debugging 
+        print(f"Response Status Code: {response.status_code} ({response.reason})")
+        print("Response Headers:")
+        for header_name, header_value in response.headers.items():
+            print(f"  {header_name}: {header_value}")
+        
+    except Exception as e:
+        print(f"Error making API request: {e}")
+        return
+
+    # Handle different response scenarios based on status code
+    if response.status_code == 200:
+        # 200 - Success: barcode reading completed immediately
+        print("✓ Success! Barcode reading completed!")
+        
+        # Save the raw JSON response
+        json_response = response.text
+        print(f"Response Body (200): {json_response}")
+        
+        # Save the raw JSON response to file
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(json_response)
+        
+        print(f"Barcode data file saved: {output_path}")
+        return
+        
+    elif response.status_code == 202:
+        # 202 - Accepted: API is processing the request asynchronously
+        print("202 - Request accepted. Processing asynchronously...")
+        
+        # Get the polling URL from the Location header for checking status
+        location_url = response.headers.get('Location')
+        print(f"Location URL: {location_url if location_url else 'NOT FOUND'}")
+        
+        if not location_url:
+            print("Error: No polling URL found in response")
+            return
+
+        # Retry logic for polling the result
+        max_retries = 50
+        retry_delay = 10
+
+        # Poll the API until barcode reading is complete
+        for attempt in range(max_retries):
+            print(f"Checking status... (Attempt {attempt + 1}/{max_retries})")
+            time.sleep(retry_delay)
+
+            # Check the processing status by calling the polling URL
+            try:
+                response_conversion = requests.get(location_url, headers=headers, verify=False)
+                print(f"Poll response status: {response_conversion.status_code} ({response_conversion.reason})")
+            except Exception as e:
+                print(f"Error polling status: {e}")
+                continue
+
+            if response_conversion.status_code == 200:
+                # 200 - Success: Processing completed
+                print("✓ Success! Barcode reading completed!")
+                
+                # Save the raw JSON response
+                json_response = response_conversion.text
+                print(f"Poll response body (200): {json_response}")
+                
+                # Save the raw JSON response to file
+                with open(output_path, 'w', encoding="utf-8") as out_file:
+                    out_file.write(json_response)
+                print(f"Barcode data file saved: {output_path}")
+                return
+                
+            elif response_conversion.status_code == 202:
+                # Still processing, continue polling
+                print("Still processing (202)...")
+                continue
+            else:
+                # Error occurred during processing
+                print(f"Error during processing: {response_conversion.status_code} - {response_conversion.text}")
+                return
+
+        # If we reach here, polling timed out
+        print("Timeout: Processing did not complete after multiple retries")
+        
+    else:
+        # Other status codes - Error
+        print(f"Error: {response.status_code} - {response.text}")
+
+
+
+# Run the function when script is executed directly
+if __name__ == "__main__":
+    print("Reading barcodes from image...")
+    read_barcode_from_image()

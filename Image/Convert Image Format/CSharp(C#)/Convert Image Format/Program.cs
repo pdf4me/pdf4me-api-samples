@@ -7,24 +7,23 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for image format conversion functionality
-/// This program demonstrates how to convert images between different formats using the PDF4ME API
+/// Main program class for converting image formats
+/// This program demonstrates how to convert image formats using the PDF4ME API
 /// </summary>
 public class Program
 {
     public static readonly string BASE_URL = "https://api.pdf4me.com/";
-    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-    
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
-    /// <param name="args">Command line arguments (not used in this example)</param>
+    /// <param name="args">Command line arguments (not used in this application)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the input image file to be converted
-        string imagePath = "sample.jpg";  // Update this path to your image file location
-        // Target format for conversion
-        string targetFormat = "png";  // Update this to your desired output format (e.g., "png", "jpg", "gif", "bmp", "tiff")
+        // Path to the input image file - update this to your image file location
+        string imagePath = "sample.jpg";
+        // Target format for conversion (JPG, PNG, GIF, BMP, TIFF, WEBP)
+        string targetFormat = "PNG";  // Update this to your desired output format
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
@@ -33,10 +32,10 @@ public class Program
         // Initialize the image format converter with the HTTP client, image path, target format, and API key
         var imageFormatConverter = new ImageFormatConverter(httpClient, imagePath, targetFormat, API_KEY);
         
-        // Perform the image format conversion operation
+        // Convert the image format
         var result = await imageFormatConverter.ConvertImageFormatAsync();
         
-        // Display the result
+        // Display the results
         if (!string.IsNullOrEmpty(result))
             Console.WriteLine($"Converted image saved to: {result}");
         else
@@ -49,14 +48,20 @@ public class Program
 /// </summary>
 public class ImageFormatConverter
 {
-    // File paths and target format
+    // Configuration constants
+    /// <summary>
+    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
+    /// </summary>
+    private readonly string _apiKey;
+    
+    // File paths and format
     /// <summary>
     /// Path to the input image file
     /// </summary>
     private readonly string _inputImagePath;
     
     /// <summary>
-    /// Target format for conversion
+    /// Target format for conversion (JPG, PNG, GIF, BMP, TIFF, WEBP)
     /// </summary>
     private readonly string _targetFormat;
     
@@ -69,11 +74,6 @@ public class ImageFormatConverter
     /// HTTP client for making API requests
     /// </summary>
     private readonly HttpClient _httpClient;
-
-    /// <summary>
-    /// API key for authentication
-    /// </summary>
-    private readonly string _apiKey;
 
     /// <summary>
     /// Constructor to initialize the image format converter
@@ -89,9 +89,10 @@ public class ImageFormatConverter
         _targetFormat = targetFormat;
         _apiKey = apiKey;
         
-        // Generate output path with the new format extension
-        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(_inputImagePath);
-        _outputImagePath = $"{fileNameWithoutExtension}.{_targetFormat.ToLower()}";
+        // Generate output path by replacing the original extension with the target format extension
+        string originalExtension = Path.GetExtension(inputImagePath);
+        string targetExtension = "." + targetFormat.ToLowerInvariant();
+        _outputImagePath = inputImagePath.Replace(originalExtension, targetExtension);
     }
 
     /// <summary>
@@ -145,17 +146,16 @@ public class ImageFormatConverter
             string? locationUrl = response.Headers.Location?.ToString();
             if (string.IsNullOrEmpty(locationUrl) && response.Headers.TryGetValues("Location", out var values))
                 locationUrl = System.Linq.Enumerable.FirstOrDefault(values);
-
             if (string.IsNullOrEmpty(locationUrl))
             {
                 Console.WriteLine("No 'Location' header found in the response.");
                 return null;
             }
-
+            
             // Poll for completion with retry logic
             int maxRetries = 10;
             int retryDelay = 10; // seconds
-
+            
             for (int attempt = 0; attempt < maxRetries; attempt++)
             {
                 // Wait before polling
@@ -165,7 +165,7 @@ public class ImageFormatConverter
                 using var pollRequest = new HttpRequestMessage(HttpMethod.Get, locationUrl);
                 pollRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", _apiKey);
                 var pollResponse = await _httpClient.SendAsync(pollRequest);
-
+                
                 // Handle successful completion
                 if ((int)pollResponse.StatusCode == 200)
                 {
@@ -201,11 +201,11 @@ public class ImageFormatConverter
     }
 
     /// <summary>
-    /// Determines the image type based on the file extension
+    /// Determines the image type from the file extension
     /// </summary>
     /// <param name="filePath">Path to the image file</param>
-    /// <returns>The image type as a string (JPG, PNG, GIF, BMP, TIFF, WEBP)</returns>
-    private string GetImageTypeFromExtension(string filePath)
+    /// <returns>Image type string (JPG, PNG, etc.)</returns>
+    private static string GetImageTypeFromExtension(string filePath)
     {
         string extension = Path.GetExtension(filePath).ToUpperInvariant();
         return extension switch
@@ -216,7 +216,7 @@ public class ImageFormatConverter
             ".BMP" => "BMP",
             ".TIFF" or ".TIF" => "TIFF",
             ".WEBP" => "WEBP",
-            _ => "JPG" // Default to JPG if unknown extension
+            _ => "JPG" // Default to JPG for unknown extensions
         };
     }
 }

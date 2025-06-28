@@ -13,8 +13,7 @@ using System.Threading.Tasks;
 public class Program
 {
     public static readonly string BASE_URL = "https://api.pdf4me.com/";
-    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-    
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
@@ -49,6 +48,12 @@ public class Program
 /// </summary>
 public class TextWatermarker
 {
+    // Configuration constants
+    /// <summary>
+    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
+    /// </summary>
+    private readonly string _apiKey;
+    
     // File paths and watermark text
     /// <summary>
     /// Path to the input image file
@@ -69,11 +74,6 @@ public class TextWatermarker
     /// HTTP client for making API requests
     /// </summary>
     private readonly HttpClient _httpClient;
-    
-    /// <summary>
-    /// API key for authentication
-    /// </summary>
-    private readonly string _apiKey;
     
     /// <summary>
     /// Constructor to initialize the text watermarker

@@ -7,38 +7,36 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Main program class for extracting text from images functionality
-/// This program demonstrates how to extract text from images using the PDF4ME API
+/// Main program class for extracting text from images using PDF4ME API
 /// </summary>
 public class Program
 {
     public static readonly string BASE_URL = "https://api.pdf4me.com/";
-    public static readonly string API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-    
+    public static readonly string API_KEY = "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys";
     /// <summary>
     /// Main entry point of the application
     /// </summary>
-    /// <param name="args">Command line arguments (not used in this example)</param>
+    /// <param name="args">Command line arguments (not used in this application)</param>
     public static async Task Main(string[] args)
     {
-        // Path to the input image file to extract text from
-        string imagePath = "sample.png";  // Update this path to your image file location
+        // Path to the input image file - update this to your image file location
+        string imagePath = "sample.jpg";
         
         // Create HTTP client for API communication
         using HttpClient httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri(BASE_URL);
         
-        // Initialize the image text extractor with the HTTP client, image path, and API key
+        // Initialize the text extractor with the HTTP client, image path, and API key
         var imageTextExtractor = new ImageTextExtractor(httpClient, imagePath, API_KEY);
         
-        // Perform the text extraction operation
-        var result = await imageTextExtractor.ExtractTextAsync();
+        // Extract text from the image
+        var result = await imageTextExtractor.ExtractTextFromImageAsync();
         
-        // Display the result
+        // Display the results
         if (!string.IsNullOrEmpty(result))
-            Console.WriteLine($"Extracted text saved to: {result}");
+            Console.WriteLine($"Extracted text:\n{result}");
         else
-            Console.WriteLine("Text extraction failed.");
+            Console.WriteLine("Failed to extract text from image.");
     }
 }
 
@@ -49,7 +47,7 @@ public class ImageTextExtractor
 {
     // Configuration constants
     /// <summary>
-    /// API key for authentication
+    /// API key for authentication - Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/
     /// </summary>
     private readonly string _apiKey;
 
@@ -58,11 +56,6 @@ public class ImageTextExtractor
     /// Path to the input image file
     /// </summary>
     private readonly string _inputImagePath;
-    
-    /// <summary>
-    /// Path where the extracted text will be saved
-    /// </summary>
-    private readonly string _outputTextPath;
 
     /// <summary>
     /// HTTP client for making API requests
@@ -70,7 +63,7 @@ public class ImageTextExtractor
     private readonly HttpClient _httpClient;
 
     /// <summary>
-    /// Constructor to initialize the image text extractor
+    /// Initializes a new instance of the ImageTextExtractor class
     /// </summary>
     /// <param name="httpClient">HTTP client for API communication</param>
     /// <param name="inputImagePath">Path to the input image file</param>
@@ -80,17 +73,13 @@ public class ImageTextExtractor
         _httpClient = httpClient;
         _inputImagePath = inputImagePath;
         _apiKey = apiKey;
-        
-        // Generate output path for the extracted text
-        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(_inputImagePath);
-        _outputTextPath = $"{fileNameWithoutExtension}_extracted_text.txt";
     }
 
     /// <summary>
     /// Extracts text from the specified image file asynchronously
     /// </summary>
     /// <returns>The extracted text, or null if extraction failed</returns>
-    public async Task<string?> ExtractTextAsync()
+    public async Task<string?> ExtractTextFromImageAsync()
     {
         try
         {
@@ -216,38 +205,46 @@ public class ImageTextExtractor
     }
 
     /// <summary>
-    /// Parses the extracted text from the API response JSON
+    /// Parses the extracted text from the JSON response
     /// </summary>
-    /// <param name="jsonString">JSON response from the API</param>
-    /// <returns>Formatted extracted text, or the original JSON if parsing fails</returns>
+    /// <param name="jsonString">JSON string containing the extracted text</param>
+    /// <returns>The extracted text, or null if parsing failed</returns>
     private string ParseExtractedText(string jsonString)
     {
         try
         {
-            // Parse the JSON response
+            // Try to parse the JSON response
             using JsonDocument document = JsonDocument.Parse(jsonString);
             
-            // Try to extract the text content from the response
-            if (document.RootElement.TryGetProperty("text", out JsonElement textElement))
+            // Look for common text extraction result patterns
+            if (document.RootElement.TryGetProperty("text", out var textElement))
             {
                 return textElement.GetString() ?? "No text found";
             }
-            else if (document.RootElement.TryGetProperty("result", out JsonElement resultElement))
+            else if (document.RootElement.TryGetProperty("result", out var resultElement))
             {
-                if (resultElement.TryGetProperty("text", out JsonElement nestedTextElement))
+                if (resultElement.TryGetProperty("text", out var resultTextElement))
                 {
-                    return nestedTextElement.GetString() ?? "No text found";
+                    return resultTextElement.GetString() ?? "No text found";
                 }
+                return resultElement.GetString() ?? "No text found";
             }
-            
-            // If we can't find the text in the expected format, return the formatted JSON
-            return JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
+            else if (document.RootElement.ValueKind == JsonValueKind.String)
+            {
+                // If the response is just a string, return it directly
+                return document.RootElement.GetString() ?? "No text found";
+            }
+            else
+            {
+                // If we can't find the text in the expected format, return the full JSON for debugging
+                Console.WriteLine("Could not parse text from response, returning full JSON:");
+                return jsonString;
+            }
         }
-        catch (JsonException ex)
+        catch (Exception ex)
         {
-            // If JSON parsing fails, return the original string with an error message
-            Console.WriteLine($"JSON parsing error: {ex.Message}");
-            return $"Error parsing response: {jsonString}";
+            Console.WriteLine($"Error parsing JSON response: {ex.Message}");
+            return jsonString; // Return the raw response if parsing fails
         }
     }
 }
