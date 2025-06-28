@@ -10,7 +10,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 /// <summary>
-/// Main program class for extracting text by expression functionality
+/// Main program class for extracting text by expression functionalƒity
 /// This program demonstrates how to extract text by expression from PDF documents using the PDF4ME API
 /// </summary>
 public class Program
