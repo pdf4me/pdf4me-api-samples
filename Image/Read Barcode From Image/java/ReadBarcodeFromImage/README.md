@@ -43,7 +43,7 @@ The application handles different scenarios:
 
 ## Configuration
 
-- **API Endpoint**: `https://api-dev.pdf4me.com/`
+- **API Endpoint**: `https://api.pdf4me.com/`
 - **Input Image**: Modify `imagePath` variable in `Main.java` to use different images
 - **API Key**: Configured for development environment
 
