@@ -35,7 +35,7 @@ Add_Margin_To_PDF/
 1. **Clone or download this project**
 2. **Add your PDF4me API key** in `src/Main.java`:
    ```java
-   private static final String API_KEY = "YOUR_API_KEY_HERE";
+   private static final String API_KEY = "Please";
    ```
 3. **Add a sample PDF file** named `sample.pdf` in the project root directory
 

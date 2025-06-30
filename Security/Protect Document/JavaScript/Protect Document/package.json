@@ -1,0 +1,16 @@
+{
+  "name": "protect-document",
+  "version": "1.0.0",
+  "description": "Protect PDF documents with password using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pdf", "protect", "password", "security", "pdf4me", "api"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
