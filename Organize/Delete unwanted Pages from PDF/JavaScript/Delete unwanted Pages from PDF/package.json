@@ -1,0 +1,26 @@
+{
+  "name": "delete-unwanted-pages-from-pdf",
+  "version": "1.0.0",
+  "description": "JavaScript prototype for deleting unwanted pages from PDF documents using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pdf",
+    "delete",
+    "remove",
+    "pages",
+    "unwanted",
+    "pdf4me",
+    "api",
+    "javascript"
+  ],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

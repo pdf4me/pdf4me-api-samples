@@ -1,0 +1,26 @@
+{
+  "name": "rotate-page",
+  "version": "1.0.0",
+  "description": "JavaScript prototype for rotating specific pages in PDF documents using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pdf",
+    "rotate",
+    "page",
+    "specific",
+    "orientation",
+    "pdf4me",
+    "api",
+    "javascript"
+  ],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
