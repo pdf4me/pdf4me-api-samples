@@ -1,0 +1,16 @@
+{
+  "name": "extract-text-by-expression",
+  "version": "1.0.0",
+  "description": "Extract specific text from PDF documents using regular expressions with PDF4me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node test.js"
+  },
+  "keywords": ["pdf", "text-extraction", "regex", "pdf4me"],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 

@@ -1,0 +1,20 @@
+{
+  "name": "pdf-attachment-extraction-client",
+  "version": "1.0.0",
+  "description": "Simple JavaScript client for extracting attachments from PDF using PDF4me API - No dependencies required",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {},
+  "keywords": [
+    "pdf",
+    "attachment",
+    "extract",
+    "api",
+    "javascript",
+    "no-dependencies"
+  ],
+  "author": "",
+  "license": "MIT"
+} 

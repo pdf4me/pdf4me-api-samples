@@ -1,0 +1,16 @@
+{
+  "name": "parse-document",
+  "version": "1.0.0",
+  "description": "Parse documents using PDF4Me API with template-based parsing",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["document", "parsing", "pdf4me", "api", "extract"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

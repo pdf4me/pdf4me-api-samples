@@ -1,0 +1,6 @@
+Extracted Document Text
+========================
+Source filename: sample.txt
+Extracted on: 2025-06-30T22:29:32.491Z
+
+null
