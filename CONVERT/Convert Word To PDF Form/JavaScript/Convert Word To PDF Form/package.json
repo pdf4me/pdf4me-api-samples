@@ -1,0 +1,24 @@
+{
+  "name": "word-to-pdf-form-converter",
+  "version": "1.0.0",
+  "description": "Convert Word documents to PDF forms using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "word",
+    "pdf",
+    "form",
+    "conversion",
+    "pdf4me",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {}
+} 

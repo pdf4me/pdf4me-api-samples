@@ -1,0 +1,16 @@
+{
+  "name": "visio-to-pdf-converter",
+  "version": "1.0.0",
+  "description": "Convert Visio files to PDF using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["visio", "pdf", "conversion", "pdf4me", "api", "vsdx", "vsd", "vsdm"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
