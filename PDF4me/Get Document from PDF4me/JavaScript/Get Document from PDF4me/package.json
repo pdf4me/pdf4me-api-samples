@@ -1,0 +1,16 @@
+{
+  "name": "get-document-from-pdf4me",
+  "version": "1.0.0",
+  "description": "Get document from PDF4Me using the PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pdf", "document", "get", "pdf4me", "api"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
