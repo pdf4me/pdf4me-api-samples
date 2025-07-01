@@ -9,7 +9,7 @@ const path = require('path');
 
 // API Configuration - PDF4Me service for splitting PDF by text
 const API_KEY = "Please get the key from https://dev.pdf4me.com/dashboard/#/api-keys/";
-const BASE_URL = "https://api-dev.pdf4me.com/";
+const BASE_URL = "https://api.pdf4me.com/";
 const API_ENDPOINT = `${BASE_URL}api/v2/SplitByText`;
 
 // File paths configuration
