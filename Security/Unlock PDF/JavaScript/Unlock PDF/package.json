@@ -1,0 +1,16 @@
+{
+  "name": "unlock-pdf",
+  "version": "1.0.0",
+  "description": "Unlock password-protected PDF documents using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pdf", "unlock", "password", "security", "pdf4me", "api"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
