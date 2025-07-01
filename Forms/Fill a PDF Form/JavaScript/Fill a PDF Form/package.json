@@ -1,0 +1,16 @@
+{
+  "name": "fill-pdf-form",
+  "version": "1.0.0",
+  "description": "Fill PDF forms using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pdf", "form", "fill", "pdf4me", "api"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
