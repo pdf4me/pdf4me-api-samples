@@ -1,0 +1,16 @@
+{
+  "name": "word-tracking-changes-disable",
+  "version": "1.0.0",
+  "description": "Disable tracking changes in Word documents using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["word", "tracking", "changes", "disable", "pdf4me", "api"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
