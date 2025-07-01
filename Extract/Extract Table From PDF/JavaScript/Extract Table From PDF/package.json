@@ -1,0 +1,16 @@
+{
+  "name": "extract-table-from-pdf",
+  "version": "1.0.0",
+  "description": "Extract table data from PDF documents using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pdf", "table", "extraction", "pdf4me", "api"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
