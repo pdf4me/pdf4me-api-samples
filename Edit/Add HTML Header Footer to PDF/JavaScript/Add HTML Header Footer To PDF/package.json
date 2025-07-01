@@ -1,0 +1,25 @@
+{
+  "name": "add-html-header-footer-to-pdf",
+  "version": "1.0.0",
+  "description": "Add HTML content as header or footer to PDF documents using PDF4me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pdf",
+    "html",
+    "header",
+    "footer",
+    "pdf4me",
+    "api"
+  ],
+  "author": "PDF4me",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+} 

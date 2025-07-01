@@ -1,0 +1,16 @@
+{
+  "name": "add-margin-to-pdf",
+  "version": "1.0.0",
+  "description": "Add custom margins to PDF documents using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pdf", "margin", "pdf4me", "api", "document-processing"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
