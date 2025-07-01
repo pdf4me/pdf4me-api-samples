@@ -72,7 +72,7 @@ if (result) {
 ## API Configuration
 
 ### Endpoints
-- **Base URL:** `https://api-dev.pdf4me.com/`
+- **Base URL:** `https://api.pdf4me.com/`
 - **Overlay Endpoint:** `api/v2/MergeOverlay`
 
 ### Request Payload Structure
@@ -125,7 +125,7 @@ The application provides detailed logging for:
 ### API Settings
 ```javascript
 const API_KEY = "your_api_key_here";
-const BASE_URL = "https://api-dev.pdf4me.com/";
+const BASE_URL = "https://api.pdf4me.com/";
 const API_ENDPOINT = `${BASE_URL}api/v2/MergeOverlay`;
 ```
 
