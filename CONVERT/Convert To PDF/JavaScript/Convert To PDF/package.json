@@ -1,0 +1,16 @@
+{
+  "name": "document-to-pdf-converter",
+  "version": "1.0.0",
+  "description": "Convert various document formats (DOCX, XLSX, etc.) to PDF using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["document", "pdf", "conversion", "pdf4me", "api", "docx", "xlsx"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

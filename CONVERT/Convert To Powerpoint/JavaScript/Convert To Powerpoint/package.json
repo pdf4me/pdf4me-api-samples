@@ -1,0 +1,16 @@
+{
+  "name": "pdf-to-powerpoint-converter",
+  "version": "1.0.0",
+  "description": "Convert PDF documents to PowerPoint presentations using PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pdf", "powerpoint", "conversion", "pdf4me", "api", "presentation", "slides"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

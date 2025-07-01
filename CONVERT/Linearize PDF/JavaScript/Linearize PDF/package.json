@@ -1,0 +1,16 @@
+{
+  "name": "pdf-linearizer",
+  "version": "1.0.0",
+  "description": "Linearize PDF documents using PDF4Me API for web optimization",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pdf", "linearize", "optimization", "pdf4me", "api", "web"],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
