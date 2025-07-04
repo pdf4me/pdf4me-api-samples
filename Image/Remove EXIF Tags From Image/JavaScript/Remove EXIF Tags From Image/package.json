@@ -1,0 +1,30 @@
+{
+  "name": "remove-exif-tags-from-image",
+  "version": "1.0.0",
+  "description": "JavaScript implementation for removing EXIF tags from images using the PDF4Me API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node app.js"
+  },
+  "keywords": [
+    "image",
+    "exif",
+    "remove",
+    "pdf4me",
+    "api",
+    "javascript"
+  ],
+  "author": "PDF4Me",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pdf4me/pdf4me-api-samples"
+  }
+} 
