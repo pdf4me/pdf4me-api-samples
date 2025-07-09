@@ -24,7 +24,7 @@ This JavaScript project converts PDF files to Word documents using the PDF4Me AP
    - Get your API key from the dashboard
 3. **Update the API key in `app.js`:**
    ```javascript
-   const API_KEY = 'YOUR_PDF4ME_API_KEY_HERE';
+   const API_KEY = 'get the API key from https://dev.pdf4me.com/dashboard/#/api-keys';
    ```
 4. **Place your PDF file in the project directory** (or update the file path in the code)
 

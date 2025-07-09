@@ -1,0 +1,54 @@
+// Add the file URL to Remote Site Settings first!
+String fileUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+String outputFileName = 'DummyPDFToPowerPoint';
+
+try {
+    HttpRequest req = new HttpRequest();
+    req.setEndpoint(fileUrl);
+    req.setMethod('GET');
+    req.setTimeout(120000); // 120 seconds timeout
+    Http http = new Http();
+    HttpResponse res = http.send(req);
+
+    if (res.getStatusCode() == 200) {
+        System.debug('Successfully downloaded PDF from: ' + fileUrl);
+        Blob pdfBlob = res.getBodyAsBlob();
+        String pdfBase64 = EncodingUtil.base64Encode(pdfBlob);
+        System.debug('PDF converted to base64, length: ' + pdfBase64.length());
+
+        // Step 2: Convert PDF to PowerPoint and save as Salesforce File
+        Object result = ConvertPDFToPowerPoint.convertPDFToPowerPointAndSave(
+            pdfBase64,
+            'standard',     // qualityType (e.g., 'standard', 'high')
+            'en',           // language (e.g., 'en' for English)
+            false,          // ocrWhenNeeded
+            true,           // outputFormat (true for .pptx, false for .ppt)
+            false,          // mergeAllSheets
+            outputFileName
+        );
+        System.debug('PDF to PowerPoint Conversion Result: ' + result);
+
+        // Step 3: Extract ContentDocumentId and get public URL
+        Map<String, Object> resultMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(result));
+        if (resultMap != null && resultMap.containsKey('downloadUrl') && resultMap.get('downloadUrl') != null) {
+            String contentDocumentId = String.valueOf(resultMap.get('downloadUrl')).substringAfterLast('/');
+            System.debug('ContentDocumentId: ' + contentDocumentId);
+
+            String publicUrl = ConvertPDFToPowerPoint.makeFilePublic(contentDocumentId);
+            System.debug('Public URL: ' + publicUrl);
+            System.debug('Salesforce Download URL: ' + resultMap.get('downloadUrl'));
+        } else {
+            System.debug('No download URL available, cannot make file public.');
+        }
+
+        if (resultMap != null && resultMap.containsKey('error') && resultMap.get('error') != null) {
+            System.debug('PDF to PowerPoint conversion failed: ' + resultMap.get('error'));
+        }
+    } else {
+        System.debug('Failed to download PDF. Status Code: ' + res.getStatusCode() + ', Status: ' + res.getStatus());
+        System.debug('Response Body: ' + res.getBody());
+    }
+} catch (Exception e) {
+    System.debug('Exception occurred: ' + e.getMessage());
+    System.debug('Stack Trace: ' + e.getStackTraceString());
+}

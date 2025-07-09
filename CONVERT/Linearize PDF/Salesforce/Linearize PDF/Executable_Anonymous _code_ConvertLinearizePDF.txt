@@ -1,0 +1,49 @@
+// ====== STEP 0: Find a recent PDF file in Salesforce Files ======
+List<ContentVersion> cvs = [
+    SELECT Id, VersionData, Title
+    FROM ContentVersion
+    WHERE FileType = 'PDF'
+    ORDER BY CreatedDate DESC
+    LIMIT 1
+];
+
+// Declare variables outside the if-block
+Object result;
+String contentDocumentId;
+String publicUrl;
+
+if (!cvs.isEmpty()) {
+    ContentVersion cv = cvs[0];
+    System.debug('Using PDF file: ' + cv.Title + ' (Id: ' + cv.Id + ')');
+    String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+    // ====== STEP 1: Linearize the PDF and save as Salesforce File ======
+    result = ConvertLinearizePDF.linearizePDFAndSave(
+        pdfBase64,         // PDF file as base64
+        'default',         // optimizeProfile (use 'default' or as needed)
+        'Linearized_PDF_Result' // Output file name (without extension)
+    );
+    System.debug('Linearize PDF Result: ' + result);
+
+    // ====== STEP 2: Try to extract ContentDocumentId and get public URL even if there was an error ======
+    // Since the result class is an inner class, use Object and check debug log for details
+    // If you move LinearizePDFResult to a top-level class, you can access fields directly
+
+    // If you want to access fields, you can cast to Map<String, Object>:
+    Map<String, Object> resultMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(result));
+    if (resultMap != null && resultMap.containsKey('downloadUrl') && resultMap.get('downloadUrl') != null) {
+        contentDocumentId = String.valueOf(resultMap.get('downloadUrl')).substringAfterLast('/');
+        System.debug('ContentDocumentId: ' + contentDocumentId);
+
+        publicUrl = ConvertLinearizePDF.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    } else {
+        System.debug('No download URL available, cannot make file public.');
+    }
+
+    if (resultMap != null && resultMap.containsKey('error') && resultMap.get('error') != null) {
+        System.debug('PDF linearization failed: ' + resultMap.get('error'));
+    }
+} else {
+    System.debug('No PDF file found in Salesforce Files. Please upload a PDF and try again.');
+}

@@ -1,0 +1,31 @@
+// Find the most recent Word (.docx) file in Salesforce Files
+List<ContentVersion> cvs = [
+    SELECT Id, VersionData, Title
+    FROM ContentVersion
+    WHERE PathOnClient LIKE '%.docx'
+    ORDER BY CreatedDate DESC
+    LIMIT 1
+];
+
+if (!cvs.isEmpty()) {
+    ContentVersion cv = cvs[0];
+    System.debug('Using Word file: ' + cv.Title + ' (Id: ' + cv.Id + ')');
+    String wordBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+    // Call your conversion method
+    Object result = ConvertWordToPDFForm.convertWordToPDFFormAndSave(
+        wordBase64,
+        'WordToPDFForm_Test_Result'
+    );
+    System.debug('Word to PDF Form Conversion Result: ' + result);
+
+    // Extract ContentDocumentId and get public URL
+    Map<String, Object> resultMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(result));
+    if (resultMap != null && resultMap.containsKey('downloadUrl') && resultMap.get('downloadUrl') != null) {
+        String contentDocumentId = String.valueOf(resultMap.get('downloadUrl')).substringAfterLast('/');
+        String publicUrl = ConvertWordToPDFForm.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+} else {
+    System.debug('No Word (.docx) file found in Salesforce Files. Please upload a .docx file and try again.');
+}

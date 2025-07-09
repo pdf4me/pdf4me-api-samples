@@ -1,0 +1,43 @@
+// ====== STEP 0: Find a recent PDF file in Salesforce Files ======
+List<ContentVersion> cvs = [
+    SELECT Id, VersionData, Title
+    FROM ContentVersion
+    WHERE FileType = 'PDF'
+    ORDER BY CreatedDate DESC
+    LIMIT 1
+];
+
+// Declare variables outside the if-block
+ConvertFlattenPDF.FlattenPDFResult result;
+String contentDocumentId;
+String publicUrl;
+
+if (!cvs.isEmpty()) {
+    ContentVersion cv = cvs[0];
+    System.debug('Using PDF file: ' + cv.Title + ' (Id: ' + cv.Id + ')');
+    String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+    // ====== STEP 1: Flatten the PDF and save as Salesforce File ======
+    result = ConvertFlattenPDF.flattenPDFAndSave(
+        pdfBase64,         // PDF file as base64
+        'Flattened_PDF_Result' // Output file name (without extension)
+    );
+    System.debug('Flatten PDF Result: ' + result);
+
+    // Try to extract ContentDocumentId and get public URL even if there was an error
+    if (result != null && result.downloadUrl != null) {
+        contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        System.debug('ContentDocumentId: ' + contentDocumentId);
+
+        publicUrl = ConvertFlattenPDF.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    } else {
+        System.debug('No download URL available, cannot make file public.');
+    }
+
+    if (result != null && result.error != null) {
+        System.debug('PDF flattening failed: ' + result.error);
+    }
+} else {
+    System.debug('No PDF file found in Salesforce Files. Please upload a PDF and try again.');
+}
