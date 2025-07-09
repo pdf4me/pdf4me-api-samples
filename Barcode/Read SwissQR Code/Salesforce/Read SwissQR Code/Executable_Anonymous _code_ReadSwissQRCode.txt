@@ -1,0 +1,41 @@
+// ====== STEP 0: Find a recent PDF file in Salesforce Files ======
+List<ContentVersion> cvs = [
+    SELECT Id, VersionData, Title
+    FROM ContentVersion
+    WHERE FileType = 'PDF'
+    ORDER BY CreatedDate DESC
+    LIMIT 1
+];
+
+if (!cvs.isEmpty()) {
+    ContentVersion cv = cvs[0];
+    System.debug('Using PDF file: ' + cv.Title + ' (Id: ' + cv.Id + ')');
+    String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+    // ====== STEP 1: Read Swiss QR code from the PDF and save results as Salesforce File ======
+    ReadSwissQRCode.SwissQRResult result = ReadSwissQRCode.readSwissQRCodeAndSave(
+        pdfBase64,         // PDF file as base64
+        'SwissQR_Read_Result' // Output file name (without extension)
+    );
+    System.debug('Swiss QR Read Result: ' + result);
+
+    // ====== STEP 2: Extract ContentDocumentId from the download URL ======
+    if (result != null && result.downloadUrl != null && result.error == null) {
+        // The ContentDocumentId is the last part of the download URL
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        System.debug('ContentDocumentId: ' + contentDocumentId);
+
+        // ====== STEP 3: Get the public URL ======
+        String publicUrl = ReadSwissQRCode.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+
+        // ====== STEP 4: Output both URLs and QR data for your reference ======
+        System.debug('Salesforce Download URL: ' + result.downloadUrl);
+        System.debug('Public URL: ' + publicUrl);
+        System.debug('Swiss QR Data: ' + result.qrData);
+    } else {
+        System.debug('Swiss QR reading failed: ' + (result != null ? result.error : 'Unknown error'));
+    }
+} else {
+    System.debug('No PDF file found in Salesforce Files. Please upload a PDF and try again.');
+}

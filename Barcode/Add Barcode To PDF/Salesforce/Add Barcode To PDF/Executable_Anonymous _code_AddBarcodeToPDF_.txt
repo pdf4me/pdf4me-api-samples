@@ -1,0 +1,135 @@
+// ========================================
+// Execute Anonymous Script for AddBarcodeToPDF.cls
+// ========================================
+
+// First, let's create a sample PDF base64 string for testing
+// This is a minimal PDF in base64 format
+String samplePDFBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0NvdW50IDENCi9LaWRzIFsgMyAwIFIgXQ0KPj4NCmVuZG9iag0KMyAwIG9iag0KPDwNCi9UeXBlIC9QYWdlDQovUGFyZW50IDIgMCBSDQovUmVzb3VyY2VzIDw8DQovRm9udCA8PA0KL0YxIDQgMCBSDQo+Pg0KPj4NCi9NZWRpYUJveCBbIDAgMCA1OTUgODQyIF0NCi9Db250ZW50cyA1IDAgUg0KPj4NCmVuZG9iag0KNCAwIG9iag0KPDwNCi9UeXBlIC9Gb250DQovU3VidHlwZSAvVHlwZTENCi9CYXNlRm9udCAvSGVsdmV0aWNhDQovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZw0KPj4NCmVuZG9iag0KNSAwIG9iag0KPDwNCi9MZW5ndGggNDQNCj4+DQpzdHJlYW0NCkJUCjc1MCA3NTAgVHENCi9GMSAxMiBUZg0oSGVsbG8gV29ybGQhKSBUag0KRVQNCmVuZHN0cmVhbQ0KZW5kb2JqDQp4cmVmDQowIDYNCjAwMDAwMDAwMDAgNjU1MzUgZiANCjAwMDAwMDAwMTAgMDAwMDAgbg0KMDAwMDAwMDA3OSAwMDAwMCBuDQowMDAwMDAwMTczIDAwMDAwIG4NCjAwMDAwMDAzMDEgMDAwMDAgbg0KMDAwMDAwMDM4MCAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNg0KL1Jvb3QgMSAwIFINCj4+DQpzdGFydHhyZWYNCjQ5Mg0KJSVFT0Y=';
+
+System.debug('=== Testing AddBarcodeToPDF.cls ===');
+
+// Test 1: Basic barcode addition with success scenario
+System.debug('Test 1: Adding barcode to PDF (Success Scenario)');
+try {
+    AddBarcodeToPDF.BarcodeResult result = AddBarcodeToPDF.addBarcodeToPDFAndSave(
+        samplePDFBase64,           // PDF base64 content
+        '123456789',               // Barcode text
+        'Code128',                 // Barcode type
+        '1',                       // Pages (page 1)
+        'center',                  // X alignment
+        'top',                     // Y alignment
+        false,                     // Hide text
+        'TestBarcodeDocument'      // Output filename
+    );
+    
+    System.debug('Result: ' + result);
+    System.debug('Success: ' + (result.error == null));
+    System.debug('Base64: ' + (result.base64 != null ? 'Present (' + String.valueOf(result.base64.length()) + ' chars)' : 'Missing'));
+    System.debug('Download URL: ' + result.downloadUrl);
+    
+    if (result.error != null) {
+        System.debug('Error occurred: ' + result.error);
+    } else {
+        System.debug('✓ Test 1 PASSED - Barcode addition successful');
+        
+        // Test 2: Make file public (if we have a download URL)
+        if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+            System.debug('Test 2: Making file public');
+            
+            // Extract ContentDocumentId from download URL
+            String downloadUrl = result.downloadUrl;
+            String contentDocumentId = downloadUrl.substringAfterLast('/');
+            
+            System.debug('ContentDocumentId: ' + contentDocumentId);
+            
+            String publicUrl = AddBarcodeToPDF.makeFilePublic(contentDocumentId);
+            System.debug('Public URL: ' + publicUrl);
+            
+            if (publicUrl.contains('ERROR:')) {
+                System.debug('✗ Test 2 FAILED - Public URL generation failed: ' + publicUrl);
+            } else {
+                System.debug('✓ Test 2 PASSED - Public URL generated successfully');
+            }
+        }
+    }
+} catch (Exception e) {
+    System.debug('✗ Test 1 FAILED - Exception: ' + e.getMessage());
+    System.debug('Stack trace: ' + e.getStackTraceString());
+}
+
+// Test 3: Error scenario with invalid parameters
+System.debug('Test 3: Testing error handling with invalid parameters');
+try {
+    AddBarcodeToPDF.BarcodeResult result = AddBarcodeToPDF.addBarcodeToPDFAndSave(
+        'INVALID_BASE64',          // Invalid base64
+        '',                        // Empty text
+        'InvalidType',             // Invalid barcode type
+        '999',                     // Invalid page number
+        'invalid',                 // Invalid alignment
+        'invalid',                 // Invalid alignment
+        false,                     // Hide text
+        'ErrorTestDocument'        // Output filename
+    );
+    
+    System.debug('Error Test Result: ' + result);
+    System.debug('Error: ' + result.error);
+    
+    if (result.error != null && result.error.contains('ERROR:')) {
+        System.debug('✓ Test 3 PASSED - Error handling working correctly');
+    } else {
+        System.debug('✗ Test 3 FAILED - Expected error but got success');
+    }
+} catch (Exception e) {
+    System.debug('✓ Test 3 PASSED - Exception caught as expected: ' + e.getMessage());
+}
+
+// Test 4: Test public URL with invalid ContentDocumentId
+System.debug('Test 4: Testing public URL with invalid ContentDocumentId');
+try {
+    String publicUrl = AddBarcodeToPDF.makeFilePublic('InvalidId123');
+    System.debug('Invalid ID Public URL Result: ' + publicUrl);
+    
+    if (publicUrl.contains('ERROR:')) {
+        System.debug('✓ Test 4 PASSED - Error handling for invalid ContentDocumentId working');
+    } else {
+        System.debug('✗ Test 4 FAILED - Expected error for invalid ContentDocumentId');
+    }
+} catch (Exception e) {
+    System.debug('✓ Test 4 PASSED - Exception caught for invalid ContentDocumentId: ' + e.getMessage());
+}
+
+// Test 5: Test public URL with valid ContentDocumentId (if we have one from Test 1)
+System.debug('Test 5: Testing public URL with valid ContentDocumentId');
+try {
+    // First, let's create a test ContentVersion to get a valid ContentDocumentId
+    ContentVersion cv = new ContentVersion();
+    cv.Title = 'Test Barcode PDF';
+    cv.PathOnClient = 'test.pdf';
+    cv.VersionData = Blob.valueOf('Test data for public URL test');
+    cv.IsMajorVersion = true;
+    insert cv;
+    
+    ContentVersion insertedCV = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id LIMIT 1];
+    
+    String publicUrl = AddBarcodeToPDF.makeFilePublic(insertedCV.ContentDocumentId);
+    System.debug('Valid ID Public URL Result: ' + publicUrl);
+    
+    if (publicUrl.contains('ERROR:')) {
+        System.debug('✗ Test 5 FAILED - Public URL generation failed: ' + publicUrl);
+    } else {
+        System.debug('✓ Test 5 PASSED - Public URL generated successfully');
+    }
+} catch (Exception e) {
+    System.debug('✗ Test 5 FAILED - Exception: ' + e.getMessage());
+}
+
+System.debug('=== AddBarcodeToPDF Testing Complete ===');
+
+// Summary
+System.debug('Test Summary:');
+System.debug('- Test 1: Basic barcode addition');
+System.debug('- Test 2: Public URL generation (from Test 1 result)');
+System.debug('- Test 3: Error handling');
+System.debug('- Test 4: Invalid ContentDocumentId handling');
+System.debug('- Test 5: Public URL generation (standalone test)');
+System.debug('Check the debug logs above for detailed results.');
