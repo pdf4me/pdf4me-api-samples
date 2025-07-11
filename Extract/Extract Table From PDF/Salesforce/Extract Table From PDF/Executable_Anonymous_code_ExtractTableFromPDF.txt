@@ -1,0 +1,53 @@
+// Execute Anonymous Script for ExtractTableFromPDF Testing
+// Uses a minimal dummy PDF for demonstration
+
+System.debug('=== Starting ExtractTableFromPDF Test with Dummy PDF ===');
+
+try {
+    // Minimal dummy PDF (no tables, just for flow testing)
+    String pdfBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0tpZHMgWzMgMCBSXQ0KL0NvdW50IDENCi9NZWRpYUJveCBbMCAwIDYxMiA3OTJdDQo+Pg0KZW5kb2JqDQozIDAgb2JqDQo8PA0KL1R5cGUgL1BhZ2UNCj4+DQplbmRvYmoNCnhyZWYNCjAgNA0KMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAwMDEwIDAwMDAwIG4NCjAwMDAwMDAwNzkgMDAwMDAgbg0KMDAwMDAwMDE3MyAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNA0KL1Jvb3QgMSAwIFINCi9JbmZvIDQgMCBSDQo+Pg0Kc3RhcnR4cmVmDQoxMjMNCiUlRU9G';
+
+    String docName = 'DummyPDF_Tables_' + Datetime.now().format('yyyyMMdd_HHmmss');
+
+    System.debug('Calling ExtractTableFromPDF.extractAndSave...');
+    ExtractTableFromPDF.ExtractTableResult result =
+        ExtractTableFromPDF.extractAndSave(pdfBase64, docName);
+
+    System.debug('=== EXTRACTION RESULTS ===');
+    System.debug('Document Name: ' + docName);
+
+    // NULL CHECK
+    if (result == null) {
+        System.debug('ERROR: extractAndSave returned null.');
+        return;
+    }
+    if (String.isNotBlank(result.error)) {
+        System.debug('ERROR: ' + result.error);
+        return;
+    }
+
+    System.debug('Number of tables found: ' + result.tables.size());
+    for (Integer t = 0; t < result.tables.size(); t++) {
+        System.debug('Table ' + (t+1) + ':');
+        List<List<Object>> table = result.tables[t];
+        for (Integer r = 0; r < table.size(); r++) {
+            System.debug('Row ' + (r+1) + ': ' + table[r]);
+        }
+    }
+
+    System.debug('JSON Download URL: ' + result.downloadUrl);
+
+    // Optionally, make the JSON file public
+    if (String.isNotBlank(result.downloadUrl)) {
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        System.debug('Making JSON file public...');
+        String publicUrl = ExtractTableFromPDF.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+
+    System.debug('=== Test Completed Successfully ===');
+
+} catch (Exception ex) {
+    System.debug('ERROR: ' + ex.getMessage());
+    System.debug('Stack Trace: ' + ex.getStackTraceString());
+}

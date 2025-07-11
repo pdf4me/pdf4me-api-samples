@@ -1,0 +1,23 @@
+String pdfBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0tpZHMgWzMgMCBSXQ0KL0NvdW50IDENCi9NZWRpYUJveCBbMCAwIDYxMiA3OTJdDQo+Pg0KZW5kb2JqDQozIDAgb2JqDQo8PA0KL1R5cGUgL1BhZ2UNCj4+DQplbmRvYmoNCnhyZWYNCjAgNA0KMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAwMDEwIDAwMDAwIG4NCjAwMDAwMDAwNzkgMDAwMDAgbg0KMDAwMDAwMDE3MyAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNA0KL1Jvb3QgMSAwIFINCi9JbmZvIDQgMCBSDQo+Pg0Kc3RhcnR4cmVmDQoxMjMNCiUlRU9G';
+
+String docName = 'DummyPDF_' + Datetime.now().format('yyyyMMdd_HHmmss');
+ExtractFormDataFromPDF.ExtractFormDataResult result = 
+    ExtractFormDataFromPDF.extractAndSave(pdfBase64, docName);
+
+System.debug('=== EXTRACTION RESULTS ===');
+System.debug('Document Name: ' + docName);
+
+if (String.isNotBlank(result.error)) {
+    System.debug('ERROR: ' + result.error);
+} else {
+    System.debug('Download URL: ' + result.downloadUrl);
+    System.debug('Number of form fields found: ' + result.formFields.size());
+    if (result.formFields.isEmpty()) {
+        System.debug('NOTE: No form fields found in this PDF.');
+    } else {
+        for (Integer i = 0; i < result.formFields.size(); i++) {
+            Map<String, String> field = result.formFields[i];
+            System.debug('Field ' + (i+1) + ': ' + field.get('name') + ' = ' + field.get('value'));
+        }
+    }
+}
