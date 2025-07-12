@@ -1,0 +1,202 @@
+// =====================================================
+// FindAndReplaceText - Developer Console Test Script
+// =====================================================
+// This script tests all functionality of the FindAndReplaceText class
+// Execute this in Developer Console > Debug > Open Execute Anonymous Window
+
+System.debug('=== STARTING FindAndReplaceText TEST SCRIPT ===');
+
+// Test 1: Basic Find and Replace with Sample PDF
+System.debug('--- Test 1: Basic Find and Replace ---');
+try {
+    // Create a sample PDF base64 (this is just a placeholder - replace with real PDF data)
+    String samplePdfBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0tpZHMgWzMgMCBSXQ0KL0NvdW50IDENCi9NZWRpYUJveCBbMCAwIDYxMiA3OTJdDQo+Pg0KZW5kb2JqDQozIDAgb2JqDQo8PA0KL1R5cGUgL1BhZ2UNCj4+DQplbmRvYmoNCnhyZWYNCjAgNA0KMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAwMDEwIDAwMDAwIG4NCjAwMDAwMDAwNzkgMDAwMDAgbg0KMDAwMDAwMDE3MyAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNA0KL1Jvb3QgMSAwIFINCi9JbmZvIDQgMCBSDQo+Pg0Kc3RhcnR4cmVmDQoxODUNCjUlRU9G';
+    
+    String docName = 'TestDocument_' + Datetime.now().format('yyyyMMdd_HHmmss');
+    String oldText = 'Sample Text';
+    String newText = 'Replaced Text';
+    String pageSequence = '1';
+    
+    System.debug('Document Name: ' + docName);
+    System.debug('Old Text: ' + oldText);
+    System.debug('New Text: ' + newText);
+    System.debug('Page Sequence: ' + pageSequence);
+    
+    FindAndReplaceText.FindReplaceResult result = FindAndReplaceText.findAndReplaceAndSave(
+        samplePdfBase64, 
+        docName, 
+        oldText, 
+        newText, 
+        pageSequence
+    );
+    
+    System.debug('Result: ' + result);
+    System.debug('Error: ' + result.error);
+    System.debug('Base64 Length: ' + (result.base64 != null ? String.valueOf(result.base64.length()) : 'null'));
+    System.debug('Download URL: ' + result.downloadUrl);
+    
+    if (String.isNotBlank(result.error)) {
+        System.debug('ERROR: ' + result.error);
+    } else {
+        System.debug('SUCCESS: Find and replace completed successfully');
+    }
+    
+} catch (Exception e) {
+    System.debug('EXCEPTION in Test 1: ' + e.getMessage());
+    System.debug('Stack Trace: ' + e.getStackTraceString());
+}
+
+// Test 2: Test with different page sequence
+System.debug('--- Test 2: Different Page Sequence ---');
+try {
+    String samplePdfBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0tpZHMgWzMgMCBSXQ0KL0NvdW50IDENCi9NZWRpYUJveCBbMCAwIDYxMiA3OTJdDQo+Pg0KZW5kb2JqDQozIDAgb2JqDQo8PA0KL1R5cGUgL1BhZ2UNCj4+DQplbmRvYmoNCnhyZWYNCjAgNA0KMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAwMDEwIDAwMDAwIG4NCjAwMDAwMDAwNzkgMDAwMDAgbg0KMDAwMDAwMDE3MyAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNA0KL1Jvb3QgMSAwIFINCi9JbmZvIDQgMCBSDQo+Pg0Kc3RhcnR4cmVmDQoxODUNCjUlRU9G';
+    
+    String docName = 'TestDocument_Page2_' + Datetime.now().format('yyyyMMdd_HHmmss');
+    String oldText = 'Page Content';
+    String newText = 'Updated Content';
+    String pageSequence = '2'; // Test with page 2
+    
+    FindAndReplaceText.FindReplaceResult result = FindAndReplaceText.findAndReplaceAndSave(
+        samplePdfBase64, 
+        docName, 
+        oldText, 
+        newText, 
+        pageSequence
+    );
+    
+    System.debug('Page 2 Result: ' + result);
+    System.debug('Page 2 Error: ' + result.error);
+    
+} catch (Exception e) {
+    System.debug('EXCEPTION in Test 2: ' + e.getMessage());
+}
+
+// Test 3: Test with empty strings
+System.debug('--- Test 3: Empty Strings ---');
+try {
+    String samplePdfBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0tpZHMgWzMgMCBSXQ0KL0NvdW50IDENCi9NZWRpYUJveCBbMCAwIDYxMiA3OTJdDQo+Pg0KZW5kb2JqDQozIDAgb2JqDQo8PA0KL1R5cGUgL1BhZ2UNCj4+DQplbmRvYmoNCnhyZWYNCjAgNA0KMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAwMDEwIDAwMDAwIG4NCjAwMDAwMDAwNzkgMDAwMDAgbg0KMDAwMDAwMDE3MyAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNA0KL1Jvb3QgMSAwIFINCi9JbmZvIDQgMCBSDQo+Pg0Kc3RhcnR4cmVmDQoxODUNCjUlRU9G';
+    
+    String docName = 'TestDocument_Empty_' + Datetime.now().format('yyyyMMdd_HHmmss');
+    String oldText = '';
+    String newText = 'New Text';
+    String pageSequence = '1';
+    
+    FindAndReplaceText.FindReplaceResult result = FindAndReplaceText.findAndReplaceAndSave(
+        samplePdfBase64, 
+        docName, 
+        oldText, 
+        newText, 
+        pageSequence
+    );
+    
+    System.debug('Empty Strings Result: ' + result);
+    System.debug('Empty Strings Error: ' + result.error);
+    
+} catch (Exception e) {
+    System.debug('EXCEPTION in Test 3: ' + e.getMessage());
+}
+
+// Test 4: Test makeFilePublic method (if we have a ContentDocumentId)
+System.debug('--- Test 4: Make File Public ---');
+try {
+    // First, let's check if we have any ContentVersion records
+    List<ContentVersion> existingFiles = [SELECT ContentDocumentId FROM ContentVersion WHERE Title LIKE 'TestDocument_%' ORDER BY CreatedDate DESC LIMIT 1];
+    
+    if (!existingFiles.isEmpty()) {
+        String contentDocumentId = existingFiles[0].ContentDocumentId;
+        System.debug('Testing makeFilePublic with ContentDocumentId: ' + contentDocumentId);
+        
+        String publicUrl = FindAndReplaceText.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+        
+        if (publicUrl.startsWith('ERROR:')) {
+            System.debug('ERROR making file public: ' + publicUrl);
+        } else {
+            System.debug('SUCCESS: File made public successfully');
+        }
+    } else {
+        System.debug('No test files found to make public');
+    }
+    
+} catch (Exception e) {
+    System.debug('EXCEPTION in Test 4: ' + e.getMessage());
+}
+
+// Test 5: Test with special characters
+System.debug('--- Test 5: Special Characters ---');
+try {
+    String samplePdfBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0tpZHMgWzMgMCBSXQ0KL0tpZHMgWzMgMCBSXQ0KL0NvdW50IDENCi9NZWRpYUJveCBbMCAwIDYxMiA3OTJdDQo+Pg0KZW5kb2JqDQozIDAgb2JqDQo8PA0KL1R5cGUgL1BhZ2UNCj4+DQplbmRvYmoNCnhyZWYNCjAgNA0KMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAwMDEwIDAwMDAwIG4NCjAwMDAwMDAwNzkgMDAwMDAgbg0KMDAwMDAwMDE3MyAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNA0KL1Jvb3QgMSAwIFINCi9JbmZvIDQgMCBSDQo+Pg0Kc3RhcnR4cmVmDQoxODUNCjUlRU9G';
+    
+    String docName = 'TestDocument_Special_' + Datetime.now().format('yyyyMMdd_HHmmss');
+    String oldText = 'Text with "quotes" & symbols';
+    String newText = 'Replaced with <special> characters';
+    String pageSequence = '1';
+    
+    FindAndReplaceText.FindReplaceResult result = FindAndReplaceText.findAndReplaceAndSave(
+        samplePdfBase64, 
+        docName, 
+        oldText, 
+        newText, 
+        pageSequence
+    );
+    
+    System.debug('Special Characters Result: ' + result);
+    System.debug('Special Characters Error: ' + result.error);
+    
+} catch (Exception e) {
+    System.debug('EXCEPTION in Test 5: ' + e.getMessage());
+}
+
+// Test 6: Test API Key validation
+System.debug('--- Test 6: API Key Validation ---');
+try {
+    // Check if API key is set
+    String apiKey = FindAndReplaceText.API_KEY;
+    System.debug('API Key: ' + (apiKey != 'get the API key from https://dev.pdf4me.com/dashboard/#/api-keys' ? 'Set' : 'NOT SET - Using placeholder'));
+    
+    if (apiKey == 'get the API key from https://dev.pdf4me.com/dashboard/#/api-keys') {
+        System.debug('WARNING: Please set your actual PDF4me API key in the FindAndReplaceText class');
+    }
+    
+    System.debug('Endpoint URL: ' + FindAndReplaceText.ENDPOINT_URL);
+    
+} catch (Exception e) {
+    System.debug('EXCEPTION in Test 6: ' + e.getMessage());
+}
+
+// Test 7: Test with null values
+System.debug('--- Test 7: Null Values ---');
+try {
+    String docName = 'TestDocument_Null_' + Datetime.now().format('yyyyMMdd_HHmmss');
+    
+    FindAndReplaceText.FindReplaceResult result = FindAndReplaceText.findAndReplaceAndSave(
+        null, 
+        docName, 
+        null, 
+        null, 
+        null
+    );
+    
+    System.debug('Null Values Result: ' + result);
+    System.debug('Null Values Error: ' + result.error);
+    
+} catch (Exception e) {
+    System.debug('EXCEPTION in Test 7: ' + e.getMessage());
+    System.debug('Stack Trace: ' + e.getStackTraceString());
+}
+
+// Summary
+System.debug('=== TEST SUMMARY ===');
+System.debug('All tests completed. Check the debug logs above for results.');
+System.debug('Note: Some tests may fail if the PDF4me API key is not set or if there are network issues.');
+System.debug('To set your API key, update the API_KEY constant in FindAndReplaceText.cls');
+
+// =====================================================
+// IMPORTANT NOTES:
+// =====================================================
+// 1. Replace 'get the API key from https://dev.pdf4me.com/dashboard/#/api-keys' in FindAndReplaceText.cls with your actual API key
+// 2. The sample PDF base64 strings are minimal PDFs for testing - replace with real PDF data
+// 3. Some tests may fail due to API authentication or network issues
+// 4. Check the debug logs for detailed results of each test
+// 5. The makeFilePublic test requires an existing ContentVersion record
+// =====================================================

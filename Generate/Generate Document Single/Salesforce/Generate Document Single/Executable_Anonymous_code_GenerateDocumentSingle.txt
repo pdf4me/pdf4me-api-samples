@@ -1,0 +1,39 @@
+// ====== GenerateDocumentSingle Test with Random Base64 ======
+
+// 1. Generate a random base64 string (not a real file, just for testing the flow)
+String templateBase64 = EncodingUtil.base64Encode(Crypto.generateAesKey(128)); // 128-bit random bytes
+
+// 2. Prepare parameters for document generation
+String templateFileType = 'docx'; // or 'pdf' depending on your intended template type
+String templateFileName = 'RandomTemplateSingle';
+String documentDataType = 'json'; // or 'xml' if your data is XML
+String outputType = 'pdf'; // Output format: 'pdf', 'docx', etc.
+
+// Example JSON data for mail merge (adjust fields to match your template)
+String documentDataText = '{"name":"John Doe","address":"123 Main St","amount":"100.00"}';
+
+// 3. Call the GenerateDocumentSingle method
+GenerateDocumentSingle.GenerateSingleResult result = GenerateDocumentSingle.generateSingleAndSave(
+    templateBase64,
+    templateFileType,
+    templateFileName,
+    documentDataType,
+    outputType,
+    documentDataText
+);
+
+// 4. Output result to debug log
+System.debug('==== GenerateDocumentSingle Test Result ====');
+System.debug('Result: ' + JSON.serialize(result));
+if (result.error != null) {
+    System.debug('❌ Document generation failed: ' + result.error);
+} else {
+    System.debug('✅ Document generated successfully!');
+    System.debug('Download URL: ' + result.downloadUrl);
+    // Optionally, make the file public:
+    if (result.downloadUrl != null) {
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        String publicUrl = GenerateDocumentSingle.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+}

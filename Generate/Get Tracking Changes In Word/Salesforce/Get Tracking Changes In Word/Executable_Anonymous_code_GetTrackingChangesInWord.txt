@@ -1,0 +1,29 @@
+// ====== GenerateGetTrackingChangesInWord Test with Random Base64 ======
+
+// 1. Generate a random base64 string (not a real file, just for testing the flow)
+String wordBase64 = EncodingUtil.base64Encode(Crypto.generateAesKey(128)); // 128-bit random bytes
+
+// 2. Prepare parameters for getting tracking changes
+String docName = 'RandomWordGetTracking';
+
+// 3. Call the getTrackingChangesAndSave method
+GenerateGetTrackingChangesInWord.GetTrackingChangesResult result = GenerateGetTrackingChangesInWord.getTrackingChangesAndSave(
+    wordBase64,
+    docName
+);
+
+// 4. Output result to debug log
+System.debug('==== GenerateGetTrackingChangesInWord Test Result ====');
+System.debug('Result: ' + JSON.serialize(result));
+if (result.error != null) {
+    System.debug('❌ Get tracking changes failed: ' + result.error);
+} else {
+    System.debug('✅ Tracking changes retrieved successfully!');
+    System.debug('Download URL: ' + result.downloadUrl);
+    // Optionally, make the file public:
+    if (result.downloadUrl != null) {
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        String publicUrl = GenerateGetTrackingChangesInWord.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+}

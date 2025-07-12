@@ -1,0 +1,39 @@
+// ====== Test FillPDFForm.fillFormAndSave ======
+
+// Sample minimal PDF base64 (replace with real PDF data for real test)
+String samplePdfBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0tpZHMgWzMgMCBSXQ0KL0NvdW50IDENCi9NZWRpYUJveCBbMCAwIDYxMiA3OTJdDQo+Pg0KZW5kb2JqDQozIDAgb2JqDQo8PA0KL1R5cGUgL1BhZ2UNCj4+DQplbmRvYmoNCnhyZWYNCjAgNA0KMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAwMDEwIDAwMDAwIG4NCjAwMDAwMDAwNzkgMDAwMDAgbg0KMDAwMDAwMDE3MyAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNA0KL1Jvb3QgMSAwIFINCi9JbmZvIDQgMCBSDQo+Pg0Kc3RhcnR4cmVmDQoxODUNCjUlRU9G';
+
+String docName = 'TestFillForm_' + Datetime.now().format('yyyyMMdd_HHmmss');
+
+// Example form data (field names and values)
+Map<String, String> formData = new Map<String, String>{
+    'firstname' => 'John',
+    'lastname' => 'Doe',
+    'email' => 'john.doe@example.com'
+};
+
+// Call the method (do NOT specify the return type)
+Object result = FillPDFForm.fillFormAndSave(
+    samplePdfBase64,
+    docName,
+    formData
+);
+
+System.debug('==== FillPDFForm Test Result ====');
+System.debug(result);
+
+// To access fields, use Map<String, Object> via JSON serialization
+Map<String, Object> resMap = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(result));
+System.debug('Error: ' + resMap.get('error'));
+System.debug('Base64 Length: ' + (resMap.get('base64') != null ? String.valueOf(String.valueOf(resMap.get('base64')).length()) : 'null'));
+System.debug('Download URL: ' + resMap.get('downloadUrl'));
+
+// Optionally, make the file public if it was created successfully
+if (String.isBlank((String)resMap.get('error')) && resMap.get('downloadUrl') != null) {
+    String[] parts = String.valueOf(resMap.get('downloadUrl')).split('/');
+    String contentDocumentId = (parts != null && parts.size() > 0) ? parts[parts.size() - 1] : null;
+    if (contentDocumentId != null) {
+        String publicUrl = FillPDFForm.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+}
