@@ -1,0 +1,38 @@
+// === BEGIN: MergeMultiplePDFs Test Script ===
+
+// Replace these with your real ContentDocumentIds of PDF files in Salesforce Files
+List<String> contentDocumentIds = new List<String>{
+    '069XXXXXXXXXXXXAAA', // PDF 1
+    '069YYYYYYYYYYYYBBB'  // PDF 2
+};
+
+List<String> pdfBase64List = new List<String>();
+for (String docId : contentDocumentIds) {
+    ContentVersion cv = [
+        SELECT VersionData
+        FROM ContentVersion
+        WHERE ContentDocumentId = :docId
+        ORDER BY VersionNumber DESC
+        LIMIT 1
+    ];
+    pdfBase64List.add(EncodingUtil.base64Encode(cv.VersionData));
+}
+
+// Call the merge method
+String outputFileName = 'merged_output.pdf';
+MergeMultiplePDFs.MergeResult result = MergeMultiplePDFs.mergeMultiplePDFsAndSave(pdfBase64List, outputFileName);
+
+// Output results to debug log
+System.debug('Merge Result base64 (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, Math.min(100, result.base64.length())) : null));
+System.debug('Download URL (internal): ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optionally, make the file public and get a public URL
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    // Extract ContentDocumentId from the download URL
+    String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = MergeMultiplePDFs.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}
+
+// === END: MergeMultiplePDFs Test Script ===

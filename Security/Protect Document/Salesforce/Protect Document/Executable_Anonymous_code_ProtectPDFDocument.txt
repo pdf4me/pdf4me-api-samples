@@ -1,0 +1,40 @@
+// Replace this with your actual ContentDocumentId
+String contentDocumentId = '069XXXXXXXXXXXXXXX'; // Replace with your file's ContentDocumentId
+
+// Find the file using ContentDocumentId
+ContentVersion cv = [
+    SELECT Id, VersionData, Title 
+    FROM ContentVersion 
+    WHERE ContentDocumentId = :contentDocumentId 
+    ORDER BY VersionNumber DESC 
+    LIMIT 1
+];
+
+// Encode the file as base64
+String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+// Set your desired password and permissions
+String password = 'MySecret123';
+String pdfPermission = 'All'; // Or 'Print', 'Copy', etc.
+String outputFileName = 'Protected_' + cv.Title;
+
+// Call the ProtectPDFDocument method
+ProtectPDFDocument.ProtectResult result = ProtectPDFDocument.protectPdfAndSave(
+    pdfBase64, password, pdfPermission, outputFileName
+);
+
+// Output the results
+System.debug('Base64 (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, 100) : null));
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// (Optional) Make the file public and get a public URL
+if (result.downloadUrl != null) {
+    // Extract ContentDocumentId from the download URL
+    String prefix = '/sfc/servlet.shepherd/document/download/';
+    if (result.downloadUrl.startsWith(prefix)) {
+        String newContentDocumentId = result.downloadUrl.substring(prefix.length());
+        String publicUrl = ProtectPDFDocument.makeFilePublic(newContentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+}

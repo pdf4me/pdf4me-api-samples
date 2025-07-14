@@ -1,0 +1,49 @@
+// === BEGIN: SplitPDFByBarcode Test Script ===
+
+// Replace this with your real ContentDocumentId of a PDF file in Salesforce Files
+String pdfContentDocumentId = '069XXXXXXXXXXXXAAA'; // PDF to split by barcode
+
+// Fetch the PDF
+ContentVersion cv = [
+    SELECT VersionData, Title
+    FROM ContentVersion
+    WHERE ContentDocumentId = :pdfContentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Encode the PDF to base64
+String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+// Call the split by barcode method
+String barcodeString = '123456789'; // Replace with the barcode string you want to search for
+String barcodeFilter = 'contains'; // Options: 'startsWith', 'endsWith', 'contains', 'exact'
+String barcodeType = 'any'; // Options: 'any', 'datamatrix', 'qrcode', 'pdf417'
+String splitBarcodePage = 'after'; // Options: 'before', 'after', 'remove'
+Boolean combinePagesWithSameConsecutiveBarcodes = false;
+String pdfRenderDpi = '300';
+
+SplitPDFByBarcode.SplitByBarcodeResult result = SplitPDFByBarcode.splitPDFByBarcodeAndSave(
+    pdfBase64,
+    barcodeString,
+    barcodeFilter,
+    barcodeType,
+    splitBarcodePage,
+    combinePagesWithSameConsecutiveBarcodes,
+    pdfRenderDpi
+);
+
+// Output results to debug log
+System.debug('Split by Barcode Result base64 (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, Math.min(100, result.base64.length())) : null));
+System.debug('Download URL (internal): ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optionally, make the file public and get a public URL
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    // Extract ContentDocumentId from the download URL
+    String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = SplitPDFByBarcode.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}
+
+// === END: SplitPDFByBarcode Test Script ===

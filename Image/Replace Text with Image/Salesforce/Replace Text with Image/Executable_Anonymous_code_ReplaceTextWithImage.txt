@@ -1,0 +1,47 @@
+// Replace with your actual ContentDocumentIds
+String pdfContentDocumentId = 'YOUR_PDF_CONTENT_DOCUMENT_ID';
+String imageContentDocumentId = 'YOUR_IMAGE_CONTENT_DOCUMENT_ID';
+
+// Get the latest ContentVersion for the PDF file
+ContentVersion pdfCV = [
+    SELECT Id, Title, FileExtension, VersionData
+    FROM ContentVersion
+    WHERE ContentDocumentId = :pdfContentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Get the latest ContentVersion for the image file
+ContentVersion imageCV = [
+    SELECT Id, Title, FileExtension, VersionData
+    FROM ContentVersion
+    WHERE ContentDocumentId = :imageContentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Prepare parameters
+String pdfBase64 = EncodingUtil.base64Encode(pdfCV.VersionData);
+String pdfFileName = pdfCV.Title + '.' + pdfCV.FileExtension;
+String replaceText = 'REPLACE_THIS_TEXT'; // Replace with the text you want to replace
+String pageSequence = '1'; // Replace with the page number where you want to replace text
+String imageBase64 = EncodingUtil.base64Encode(imageCV.VersionData);
+Integer imageHeight = 100; // Replace with desired image height
+Integer imageWidth = 100; // Replace with desired image width
+
+// Call the method
+ReplaceTextWithImage.ReplaceTextWithImageResult result =
+    ReplaceTextWithImage.replaceTextWithImageAndSave(pdfBase64, pdfFileName, replaceText, pageSequence, imageBase64, imageHeight, imageWidth);
+
+// Output results
+System.debug('Base64: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Make the file public and get public URL (if previous call succeeded)
+if (result != null && result.downloadUrl != null && result.error == null) {
+    // Extract ContentDocumentId from the download URL
+    String docId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = ReplaceTextWithImage.makeFilePublic(docId);
+    System.debug('Public URL: ' + publicUrl);
+}

@@ -1,0 +1,45 @@
+// === BEGIN: SplitPDFBySwissQR Test Script ===
+
+// Replace this with your real ContentDocumentId of a PDF file in Salesforce Files
+String pdfContentDocumentId = '069XXXXXXXXXXXXAAA'; // PDF to split by Swiss QR
+
+// Fetch the PDF
+ContentVersion cv = [
+    SELECT VersionData, Title
+    FROM ContentVersion
+    WHERE ContentDocumentId = :pdfContentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Encode the PDF to base64
+String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+// Call the split by Swiss QR method
+String splitQRPage = 'after'; // Options: 'after', 'before'
+String pdfRenderDpi = '200'; // Options: '100', '150', '200', '250'
+Boolean combinePagesWithSameBarcodes = false;
+Boolean returnAsZip = false; // Set to false to get individual files
+
+SplitPDFBySwissQR.SplitBySwissQRResult result = SplitPDFBySwissQR.splitPDFBySwissQRAndSave(
+    pdfBase64,
+    splitQRPage,
+    pdfRenderDpi,
+    combinePagesWithSameBarcodes,
+    returnAsZip
+);
+
+// Output results to debug log
+System.debug('Split by Swiss QR Result base64 (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, Math.min(100, result.base64.length())) : null));
+System.debug('Download URL (internal): ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optionally, make the file public and get a public URL
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    // Extract ContentDocumentId from the download URL
+    String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = SplitPDFBySwissQR.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}
+
+// === END: SplitPDFBySwissQR Test Script ===

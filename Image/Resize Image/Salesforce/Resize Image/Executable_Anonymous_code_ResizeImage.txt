@@ -1,0 +1,37 @@
+// Replace with your actual ContentDocumentId of an image file
+String contentDocumentId = 'YOUR_IMAGE_CONTENT_DOCUMENT_ID';
+
+// Get the latest ContentVersion for the file
+ContentVersion cv = [
+    SELECT Id, Title, FileExtension, VersionData
+    FROM ContentVersion
+    WHERE ContentDocumentId = :contentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Prepare parameters
+String imageBase64 = EncodingUtil.base64Encode(cv.VersionData);
+String imageFileName = cv.Title + '.' + cv.FileExtension;
+String imageResizeType = 'Percentage'; // or 'Pixel' (check API docs for valid values)
+String resizePercentage = '50'; // Resize to 50% of original size
+Integer width = null; // Not used if resizing by percentage
+Integer height = null; // Not used if resizing by percentage
+Boolean maintainAspectRatio = true;
+
+// Call the method
+ResizeImage.ResizeImageResult result =
+    ResizeImage.resizeImageAndSave(imageBase64, imageFileName, imageResizeType, resizePercentage, width, height, maintainAspectRatio);
+
+// Output results
+System.debug('Base64: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Make the file public and get public URL (if previous call succeeded)
+if (result != null && result.downloadUrl != null && result.error == null) {
+    // Extract ContentDocumentId from the download URL
+    String docId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = ResizeImage.makeFilePublic(docId);
+    System.debug('Public URL: ' + publicUrl);
+}

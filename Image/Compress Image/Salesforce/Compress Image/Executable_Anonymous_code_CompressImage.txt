@@ -1,0 +1,24 @@
+// Minimal valid base64 for a 1x1 transparent PNG
+String imageBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wIAAgMBApUAAAAASUVORK5CYII=';
+
+String imageFileName = 'TestImage.png';
+String imageType = 'Png'; // Or 'Jpeg', 'Bmp', etc. per PDF4me docs
+String compressionLevel = 'Medium'; // Or 'Low', 'High', etc.
+
+CompressImage.CompressImageResult result = CompressImage.compressImageAndSave(
+    imageBase64,
+    imageFileName,
+    imageType,
+    compressionLevel
+);
+
+System.debug('Base64: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optional: Make the output file public and get the public URL
+if (result.downloadUrl != null && result.error == null) {
+    String contentDocumentId = result.downloadUrl.replace('/sfc/servlet.shepherd/document/download/', '');
+    String publicUrl = CompressImage.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}

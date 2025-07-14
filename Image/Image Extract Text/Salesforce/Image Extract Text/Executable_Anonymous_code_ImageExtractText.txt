@@ -1,0 +1,34 @@
+String contentDocumentId = '069Kf00000Of20qIAB'; // Your real image's ID
+
+ContentVersion fileCV = [
+    SELECT Id, Title, VersionData
+    FROM ContentVersion
+    WHERE ContentDocumentId = :contentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+String imageBase64 = EncodingUtil.base64Encode(fileCV.VersionData);
+System.debug('Base64 length: ' + imageBase64.length()); // Should be >1000 for a real image
+
+ImageExtractText.ImageExtractTextResult result = ImageExtractText.imageExtractTextAndSave(
+    imageBase64,
+    fileCV.Title
+);
+
+if (result.error != null) {
+    System.debug('ImageExtractText ERROR: ' + result.error);
+} else {
+    System.debug('ImageExtractText Success!');
+    System.debug('Base64 Output (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, Math.min(100, result.base64.length())) : 'null'));
+    System.debug('Download URL: ' + result.downloadUrl);
+
+    String resultContentDocId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = ImageExtractText.makeFilePublic(resultContentDocId);
+
+    if (publicUrl.startsWith('ERROR:')) {
+        System.debug('Failed to make public: ' + publicUrl);
+    } else {
+        System.debug('Public URL: ' + publicUrl);
+    }
+}

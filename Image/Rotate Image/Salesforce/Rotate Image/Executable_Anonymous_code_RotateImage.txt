@@ -1,0 +1,35 @@
+// Replace with your actual ContentDocumentId of an image file
+String contentDocumentId = 'YOUR_IMAGE_CONTENT_DOCUMENT_ID';
+
+// Get the latest ContentVersion for the file
+ContentVersion cv = [
+    SELECT Id, Title, FileExtension, VersionData
+    FROM ContentVersion
+    WHERE ContentDocumentId = :contentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Prepare parameters
+String imageBase64 = EncodingUtil.base64Encode(cv.VersionData);
+String imageFileName = cv.Title + '.' + cv.FileExtension;
+String backgroundColor = null; // e.g., "#FFFFFF" for white, or null for default
+Boolean proportionateResize = true; // or false, as needed
+Integer rotationAngle = 90; // Rotate by 90 degrees
+
+// Call the method
+RotateImage.RotateImageResult result =
+    RotateImage.rotateImageAndSave(imageBase64, imageFileName, backgroundColor, proportionateResize, rotationAngle);
+
+// Output results
+System.debug('Base64: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Make the file public and get public URL (if previous call succeeded)
+if (result != null && result.downloadUrl != null && result.error == null) {
+    // Extract ContentDocumentId from the download URL
+    String docId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = RotateImage.makeFilePublic(docId);
+    System.debug('Public URL: ' + publicUrl);
+}

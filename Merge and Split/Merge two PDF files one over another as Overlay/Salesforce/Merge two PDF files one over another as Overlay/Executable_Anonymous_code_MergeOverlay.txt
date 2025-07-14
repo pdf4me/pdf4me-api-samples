@@ -1,0 +1,50 @@
+// === BEGIN: MergeOverlay Test Script ===
+
+// Replace these with your real ContentDocumentIds of PDF files in Salesforce Files
+String basePDFContentDocumentId = '069XXXXXXXXXXXXAAA'; // Base PDF (first layer)
+String layerPDFContentDocumentId = '069YYYYYYYYYYYYBBB'; // Layer PDF (second layer)
+
+// Fetch the base PDF
+ContentVersion baseCV = [
+    SELECT VersionData, Title
+    FROM ContentVersion
+    WHERE ContentDocumentId = :basePDFContentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Fetch the layer PDF
+ContentVersion layerCV = [
+    SELECT VersionData, Title
+    FROM ContentVersion
+    WHERE ContentDocumentId = :layerPDFContentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Encode both PDFs to base64
+String basePDFBase64 = EncodingUtil.base64Encode(baseCV.VersionData);
+String layerPDFBase64 = EncodingUtil.base64Encode(layerCV.VersionData);
+
+// Call the overlay merge method
+MergeOverlay.OverlayMergeResult result = MergeOverlay.mergeOverlayAndSave(
+    basePDFBase64, 
+    baseCV.Title, 
+    layerPDFBase64, 
+    layerCV.Title
+);
+
+// Output results to debug log
+System.debug('Overlay Merge Result base64 (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, Math.min(100, result.base64.length())) : null));
+System.debug('Download URL (internal): ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optionally, make the file public and get a public URL
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    // Extract ContentDocumentId from the download URL
+    String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = MergeOverlay.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}
+
+// === END: MergeOverlay Test Script ===
