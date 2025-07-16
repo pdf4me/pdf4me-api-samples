@@ -1,0 +1,23 @@
+// Test 1: Quick test with random base64 data
+System.debug('=== TEST 1: Quick Test with Random Data ===');
+String randomImageBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+String randomWatermarkBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+
+AddImageWatermarkToImage.ImageWatermarkResult quickResult = AddImageWatermarkToImage.addImageWatermarkAndSave(
+    randomImageBase64,
+    randomWatermarkBase64,
+    'test_image.png',
+    'test_watermark.png',
+    'Center',
+    0.5,
+    0,
+    0,
+    null,
+    null,
+    0
+);
+
+System.debug('Quick Test Result:');
+System.debug('Base64: ' + quickResult.base64);
+System.debug('Download URL: ' + quickResult.downloadUrl);
+System.debug('Error: ' + quickResult.error);

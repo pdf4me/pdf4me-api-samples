@@ -1,0 +1,38 @@
+// Replace this with your actual ContentDocumentId of a Word document with tracking changes
+String contentDocumentId = '069XXXXXXXXXXXXXXX'; // Replace with your Word document's ContentDocumentId
+
+// Find the Word document using ContentDocumentId
+ContentVersion cv = [
+    SELECT Id, VersionData, Title 
+    FROM ContentVersion 
+    WHERE ContentDocumentId = :contentDocumentId 
+    ORDER BY VersionNumber DESC 
+    LIMIT 1
+];
+
+// Encode the Word document as base64
+String docxBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+// Set the output filename
+String outputFileName = 'TrackingDisabled_' + cv.Title;
+
+// Call the DisableTrackingChangesInWord method
+DisableTrackingChangesInWord.DisableTrackingResult result = DisableTrackingChangesInWord.disableTrackingChangesInWordAndSave(
+    docxBase64, outputFileName
+);
+
+// Output the results
+System.debug('Base64 (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, 100) : null));
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// (Optional) Make the file public and get a public URL
+if (result.downloadUrl != null) {
+    // Extract ContentDocumentId from the download URL
+    String prefix = '/sfc/servlet.shepherd/document/download/';
+    if (result.downloadUrl.startsWith(prefix)) {
+        String newContentDocumentId = result.downloadUrl.substring(prefix.length());
+        String publicUrl = DisableTrackingChangesInWord.makeFilePublic(newContentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+}

@@ -1,0 +1,24 @@
+// Minimal valid base64 for a 1x1 transparent PNG
+String imageBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wIAAgMBApUAAAAASUVORK5CYII=';
+
+String imageFileName = 'TestImage.png';
+String currentImageFormat = 'Png'; // The format of the input image
+String newImageFormat = 'Jpeg';    // The format you want to convert to (e.g., 'Jpeg', 'Bmp', 'Gif', etc.)
+
+ConvertImageFormat.ConvertImageFormatResult result = ConvertImageFormat.convertImageFormatAndSave(
+    imageBase64,
+    imageFileName,
+    currentImageFormat,
+    newImageFormat
+);
+
+System.debug('Base64: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optional: Make the output file public and get the public URL
+if (result.downloadUrl != null && result.error == null) {
+    String contentDocumentId = result.downloadUrl.replace('/sfc/servlet.shepherd/document/download/', '');
+    String publicUrl = ConvertImageFormat.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}

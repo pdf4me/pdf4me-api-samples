@@ -1,0 +1,25 @@
+// Step 1: Create the barcode and save as Salesforce File
+CreateBarcodePDF4me.BarcodeResult qrResult = CreateBarcodePDF4me.createBarcodeAndSave(
+    'https://www.salesforce.com', 
+    'qrCode', 
+    false, 
+    'QR_Code_Test'
+);
+System.debug('Barcode Result: ' + qrResult);
+
+// Step 2: Extract ContentDocumentId from the download URL
+if (qrResult != null && qrResult.downloadUrl != null && qrResult.error == null) {
+    // The ContentDocumentId is the last part of the download URL
+    String contentDocumentId = qrResult.downloadUrl.substringAfterLast('/');
+    System.debug('ContentDocumentId: ' + contentDocumentId);
+
+    // Step 3: Get the public URL
+    String publicUrl = CreateBarcodePDF4me.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+
+    // Step 4: Output both URLs for your reference
+    System.debug('Salesforce Download URL: ' + qrResult.downloadUrl);
+    System.debug('Public URL: ' + publicUrl);
+} else {
+    System.debug('Barcode creation failed: ' + (qrResult != null ? qrResult.error : 'Unknown error'));
+}

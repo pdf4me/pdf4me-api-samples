@@ -1,0 +1,51 @@
+// Execute Anonymous Script for ExtractTextByExpression Testing
+// Uses a minimal dummy PDF and a simple expression for demonstration
+
+System.debug('=== Starting ExtractTextByExpression Test with Dummy PDF ===');
+
+try {
+    // Minimal dummy PDF (no real text, just for flow testing)
+    String pdfBase64 = 'JVBERi0xLjQKJcOkw7zDtsO8DQoxIDAgb2JqDQo8PA0KL1R5cGUgL0NhdGFsb2cNCi9QYWdlcyAyIDAgUg0KPj4NCmVuZG9iag0KMiAwIG9iag0KPDwNCi9UeXBlIC9QYWdlcw0KL0tpZHMgWzMgMCBSXQ0KL0NvdW50IDENCi9NZWRpYUJveCBbMCAwIDYxMiA3OTJdDQo+Pg0KZW5kb2JqDQozIDAgb2JqDQo8PA0KL1R5cGUgL1BhZ2UNCj4+DQplbmRvYmoNCnhyZWYNCjAgNA0KMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAwMDEwIDAwMDAwIG4NCjAwMDAwMDAwNzkgMDAwMDAgbg0KMDAwMDAwMDE3MyAwMDAwMCBuDQp0cmFpbGVyDQo8PA0KL1NpemUgNA0KL1Jvb3QgMSAwIFINCi9JbmZvIDQgMCBSDQo+Pg0Kc3RhcnR4cmVmDQoxMjMNCiUlRU9G';
+
+    String docName = 'DummyPDF_Expression_' + Datetime.now().format('yyyyMMdd_HHmmss');
+    String expression = '\\d+'; // Example: match any sequence of digits
+    String pageSequence = '';   // Empty means all pages
+
+    System.debug('Calling ExtractTextByExpression.extractAndSave...');
+    ExtractTextByExpression.ExtractTextByExpressionResult result =
+        ExtractTextByExpression.extractAndSave(pdfBase64, docName, expression, pageSequence);
+
+    System.debug('=== EXTRACTION RESULTS ===');
+    System.debug('Document Name: ' + docName);
+
+    // NULL CHECK
+    if (result == null) {
+        System.debug('ERROR: extractAndSave returned null.');
+        return;
+    }
+    if (String.isNotBlank(result.error)) {
+        System.debug('ERROR: ' + result.error);
+        return;
+    }
+
+    System.debug('Number of matches found: ' + result.matches.size());
+    for (Integer i = 0; i < result.matches.size(); i++) {
+        System.debug('Match ' + (i+1) + ': ' + result.matches[i]);
+    }
+
+    System.debug('JSON Download URL: ' + result.downloadUrl);
+
+    // Optionally, make the JSON file public
+    if (String.isNotBlank(result.downloadUrl)) {
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        System.debug('Making JSON file public...');
+        String publicUrl = ExtractTextByExpression.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+
+    System.debug('=== Test Completed Successfully ===');
+
+} catch (Exception ex) {
+    System.debug('ERROR: ' + ex.getMessage());
+    System.debug('Stack Trace: ' + ex.getStackTraceString());
+}

@@ -1,0 +1,82 @@
+// ========================================
+// Execute Anonymous Script for ConvertPdfToEditablePdfUsingOcr
+// ========================================
+
+// Step 1: Set up test data
+String pdfUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+String outputFileName = 'TestDocument_Editable_' + Datetime.now().format('yyyyMMdd_HHmmss');
+
+// Step 2: Fetch PDF from URL and convert to base64
+System.debug('=== Step 2: Fetching PDF from URL ===');
+Http http = new Http();
+HttpRequest pdfRequest = new HttpRequest();
+pdfRequest.setEndpoint(pdfUrl);
+pdfRequest.setMethod('GET');
+HttpResponse pdfResponse = http.send(pdfRequest);
+
+if (pdfResponse.getStatusCode() != 200) {
+    System.debug('ERROR: Failed to fetch PDF. Status: ' + pdfResponse.getStatusCode());
+    return;
+}
+
+Blob pdfBlob = pdfResponse.getBodyAsBlob();
+String pdfBase64 = EncodingUtil.base64Encode(pdfBlob);
+System.debug('PDF fetched successfully. Size: ' + pdfBlob.size() + ' bytes');
+
+// Step 3: Set OCR conversion parameters
+System.debug('=== Step 3: Setting OCR conversion parameters ===');
+String qualityType = 'Draft'; // Options: Draft, Standard, High
+Boolean ocrWhenNeeded = true;
+String language = 'English'; // Options: English, German, French, etc.
+String outputFormat = 'true'; // true for PDF, false for other formats
+Boolean mergeAllSheets = true;
+
+System.debug('Quality Type: ' + qualityType);
+System.debug('OCR When Needed: ' + ocrWhenNeeded);
+System.debug('Language: ' + language);
+System.debug('Output Format: ' + outputFormat);
+System.debug('Merge All Sheets: ' + mergeAllSheets);
+
+// Step 4: Call the ConvertPdfToEditablePdfUsingOcr method
+System.debug('=== Step 4: Calling ConvertPdfToEditablePdfUsingOcr.convertAndSave ===');
+ConvertPdfToEditablePdfUsingOcr.EditablePdfResult result = 
+    ConvertPdfToEditablePdfUsingOcr.convertAndSave(
+        pdfBase64, 
+        outputFileName, 
+        qualityType, 
+        ocrWhenNeeded, 
+        language, 
+        outputFormat, 
+        mergeAllSheets
+    );
+
+// Step 5: Display results
+System.debug('=== Step 5: Results ===');
+if (result.error != null) {
+    System.debug('ERROR: ' + result.error);
+} else {
+    System.debug('SUCCESS: PDF converted to editable PDF successfully!');
+    System.debug('Output File Name: ' + outputFileName);
+    System.debug('Base64 Length: ' + (result.base64 != null ? result.base64.length() : 0));
+    System.debug('Download URL: ' + result.downloadUrl);
+    
+    // Step 6: Extract ContentDocumentId from download URL for public link creation
+    if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        System.debug('ContentDocumentId: ' + contentDocumentId);
+        
+        // Step 7: Create public link
+        System.debug('=== Step 7: Creating public link ===');
+        String publicUrl = ConvertPdfToEditablePdfUsingOcr.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+        
+        if (!publicUrl.contains('ERROR:')) {
+            System.debug('SUCCESS: Public link created successfully!');
+            System.debug('You can now access the editable PDF at: ' + publicUrl);
+        } else {
+            System.debug('ERROR creating public link: ' + publicUrl);
+        }
+    }
+}
+
+System.debug('=== Test Complete ===');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

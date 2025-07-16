@@ -1,0 +1,41 @@
+// === BEGIN: RotateDocument Test Script ===
+
+// Replace this with your real ContentDocumentId of a PDF file in Salesforce Files
+String pdfContentDocumentId = '069XXXXXXXXXXXXAAA'; // PDF to process
+
+// Fetch the PDF
+ContentVersion cv = [
+    SELECT VersionData, Title
+    FROM ContentVersion
+    WHERE ContentDocumentId = :pdfContentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Encode the PDF to base64
+String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+// Call the rotate document method
+String outputFileName = 'rotated_document.pdf';
+String rotationType = 'Clockwise'; // Options: 'NoRotation', 'Clockwise', 'CounterClockwise', 'UpsideDown'
+
+RotateDocument.RotateDocumentResult result = RotateDocument.rotateDocumentAndSave(
+    pdfBase64,
+    outputFileName,
+    rotationType
+);
+
+// Output results to debug log
+System.debug('Rotate Document Result base64 (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, Math.min(100, result.base64.length())) : null));
+System.debug('Download URL (internal): ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optionally, make the file public and get a public URL
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    // Extract ContentDocumentId from the download URL
+    String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = RotateDocument.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}
+
+// === END: RotateDocument Test Script ===

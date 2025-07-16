@@ -1,0 +1,44 @@
+// ====== STEP 0: Find a recent PDF file in Salesforce Files ======
+List<ContentVersion> cvs = [
+    SELECT Id, VersionData, Title
+    FROM ContentVersion
+    WHERE FileType = 'PDF'
+    ORDER BY CreatedDate DESC
+    LIMIT 1
+];
+
+if (!cvs.isEmpty()) {
+    ContentVersion cv = cvs[0];
+    System.debug('Using PDF file: ' + cv.Title + ' (Id: ' + cv.Id + ')');
+    String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+    // ====== STEP 1: Read barcodes from the PDF and save results as Salesforce File ======
+    List<String> barcodeTypes = new List<String>{'qrCode', 'code128', 'code39'}; // Add or remove types as needed
+    ReadBarcodeFromPDF.BarcodeReadResult result = ReadBarcodeFromPDF.readBarcodesFromPDFAndSave(
+        pdfBase64,         // PDF file as base64
+        barcodeTypes,      // List of barcode types to read
+        '1',               // Pages (e.g., "1" for first page)
+        'Barcode_Read_Result' // Output file name (without extension)
+    );
+    System.debug('Barcode Read Result: ' + result);
+
+    // ====== STEP 2: Extract ContentDocumentId from the download URL ======
+    if (result != null && result.downloadUrl != null && result.error == null) {
+        // The ContentDocumentId is the last part of the download URL
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        System.debug('ContentDocumentId: ' + contentDocumentId);
+
+        // ====== STEP 3: Get the public URL ======
+        String publicUrl = ReadBarcodeFromPDF.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+
+        // ====== STEP 4: Output both URLs and barcode data for your reference ======
+        System.debug('Salesforce Download URL: ' + result.downloadUrl);
+        System.debug('Public URL: ' + publicUrl);
+        System.debug('Barcode Data: ' + result.barcodeData);
+    } else {
+        System.debug('Barcode reading failed: ' + (result != null ? result.error : 'Unknown error'));
+    }
+} else {
+    System.debug('No PDF file found in Salesforce Files. Please upload a PDF and try again.');
+}

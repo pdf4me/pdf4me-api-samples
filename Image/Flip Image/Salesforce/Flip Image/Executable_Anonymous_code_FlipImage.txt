@@ -1,0 +1,61 @@
+// ====== Find Available Image Files ======
+
+// Query for all image files in your org
+List<ContentDocument> imageFiles = [
+    SELECT Id, Title, FileType, ContentSize, CreatedDate
+    FROM ContentDocument 
+    WHERE FileType LIKE 'IMAGE%'
+    ORDER BY CreatedDate DESC
+    LIMIT 10
+];
+
+if (imageFiles.isEmpty()) {
+    System.debug('❌ No image files found in your org!');
+    System.debug('💡 Please upload an image file to Salesforce Files first.');
+} else {
+    System.debug('📁 Found ' + imageFiles.size() + ' image file(s):');
+    for (ContentDocument cd : imageFiles) {
+        System.debug('   ID: ' + cd.Id + ' | Title: ' + cd.Title + ' | Type: ' + cd.FileType + ' | Size: ' + cd.ContentSize + ' bytes');
+    }
+    
+    // Use the first image file for testing
+    String contentDocumentId = imageFiles[0].Id;
+    System.debug('🎯 Using first image for testing: ' + contentDocumentId);
+    
+    // Now test the FlipImage class
+    ContentVersion cv = [
+        SELECT Id, Title, VersionData, FileType
+        FROM ContentVersion
+        WHERE ContentDocumentId = :contentDocumentId
+        ORDER BY VersionNumber DESC
+        LIMIT 1
+    ];
+    
+    String imageBase64 = EncodingUtil.base64Encode(cv.VersionData);
+    String orientationType = 'Horizontal';
+    
+    FlipImage.FlipImageResult result = FlipImage.flipImageAndSave(
+        imageBase64,
+        cv.Title,
+        orientationType
+    );
+    
+    if (result.error != null) {
+        System.debug('❌ FlipImage ERROR: ' + result.error);
+    } else {
+        System.debug('✅ FlipImage Success!');
+        System.debug('🔄 Orientation: ' + orientationType);
+        System.debug('🔗 Download URL: ' + result.downloadUrl);
+        
+        String contentDocId = result.downloadUrl.substringAfterLast('/');
+        String publicUrl = FlipImage.makeFilePublic(contentDocId);
+        
+        if (publicUrl.startsWith('ERROR:')) {
+            System.debug('❌ Failed to make public: ' + publicUrl);
+        } else {
+            System.debug('🌐 Public URL: ' + publicUrl);
+        }
+    }
+}
+
+// ====== End of Script ======

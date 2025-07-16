@@ -1,0 +1,30 @@
+// Set the web page URL you want to convert to PDF
+String webUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'; // You can use any public web page URL
+String docName = 'TestWebToPDF';
+String layout = 'portrait'; // or 'landscape'
+String format = 'A4'; // e.g., 'A4', 'Letter'
+String outputFileName = 'WebToPDF_Test_Result';
+
+// Call the conversion method
+Object result = ConvertUrlToPDF.convertUrlToPDFAndSave(
+    webUrl,
+    docName,
+    layout,
+    format,
+    outputFileName
+);
+System.debug('URL to PDF Conversion Result: ' + result);
+
+// Extract ContentDocumentId and get public URL
+Map<String, Object> resultMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(result));
+if (resultMap != null && resultMap.containsKey('downloadUrl') && resultMap.get('downloadUrl') != null) {
+    String contentDocumentId = String.valueOf(resultMap.get('downloadUrl')).substringAfterLast('/');
+    String publicUrl = ConvertUrlToPDF.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+} else {
+    System.debug('No download URL available, cannot make file public.');
+}
+
+if (resultMap != null && resultMap.containsKey('error') && resultMap.get('error') != null) {
+    System.debug('URL to PDF conversion failed: ' + resultMap.get('error'));
+}

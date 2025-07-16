@@ -1,0 +1,39 @@
+// ====== GenerateReplaceTextWithImageInWord Test with Random Base64 ======
+
+// 1. Generate random base64 strings (not real files, just for testing the flow)
+String wordBase64 = EncodingUtil.base64Encode(Crypto.generateAesKey(128)); // 128-bit random bytes for Word
+String imageBase64 = EncodingUtil.base64Encode(Crypto.generateAesKey(128)); // 128-bit random bytes for Image
+
+// 2. Prepare parameters for replacing text with image
+String docName = 'RandomWordReplaceTextWithImage';
+String imageFileName = 'RandomImage.png';
+Boolean isFirstPageSkip = false;
+String pageNumbers = '1'; // Example: replace on page 1
+String searchText = 'PLACEHOLDER'; // The text to search for and replace
+
+// 3. Call the replaceTextWithImageAndSave method
+GenerateReplaceTextWithImageInWord.ReplaceTextWithImageResult result = GenerateReplaceTextWithImageInWord.replaceTextWithImageAndSave(
+    wordBase64,
+    imageBase64,
+    docName,
+    imageFileName,
+    isFirstPageSkip,
+    pageNumbers,
+    searchText
+);
+
+// 4. Output result to debug log
+System.debug('==== GenerateReplaceTextWithImageInWord Test Result ====');
+System.debug('Result: ' + JSON.serialize(result));
+if (result.error != null) {
+    System.debug('❌ Replace text with image failed: ' + result.error);
+} else {
+    System.debug('✅ Text replaced with image successfully!');
+    System.debug('Download URL: ' + result.downloadUrl);
+    // Optionally, make the file public:
+    if (result.downloadUrl != null) {
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        String publicUrl = GenerateReplaceTextWithImageInWord.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+}

@@ -1,0 +1,33 @@
+// Step 1: Download a sample PDF file from a public URL
+String pdfUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+Http http = new Http();
+HttpRequest pdfReq = new HttpRequest();
+pdfReq.setEndpoint(pdfUrl);
+pdfReq.setMethod('GET');
+HttpResponse pdfRes = http.send(pdfReq);
+
+if (pdfRes.getStatusCode() == 200) {
+    Blob pdfBlob = pdfRes.getBodyAsBlob();
+    String pdfBase64 = EncodingUtil.base64Encode(pdfBlob);
+
+    // Step 2: Call the method to add a text stamp and save the file
+    AddTextStampToPDF.TextStampResult result = AddTextStampToPDF.addTextStampToPDFAndSave(
+        pdfBase64,
+        'Test_AddTextStamp'
+    );
+
+    // Step 3: Log the results
+    System.debug('Base64 Output (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, 100) : null));
+    System.debug('Download URL: ' + result.downloadUrl);
+    System.debug('Error: ' + result.error);
+
+    // Step 4: Make the file public and log the public link (optional)
+    if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+        // Extract ContentDocumentId from the download URL
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        String publicUrl = AddTextStampToPDF.makeFilePublic(contentDocumentId);
+        System.debug('Public File URL: ' + publicUrl);
+    }
+} else {
+    System.debug('Failed to download sample PDF. Status: ' + pdfRes.getStatusCode());
+}

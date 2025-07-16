@@ -1,0 +1,41 @@
+// === BEGIN: CompressPDF Test Script ===
+
+// Replace this with your real ContentDocumentId of a PDF file in Salesforce Files
+String pdfContentDocumentId = '069XXXXXXXXXXXXAAA'; // PDF to compress
+
+// Fetch the PDF
+ContentVersion cv = [
+    SELECT VersionData, Title
+    FROM ContentVersion
+    WHERE ContentDocumentId = :pdfContentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Encode the PDF to base64
+String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+// Call the compress method
+String outputFileName = 'compressed_output.pdf';
+String optimizeProfile = 'Web'; // Options: 'Web', 'Print', 'Screen'
+
+CompressPDF.CompressResult result = CompressPDF.compressPdfAndSave(
+    pdfBase64,
+    outputFileName,
+    optimizeProfile
+);
+
+// Output results to debug log
+System.debug('Compress Result base64 (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, Math.min(100, result.base64.length())) : null));
+System.debug('Download URL (internal): ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optionally, make the file public and get a public URL
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    // Extract ContentDocumentId from the download URL
+    String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = CompressPDF.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}
+
+// === END: CompressPDF Test Script ===

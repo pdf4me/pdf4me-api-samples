@@ -1,0 +1,28 @@
+List<ContentVersion> cvs = [
+    SELECT Id, VersionData, Title
+    FROM ContentVersion
+    WHERE PathOnClient LIKE '%.vsdx'
+    ORDER BY CreatedDate DESC
+    LIMIT 1
+];
+
+if (!cvs.isEmpty()) {
+    ContentVersion cv = cvs[0];
+    System.debug('Using Visio file: ' + cv.Title + ' (Id: ' + cv.Id + ')');
+    String visioBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+    Object result = ConvertVisioToPDF.convertVisioToPDFAndSave(
+        visioBase64,
+        'VisioToPDF_Test_Result'
+    );
+    System.debug('Visio to PDF Conversion Result: ' + result);
+
+    Map<String, Object> resultMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(result));
+    if (resultMap != null && resultMap.containsKey('downloadUrl') && resultMap.get('downloadUrl') != null) {
+        String contentDocumentId = String.valueOf(resultMap.get('downloadUrl')).substringAfterLast('/');
+        String publicUrl = ConvertVisioToPDF.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+} else {
+    System.debug('No Visio (.vsdx) file found in Salesforce Files. Please upload a .vsdx file and try again.');
+}

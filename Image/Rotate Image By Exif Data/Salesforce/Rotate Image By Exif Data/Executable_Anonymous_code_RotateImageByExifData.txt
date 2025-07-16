@@ -1,0 +1,32 @@
+// Replace with your actual ContentDocumentId of an image file
+String contentDocumentId = 'YOUR_IMAGE_CONTENT_DOCUMENT_ID';
+
+// Get the latest ContentVersion for the file
+ContentVersion cv = [
+    SELECT Id, Title, FileExtension, VersionData
+    FROM ContentVersion
+    WHERE ContentDocumentId = :contentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+// Prepare parameters
+String imageBase64 = EncodingUtil.base64Encode(cv.VersionData);
+String imageFileName = cv.Title + '.' + cv.FileExtension;
+
+// Call the method
+RotateImageByExifData.RotateImageByExifDataResult result =
+    RotateImageByExifData.rotateImageByExifDataAndSave(imageBase64, imageFileName);
+
+// Output results
+System.debug('Base64: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Make the file public and get public URL (if previous call succeeded)
+if (result != null && result.downloadUrl != null && result.error == null) {
+    // Extract ContentDocumentId from the download URL
+    String docId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = RotateImageByExifData.makeFilePublic(docId);
+    System.debug('Public URL: ' + publicUrl);
+}

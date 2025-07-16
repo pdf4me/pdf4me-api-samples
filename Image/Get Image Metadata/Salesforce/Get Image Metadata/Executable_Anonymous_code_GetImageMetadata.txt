@@ -1,0 +1,55 @@
+Step 1: Upload a Minimal Test Image
+
+// Step 1: Upload a 1x1 PNG image to Salesforce Files
+Blob imageBlob = EncodingUtil.base64Decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+ContentVersion cv = new ContentVersion();
+cv.Title = 'test_image.png';
+cv.PathOnClient = 'test_image.png';
+cv.VersionData = imageBlob;
+cv.IsMajorVersion = true;
+insert cv;
+
+// Get the ContentDocumentId for use in the next step
+ContentVersion insertedCV = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id LIMIT 1];
+System.debug('ContentDocumentId: ' + insertedCV.ContentDocumentId);
+
+
+Step 2: Call GetImageMetadata and Output Public URL & Base64
+
+// Step 2: Use the uploaded file to call GetImageMetadata and output public URL & base64
+String contentDocumentId = 'PASTE_YOUR_CONTENTDOCUMENTID_HERE';
+
+ContentVersion fileCV = [
+    SELECT Id, Title, VersionData
+    FROM ContentVersion
+    WHERE ContentDocumentId = :contentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+
+String imageBase64 = EncodingUtil.base64Encode(fileCV.VersionData);
+String imageType = 'Png';
+
+GetImageMetadata.GetImageMetadataResult result = GetImageMetadata.getImageMetadataAndSave(
+    imageBase64,
+    fileCV.Title,
+    imageType
+);
+
+if (result.error != null) {
+    System.debug('GetImageMetadata ERROR: ' + result.error);
+} else {
+    System.debug('GetImageMetadata Success!');
+    System.debug('Base64 Output (first 100 chars): ' + result.base64 != null ? result.base64.substring(0, Math.min(100, result.base64.length())) : 'null');
+    System.debug('Download URL: ' + result.downloadUrl);
+
+    // Extract ContentDocumentId from the download URL
+    String resultContentDocId = result.downloadUrl.substringAfterLast('/');
+    String publicUrl = GetImageMetadata.makeFilePublic(resultContentDocId);
+
+    if (publicUrl.startsWith('ERROR:')) {
+        System.debug('Failed to make public: ' + publicUrl);
+    } else {
+        System.debug('Public URL: ' + publicUrl);
+    }
+}

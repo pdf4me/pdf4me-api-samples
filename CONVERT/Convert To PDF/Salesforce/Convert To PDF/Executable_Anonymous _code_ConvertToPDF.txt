@@ -1,0 +1,61 @@
+// Step 1: Get all recent ContentDistribution records (adjust LIMIT as needed)
+List<ContentDistribution> dists = [
+    SELECT Id, ContentDocumentId, DistributionPublicUrl
+    FROM ContentDistribution
+    ORDER BY CreatedDate DESC
+    LIMIT 100
+];
+
+String publicUrl = 'https://shyamsundernita-dev-ed.my.salesforce.com/sfc/p/6g000003ReRT/a/Kf000000dkOJ/5XPp8sZji9p7P8gKbNFGQ3F1dbuZolUCECEQB7LcUF0';
+String contentDocumentId;
+for (ContentDistribution dist : dists) {
+    if (dist.DistributionPublicUrl == publicUrl) {
+        contentDocumentId = dist.ContentDocumentId;
+        break;
+    }
+}
+
+if (contentDocumentId != null) {
+    System.debug('Found ContentDocumentId: ' + contentDocumentId);
+
+    // Step 2: Get the latest ContentVersion for this ContentDocument
+    List<ContentVersion> cvs = [
+        SELECT Id, VersionData, Title, FileType
+        FROM ContentVersion
+        WHERE ContentDocumentId = :contentDocumentId
+        ORDER BY VersionNumber DESC
+        LIMIT 1
+    ];
+
+    if (!cvs.isEmpty()) {
+        ContentVersion cv = cvs[0];
+        System.debug('Using file: ' + cv.Title + ' (Id: ' + cv.Id + ', Type: ' + cv.FileType + ')');
+        String docBase64 = EncodingUtil.base64Encode(cv.VersionData);
+
+        // Step 3: Convert to PDF and save as Salesforce File
+        ConvertDocumentToPDF.DocumentToPDFResult result = ConvertDocumentToPDF.convertDocumentToPDFAndSave(
+            docBase64,         // Word file as base64
+            'Converted_PDF_Result' // Output file name (without extension)
+        );
+        System.debug('Document to PDF Conversion Result: ' + result);
+
+        // Step 4: Try to extract ContentDocumentId and get public URL even if there was an error
+        if (result != null && result.downloadUrl != null) {
+            String newContentDocumentId = result.downloadUrl.substringAfterLast('/');
+            System.debug('ContentDocumentId (new PDF): ' + newContentDocumentId);
+
+            String newPublicUrl = ConvertDocumentToPDF.makeFilePublic(newContentDocumentId);
+            System.debug('Public URL (new PDF): ' + newPublicUrl);
+        } else {
+            System.debug('No download URL available, cannot make file public.');
+        }
+
+        if (result != null && result.error != null) {
+            System.debug('Document to PDF conversion failed: ' + result.error);
+        }
+    } else {
+        System.debug('No ContentVersion found for ContentDocumentId: ' + contentDocumentId);
+    }
+} else {
+    System.debug('No ContentDistribution found for the provided public URL.');
+}

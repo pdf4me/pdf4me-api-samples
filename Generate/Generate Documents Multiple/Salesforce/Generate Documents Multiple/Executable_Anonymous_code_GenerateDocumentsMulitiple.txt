@@ -1,0 +1,38 @@
+// ====== GenerateDocumentsMultiple Test with Random Base64 ======
+
+// 1. Generate a random base64 string (not a real file, just for testing the flow)
+String templateBase64 = EncodingUtil.base64Encode(Crypto.generateAesKey(128)); // 128-bit random bytes
+
+// 2. Prepare parameters for document generation
+String templateFileType = 'docx'; // or 'pdf'
+String templateFileName = 'RandomTemplate';
+String documentDataType = 'json';
+String outputType = 'pdf';
+
+// Example JSON data for mail merge
+String documentDataText = '[{"name":"John Doe","address":"123 Main St","amount":"100.00"},{"name":"Jane Smith","address":"456 Oak Ave","amount":"200.00"}]';
+
+// 3. Call the GenerateDocumentsMultiple method
+GenerateDocumentsMultiple.GenerateMultipleResult result = GenerateDocumentsMultiple.generateMultipleAndSave(
+    templateBase64,
+    templateFileType,
+    templateFileName,
+    documentDataType,
+    outputType,
+    documentDataText
+);
+
+// 4. Output result to debug log
+System.debug('==== GenerateDocumentsMultiple Test Result ====');
+System.debug('Result: ' + JSON.serialize(result));
+if (result.error != null) {
+    System.debug('❌ Document generation failed: ' + result.error);
+} else {
+    System.debug('✅ Document generated successfully!');
+    System.debug('Download URL: ' + result.downloadUrl);
+    if (result.downloadUrl != null) {
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        String publicUrl = GenerateDocumentsMultiple.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+}

@@ -1,0 +1,39 @@
+// Step 1: Download a sample PDF file from a public URL
+String pdfUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+Http http = new Http();
+HttpRequest pdfReq = new HttpRequest();
+pdfReq.setEndpoint(pdfUrl);
+pdfReq.setMethod('GET');
+HttpResponse pdfRes = http.send(pdfReq);
+
+if (pdfRes.getStatusCode() == 200) {
+    Blob pdfBlob = pdfRes.getBodyAsBlob();
+    String pdfBase64 = EncodingUtil.base64Encode(pdfBlob);
+
+    // Step 2: Use a simple base64-encoded PNG image (1x1 red pixel)
+    // This is a minimal PNG image encoded in base64
+    String imageBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+
+    // Step 3: Call the method to add image stamp and save the file
+    AddImageStampToPDF.ImageStampResult result = AddImageStampToPDF.addImageStampToPDFAndSave(
+        pdfBase64,
+        imageBase64,
+        'stamp.png',
+        'Test_ImageStamp'
+    );
+
+    // Step 4: Log the results
+    System.debug('Base64 Output (first 100 chars): ' + (result.base64 != null ? result.base64.substring(0, 100) : null));
+    System.debug('Download URL: ' + result.downloadUrl);
+    System.debug('Error: ' + result.error);
+
+    // Step 5: Make the file public and log the public link (optional)
+    if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+        // Extract ContentDocumentId from the download URL
+        String contentDocumentId = result.downloadUrl.substringAfterLast('/');
+        String publicUrl = AddImageStampToPDF.makeFilePublic(contentDocumentId);
+        System.debug('Public File URL: ' + publicUrl);
+    }
+} else {
+    System.debug('Failed to download sample PDF. Status: ' + pdfRes.getStatusCode());
+}

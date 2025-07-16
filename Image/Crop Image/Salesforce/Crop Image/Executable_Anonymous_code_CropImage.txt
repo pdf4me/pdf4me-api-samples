@@ -1,0 +1,42 @@
+// Minimal valid base64 for a 1x1 transparent PNG
+String imageBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wIAAgMBApUAAAAASUVORK5CYII=';
+
+String imageFileName = 'TestImage.png';
+String cropType = 'Border'; // or 'Rectangle' depending on your use case
+
+// For Border crop type, set border values (others can be null)
+Integer leftBorder = 0;
+Integer rightBorder = 0;
+Integer topBorder = 0;
+Integer bottomBorder = 0;
+
+// For Rectangle crop type, set these (others can be null)
+Integer upperLeftX = null;
+Integer upperLeftY = null;
+Integer width = null;
+Integer height = null;
+
+CropImage.CropImageResult result = CropImage.cropImageAndSave(
+    imageBase64,
+    imageFileName,
+    cropType,
+    leftBorder,
+    rightBorder,
+    topBorder,
+    bottomBorder,
+    upperLeftX,
+    upperLeftY,
+    width,
+    height
+);
+
+System.debug('Base64: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Optional: Make the output file public and get the public URL
+if (result.downloadUrl != null && result.error == null) {
+    String contentDocumentId = result.downloadUrl.replace('/sfc/servlet.shepherd/document/download/', '');
+    String publicUrl = CropImage.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+}

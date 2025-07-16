@@ -1,0 +1,37 @@
+// Add the file URL to Remote Site Settings first!
+String fileUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+String outputFileName = 'MyConvertedWord';
+
+// Download the PDF as a Blob
+HttpRequest req = new HttpRequest();
+req.setEndpoint(fileUrl);
+req.setMethod('GET');
+Http http = new Http();
+HttpResponse res = http.send(req);
+
+if (res.getStatusCode() == 200) {
+    Blob pdfBlob = res.getBodyAsBlob();
+    String pdfBase64 = EncodingUtil.base64Encode(pdfBlob);
+
+    // Now call your conversion method
+    Object result = ConvertPDFToWord.convertPDFToWordAndSave(
+        pdfBase64,
+        'standard',     // qualityType
+        'en',           // language
+        false,          // mergeAllSheets
+        true,           // outputFormat (.docx)
+        false,          // ocrWhenNeeded
+        outputFileName
+    );
+    System.debug('PDF to Word Conversion Result: ' + result);
+
+    // Extract ContentDocumentId and get public URL
+    Map<String, Object> resultMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(result));
+    if (resultMap != null && resultMap.containsKey('downloadUrl') && resultMap.get('downloadUrl') != null) {
+        String contentDocumentId = String.valueOf(resultMap.get('downloadUrl')).substringAfterLast('/');
+        String publicUrl = ConvertPDFToWord.makeFilePublic(contentDocumentId);
+        System.debug('Public URL: ' + publicUrl);
+    }
+} else {
+    System.debug('Failed to download PDF. Status: ' + res.getStatus());
+}

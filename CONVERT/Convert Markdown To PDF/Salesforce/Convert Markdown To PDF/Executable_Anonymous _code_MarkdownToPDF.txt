@@ -1,0 +1,31 @@
+// ====== STEP 0: Prepare a simple Markdown string and encode as base64 ======
+String mdString = '# Hello, PDF4me!\nThis is a test Markdown to PDF conversion.\n\n- Bullet 1\n- Bullet 2\n\n**Bold Text**';
+String mdBase64 = EncodingUtil.base64Encode(Blob.valueOf(mdString));
+
+// ====== STEP 1: Set conversion options ======
+String mdFilePath = ''; // Not needed for a single Markdown string
+String outputFileName = 'MarkdownToPDF_Test_Result';
+
+// ====== STEP 2: Convert Markdown to PDF and save as Salesforce File ======
+Object result = ConvertMarkdownToPDF.convertMarkdownToPDFAndSave(
+    mdBase64,
+    mdFilePath,
+    outputFileName
+);
+System.debug('Markdown to PDF Conversion Result: ' + result);
+
+// ====== STEP 3: Try to extract ContentDocumentId and get public URL even if there was an error ======
+Map<String, Object> resultMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(result));
+if (resultMap != null && resultMap.containsKey('downloadUrl') && resultMap.get('downloadUrl') != null) {
+    String contentDocumentId = String.valueOf(resultMap.get('downloadUrl')).substringAfterLast('/');
+    System.debug('ContentDocumentId: ' + contentDocumentId);
+
+    String publicUrl = ConvertMarkdownToPDF.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+} else {
+    System.debug('No download URL available, cannot make file public.');
+}
+
+if (resultMap != null && resultMap.containsKey('error') && resultMap.get('error') != null) {
+    System.debug('Markdown to PDF conversion failed: ' + resultMap.get('error'));
+}
