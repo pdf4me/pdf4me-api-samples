@@ -1,0 +1,45 @@
+// Step 1: Retrieve the PDF as base64 from Salesforce Files
+String contentDocumentId = 'YOUR_PDF_CONTENTDOCUMENTID_HERE'; // <-- Replace with your PDF ContentDocumentId
+ContentVersion cv = [
+    SELECT VersionData, Title, FileExtension
+    FROM ContentVersion
+    WHERE ContentDocumentId = :contentDocumentId
+    ORDER BY VersionNumber DESC
+    LIMIT 1
+];
+String pdfBase64 = EncodingUtil.base64Encode(cv.VersionData);
+String pdfFileName = cv.Title + '.' + cv.FileExtension;
+
+// Step 2: Set image creation parameters
+String widthPixel = '800'; // e.g., '800' for 800px width, or null for default
+String imageExtension = 'jpg'; // 'jpg' or 'png'
+List<Integer> pageNrs = new List<Integer>{1}; // Pages to convert (e.g., first page only)
+
+// Step 3: Call the createImageFromPDFAndSave method
+CreateImageFromPDF.CreateImageFromPDFResult result = CreateImageFromPDF.createImageFromPDFAndSave(
+    pdfBase64,
+    pdfFileName,
+    widthPixel,
+    imageExtension,
+    pageNrs
+);
+
+System.debug('Base64 Image ZIP: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Step 4: Extract ContentDocumentId from the download URL
+String newContentDocumentId;
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    List<String> urlParts = result.downloadUrl.split('/');
+    newContentDocumentId = urlParts[urlParts.size() - 1];
+    System.debug('ContentDocumentId: ' + newContentDocumentId);
+}
+
+// Step 5: Make the new file public and output the public URL
+if (newContentDocumentId != null) {
+    String publicUrl = CreateImageFromPDF.makeFilePublic(newContentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+} else {
+    System.debug('Could not extract ContentDocumentId from download URL.');
+}
