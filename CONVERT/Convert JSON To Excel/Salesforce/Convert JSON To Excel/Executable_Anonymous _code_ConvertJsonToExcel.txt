@@ -1,0 +1,48 @@
+// Step 1: Prepare sample JSON and parameters
+String sampleJson = '[{"Name":"John Doe","Age":30,"Country":"USA"},{"Name":"Jane Smith","Age":25,"Country":"UK"}]';
+String jsonBase64 = EncodingUtil.base64Encode(Blob.valueOf(sampleJson));
+String worksheetName = 'Sheet1';
+Boolean isTitleWrapText = true;
+Boolean isTitleBold = true;
+Boolean convertNumberAndDate = true;
+String numberFormat = 'General';
+String dateFormat = 'yyyy-mm-dd';
+Boolean ignoreNullValues = false;
+Integer firstRow = 1;
+Integer firstColumn = 1;
+String outputFileName = 'TestJsonToExcel';
+
+// Step 2: Convert JSON to Excel and save as Salesforce File
+ConvertJsonToExcel.JsonToExcelResult result = ConvertJsonToExcel.convertJsonToExcelAndSave(
+    jsonBase64,
+    worksheetName,
+    isTitleWrapText,
+    isTitleBold,
+    convertNumberAndDate,
+    numberFormat,
+    dateFormat,
+    ignoreNullValues,
+    firstRow,
+    firstColumn,
+    outputFileName
+);
+
+System.debug('Base64 Excel: ' + result.base64);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Step 3: Extract ContentDocumentId from the download URL
+String contentDocumentId;
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    List<String> urlParts = result.downloadUrl.split('/');
+    contentDocumentId = urlParts[urlParts.size() - 1];
+    System.debug('ContentDocumentId: ' + contentDocumentId);
+}
+
+// Step 4: Make the file public and output the public URL
+if (contentDocumentId != null) {
+    String publicUrl = ConvertJsonToExcel.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+} else {
+    System.debug('Could not extract ContentDocumentId from download URL.');
+}

@@ -1,0 +1,43 @@
+// Step 1: Prepare a sample Word file as base64 (replace with your own if needed)
+String sampleText = 'This is a test Word document for PDF4me extraction.';
+Blob wordBlob = Blob.valueOf(sampleText);
+// In a real scenario, use a real .docx file's base64, not just plain text!
+String wordBase64 = EncodingUtil.base64Encode(wordBlob);
+
+String docName = 'TestWordDoc';
+Integer startPage = 1;
+Integer endPage = 1;
+Boolean removeComments = false;
+Boolean removeHeaderFooter = false;
+Boolean acceptChanges = false;
+
+// Step 2: Call the extractAndSave method
+ExtractTextFromWord.ExtractTextFromWordResult result = ExtractTextFromWord.extractAndSave(
+    wordBase64,
+    docName,
+    startPage,
+    endPage,
+    removeComments,
+    removeHeaderFooter,
+    acceptChanges
+);
+
+System.debug('Extracted Text: ' + result.textResult);
+System.debug('Download URL: ' + result.downloadUrl);
+System.debug('Error: ' + result.error);
+
+// Step 3: Extract ContentDocumentId from the download URL
+String contentDocumentId;
+if (result.downloadUrl != null && result.downloadUrl.contains('/sfc/servlet.shepherd/document/download/')) {
+    List<String> urlParts = result.downloadUrl.split('/');
+    contentDocumentId = urlParts[urlParts.size() - 1];
+    System.debug('ContentDocumentId: ' + contentDocumentId);
+}
+
+// Step 4: Make the file public and output the public URL
+if (contentDocumentId != null) {
+    String publicUrl = ExtractTextFromWord.makeFilePublic(contentDocumentId);
+    System.debug('Public URL: ' + publicUrl);
+} else {
+    System.debug('Could not extract ContentDocumentId from download URL.');
+}
