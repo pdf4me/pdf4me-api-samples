@@ -1,6 +1,6 @@
-# Split PDF by Swiss QR - Java Implementation
+# Split PDF by Swiss QR - Python Implementation
 
-This project demonstrates how to split PDF files by Swiss QR barcode using the PDF4Me API with Java.
+This project demonstrates how to split PDF files by Swiss QR barcode using the PDF4Me API with Python.
 
 ## ✅ Features
 
@@ -16,38 +16,40 @@ This project demonstrates how to split PDF files by Swiss QR barcode using the P
 
 ## Prerequisites
 
-- Java 8 or higher
+- Python 3.7 or higher
 - PDF4Me API key
-- IntelliJ IDEA or Eclipse (recommended)
+- pip (Python package installer)
 - Internet connection for API access
 
 ## Project Structure
 
 ```
-SplitPDFBySwissQR/
-├── src/
-│   └── Main.java              # Main application logic
+Split PDF by Swiss QR/
+├── split_pdf_by_swiss_qr.py   # Main application logic
 ├── README.md                  # This documentation
-├── SplitPDFBySwissQR.iml      # IntelliJ IDEA project file
-├── .gitignore                 # Git ignore file
-├── sample.pdf                 # Sample input PDF file
-└── sample_swiss_qr_split_output/  # Output directory for split PDFs
-    └── swiss_qr_split_result.zip  # Generated split PDF archive
+├── requirements.txt           # Python dependencies
+├── sample.pdf                # Sample input PDF file
+├── SwissQR.pdf               # Additional sample PDF
+└── Split_PDF_SwissQR_outputs/ # Output directory for split PDFs
+    └── split_result.zip      # Generated split PDF archive
 ```
 
 ## Setup
 
 1. **Clone or download this project**
-2. **Configure your API key** in `src/Main.java`:
-   ```java
-   private static final String API_KEY = "your-api-key-here";
-   ```
-3. **Place your input file** in the project directory:
-   - `sample.pdf` - Your PDF file with Swiss QR barcodes
-4. **Compile and run the application**:
+2. **Install dependencies**:
    ```bash
-   javac -d out src/Main.java
-   java -cp out Main
+   pip install -r requirements.txt
+   ```
+3. **Configure your API key** in `split_pdf_by_swiss_qr.py`:
+   ```python
+   API_KEY = "your-api-key-here"
+   ```
+4. **Place your input file** in the project directory:
+   - `sample.pdf` - Your PDF file with Swiss QR barcodes
+5. **Run the application**:
+   ```bash
+   python split_pdf_by_swiss_qr.py
    ```
 
 ## Usage
@@ -64,12 +66,12 @@ The application will:
 ```
 === Splitting PDF by Swiss QR Barcode ===
 Input PDF file: sample.pdf
-Output directory: sample_swiss_qr_split_output
+Output directory: Split_PDF_SwissQR_outputs
 Barcode string: hello
 Barcode filter: startsWith
 Barcode type: qrcode
 Split position: before
-Combining pages with same consecutive barcodes: true
+Combining pages with same consecutive barcodes: True
 PDF render DPI: 1
 Reading and encoding PDF file...
 PDF file read successfully: 12345 bytes
@@ -79,7 +81,7 @@ Request accepted. Processing asynchronously...
 Polling URL: https://api.pdf4me.com/api/v2/SplitPdfByBarcode_old/...
 Polling attempt 1/10...
 PDF splitting completed successfully!
-Split PDFs saved to: sample_swiss_qr_split_output/swiss_qr_split_result.zip
+Split PDFs saved to: Split_PDF_SwissQR_outputs/split_result.zip
 PDF splitting operation completed successfully!
 ```
 
@@ -176,10 +178,11 @@ The application includes comprehensive error handling for:
 
 ## Dependencies
 
-- **java.net.http**: HTTP client for API communication (Java 11+)
-- **java.util**: JSON handling and utilities
-- **java.io**: File operations
-- **java.util.Base64**: Base64 encoding/decoding
+- **requests**: HTTP client for API communication
+- **json**: JSON serialization/deserialization
+- **base64**: Base64 encoding/decoding
+- **os**: File operations and path handling
+- **time**: Time delays for polling operations
 
 ## Security Considerations
 
@@ -219,22 +222,28 @@ The application includes comprehensive error handling for:
    - Increase max retry count if needed
    - Check server status
 
-7. **Java Version Issues**
-   - Ensure Java 8 or higher is installed
-   - Check JAVA_HOME environment variable
-   - Verify Java compiler and runtime versions
+7. **Python Version Issues**
+   - Ensure Python 3.7 or higher is installed
+   - Check Python path and environment
+   - Verify pip is installed and working
+
+8. **Dependency Issues**
+   - Install required packages: `pip install requests`
+   - Check for package conflicts
+   - Use virtual environment if needed
 
 ### Debug Mode
 
 Enable detailed logging by setting:
-```java
-private static final boolean DEBUG_MODE = true;
+```python
+DEBUG_MODE = True
 ```
 
 ## Sample Files
 
 - **sample.pdf**: Sample PDF file with Swiss QR barcodes
-- **swiss_qr_split_result.zip**: Generated archive containing split PDF files
+- **SwissQR.pdf**: Additional sample PDF with Swiss QR codes
+- **split_result.zip**: Generated archive containing split PDF files
 
 ## Expected Workflow
 
@@ -274,6 +283,12 @@ private static final boolean DEBUG_MODE = true;
 - Extract specific sections from reports
 - Organize scanned documents by barcode
 
+### Swiss QR Specific
+- Process Swiss payment slips
+- Split bank statements by transaction codes
+- Organize financial documents by reference numbers
+- Extract specific payment information
+
 ## Next Steps
 
 - Implement batch processing for multiple files
@@ -284,13 +299,14 @@ private static final boolean DEBUG_MODE = true;
 
 ## Future Enhancements
 
-- **GUI Interface**: Create Swing or JavaFX application
+- **GUI Interface**: Create Tkinter or PyQt application
 - **Batch Processing**: Handle multiple PDF documents simultaneously
 - **Preview Feature**: Show split points before processing
 - **Custom Options**: Configure barcode detection sensitivity
 - **Advanced Options**: Support for multiple barcode types in one document
 - **Export Options**: Support for different output formats
-- **Maven/Gradle Integration**: Add proper dependency management
+- **Web Interface**: Create Flask or Django web application
+- **CLI Interface**: Add command-line argument support
 
 ## License
 
@@ -300,5 +316,5 @@ This project is provided as-is for educational and development purposes.
 
 For issues related to:
 - **PDF4Me API**: Contact PDF4Me support
-- **Java Implementation**: Check the troubleshooting section above
+- **Python Implementation**: Check the troubleshooting section above
 - **General Questions**: Refer to PDF4Me documentation 

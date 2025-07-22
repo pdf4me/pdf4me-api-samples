@@ -1,6 +1,6 @@
-# Split PDF by Text - Java Implementation
+# Split PDF by Text - Python Implementation
 
-This project demonstrates how to split PDF files by text content using the PDF4Me API with Java.
+This project demonstrates how to split PDF files by text content using the PDF4Me API with Python.
 
 ## ✅ Features
 
@@ -15,38 +15,40 @@ This project demonstrates how to split PDF files by text content using the PDF4M
 
 ## Prerequisites
 
-- Java 8 or higher
+- Python 3.7 or higher
 - PDF4Me API key
-- IntelliJ IDEA or Eclipse (recommended)
+- pip (Python package installer)
 - Internet connection for API access
 
 ## Project Structure
 
 ```
-SplitPDFByText/
-├── src/
-│   └── Main.java              # Main application logic
+Split PDF by Text/
+├── split_pdf_by_text.py       # Main application logic
 ├── README.md                  # This documentation
-├── SplitPDFByText.iml         # IntelliJ IDEA project file
-├── .gitignore                 # Git ignore file
-├── sample.pdf                 # Sample input PDF file
-└── sample_text_split_output/  # Output directory for split PDFs
-    └── text_split_result.zip  # Generated split PDF archive
+├── requirements.txt           # Python dependencies
+├── sample.pdf                # Sample input PDF file
+└── Split_PDF_Text_outputs/    # Output directory for split PDFs
+    ├── sample 1.pdf          # Generated split PDF file
+    └── sample 2.pdf          # Generated split PDF file
 ```
 
 ## Setup
 
 1. **Clone or download this project**
-2. **Configure your API key** in `src/Main.java`:
-   ```java
-   private static final String API_KEY = "your-api-key-here";
-   ```
-3. **Place your input file** in the project directory:
-   - `sample.pdf` - Your PDF file with text content
-4. **Compile and run the application**:
+2. **Install dependencies**:
    ```bash
-   javac -d out src/Main.java
-   java -cp out Main
+   pip install -r requirements.txt
+   ```
+3. **Configure your API key** in `split_pdf_by_text.py`:
+   ```python
+   API_KEY = "your-api-key-here"
+   ```
+4. **Place your input file** in the project directory:
+   - `sample.pdf` - Your PDF file with text content
+5. **Run the application**:
+   ```bash
+   python split_pdf_by_text.py
    ```
 
 ## Usage
@@ -56,14 +58,14 @@ The application will:
 2. Convert it to Base64
 3. Send a request to split the PDF by text content
 4. Handle the response (synchronous or asynchronous)
-5. Save the split PDF files as a ZIP archive
+5. Save the split PDF files individually
 
 ### Expected Output
 
 ```
 === Splitting PDF by Text Content ===
 Input PDF file: sample.pdf
-Output directory: sample_text_split_output
+Output directory: Split_PDF_Text_outputs
 Text to split by: Chapter
 Split position: before
 File naming: NameAsPerOrder
@@ -75,7 +77,7 @@ Request accepted. Processing asynchronously...
 Polling URL: https://api.pdf4me.com/api/v2/SplitPdfByText/...
 Polling attempt 1/10...
 PDF splitting completed successfully!
-Split PDFs saved to: sample_text_split_output/text_split_result.zip
+Split PDFs saved to: Split_PDF_Text_outputs/
 PDF splitting operation completed successfully!
 ```
 
@@ -109,7 +111,7 @@ POST /api/v2/SplitPdfByText
 2. **Request Building**: Constructs JSON payload with PDF content and text parameters
 3. **API Communication**: Sends HTTP POST request to PDF4Me API
 4. **Response Handling**: Processes both synchronous (200) and asynchronous (202) responses
-5. **File Processing**: Saves the split PDF files as a ZIP archive
+5. **File Processing**: Saves the split PDF files individually
 
 ### Error Handling
 
@@ -144,7 +146,7 @@ POST /api/v2/SplitPdfByText
 ## Response Handling
 
 ### Success Response (200 OK)
-- Returns the split PDF files as a ZIP archive
+- Returns the split PDF files as individual PDFs
 
 ### Asynchronous Response (202 Accepted)
 ```json
@@ -166,10 +168,11 @@ The application includes comprehensive error handling for:
 
 ## Dependencies
 
-- **java.net.http**: HTTP client for API communication (Java 11+)
-- **java.util**: JSON handling and utilities
-- **java.io**: File operations
-- **java.util.Base64**: Base64 encoding/decoding
+- **requests**: HTTP client for API communication
+- **json**: JSON serialization/deserialization
+- **base64**: Base64 encoding/decoding
+- **os**: File operations and path handling
+- **time**: Time delays for polling operations
 
 ## Security Considerations
 
@@ -209,28 +212,34 @@ The application includes comprehensive error handling for:
    - Increase max retry count if needed
    - Check server status
 
-7. **Java Version Issues**
-   - Ensure Java 8 or higher is installed
-   - Check JAVA_HOME environment variable
-   - Verify Java compiler and runtime versions
+7. **Python Version Issues**
+   - Ensure Python 3.7 or higher is installed
+   - Check Python path and environment
+   - Verify pip is installed and working
+
+8. **Dependency Issues**
+   - Install required packages: `pip install requests`
+   - Check for package conflicts
+   - Use virtual environment if needed
 
 ### Debug Mode
 
 Enable detailed logging by setting:
-```java
-private static final boolean DEBUG_MODE = true;
+```python
+DEBUG_MODE = True
 ```
 
 ## Sample Files
 
 - **sample.pdf**: Sample PDF file with text content
-- **text_split_result.zip**: Generated archive containing split PDF files
+- **sample 1.pdf**: Generated split PDF file
+- **sample 2.pdf**: Generated split PDF file
 
 ## Expected Workflow
 
 1. **Input**: PDF document with text content
 2. **Processing**: Split PDF at specified text positions
-3. **Output**: ZIP archive containing individual PDF files
+3. **Output**: Individual PDF files for each split section
 
 ## Text Configuration Options
 
@@ -262,6 +271,12 @@ private static final boolean DEBUG_MODE = true;
 - Extract specific sections from reports
 - Organize scanned documents by content
 
+### Academic and Research
+- Split research papers by sections
+- Extract specific chapters from textbooks
+- Organize thesis documents by chapters
+- Separate different types of academic content
+
 ## Next Steps
 
 - Implement batch processing for multiple files
@@ -272,14 +287,16 @@ private static final boolean DEBUG_MODE = true;
 
 ## Future Enhancements
 
-- **GUI Interface**: Create Swing or JavaFX application
+- **GUI Interface**: Create Tkinter or PyQt application
 - **Batch Processing**: Handle multiple PDF documents simultaneously
 - **Preview Feature**: Show split points before processing
 - **Custom Options**: Configure text detection sensitivity
 - **Advanced Options**: Support for multiple text patterns in one document
 - **Export Options**: Support for different output formats
 - **Regular Expressions**: Support for complex text matching patterns
-- **Maven/Gradle Integration**: Add proper dependency management
+- **Web Interface**: Create Flask or Django web application
+- **CLI Interface**: Add command-line argument support
+- **OCR Integration**: Support for splitting scanned documents
 
 ## License
 
@@ -289,5 +306,5 @@ This project is provided as-is for educational and development purposes.
 
 For issues related to:
 - **PDF4Me API**: Contact PDF4Me support
-- **Java Implementation**: Check the troubleshooting section above
+- **Python Implementation**: Check the troubleshooting section above
 - **General Questions**: Refer to PDF4Me documentation 

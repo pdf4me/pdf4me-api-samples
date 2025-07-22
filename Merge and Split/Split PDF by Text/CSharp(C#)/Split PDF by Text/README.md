@@ -1,6 +1,6 @@
-# Split PDF by Text - Java Implementation
+# Split PDF by Text - C# Implementation
 
-This project demonstrates how to split PDF files by text content using the PDF4Me API with Java.
+This project demonstrates how to split PDF files by text content using the PDF4Me API with C#.
 
 ## ✅ Features
 
@@ -15,38 +15,36 @@ This project demonstrates how to split PDF files by text content using the PDF4M
 
 ## Prerequisites
 
-- Java 8 or higher
+- .NET Framework 4.7.2 or higher / .NET Core 2.1 or higher
 - PDF4Me API key
-- IntelliJ IDEA or Eclipse (recommended)
+- Visual Studio 2019 or later (recommended)
 - Internet connection for API access
 
 ## Project Structure
 
 ```
-SplitPDFByText/
-├── src/
-│   └── Main.java              # Main application logic
+Split PDF by Text/
+├── Program.cs                 # Main application logic
 ├── README.md                  # This documentation
-├── SplitPDFByText.iml         # IntelliJ IDEA project file
-├── .gitignore                 # Git ignore file
+├── Split_PDF_by_Text.csproj   # Project file
+├── Split_PDF_by_Text.sln      # Solution file
 ├── sample.pdf                 # Sample input PDF file
-└── sample_text_split_output/  # Output directory for split PDFs
+└── text_split_output/         # Output directory for split PDFs
     └── text_split_result.zip  # Generated split PDF archive
 ```
 
 ## Setup
 
 1. **Clone or download this project**
-2. **Configure your API key** in `src/Main.java`:
-   ```java
-   private static final String API_KEY = "your-api-key-here";
+2. **Configure your API key** in `Program.cs`:
+   ```csharp
+   public static readonly string API_KEY = "your-api-key-here";
    ```
 3. **Place your input file** in the project directory:
    - `sample.pdf` - Your PDF file with text content
-4. **Compile and run the application**:
+4. **Run the application**:
    ```bash
-   javac -d out src/Main.java
-   java -cp out Main
+   dotnet run
    ```
 
 ## Usage
@@ -63,7 +61,7 @@ The application will:
 ```
 === Splitting PDF by Text Content ===
 Input PDF file: sample.pdf
-Output directory: sample_text_split_output
+Output directory: text_split_output
 Text to split by: Chapter
 Split position: before
 File naming: NameAsPerOrder
@@ -75,7 +73,7 @@ Request accepted. Processing asynchronously...
 Polling URL: https://api.pdf4me.com/api/v2/SplitPdfByText/...
 Polling attempt 1/10...
 PDF splitting completed successfully!
-Split PDFs saved to: sample_text_split_output/text_split_result.zip
+Split PDFs saved to: text_split_output/text_split_result.zip
 PDF splitting operation completed successfully!
 ```
 
@@ -166,10 +164,10 @@ The application includes comprehensive error handling for:
 
 ## Dependencies
 
-- **java.net.http**: HTTP client for API communication (Java 11+)
-- **java.util**: JSON handling and utilities
-- **java.io**: File operations
-- **java.util.Base64**: Base64 encoding/decoding
+- **System.Net.Http**: HTTP client for API communication
+- **System.Text.Json**: JSON serialization/deserialization
+- **System.IO**: File operations
+- **System.Text**: Base64 encoding/decoding
 
 ## Security Considerations
 
@@ -209,16 +207,11 @@ The application includes comprehensive error handling for:
    - Increase max retry count if needed
    - Check server status
 
-7. **Java Version Issues**
-   - Ensure Java 8 or higher is installed
-   - Check JAVA_HOME environment variable
-   - Verify Java compiler and runtime versions
-
 ### Debug Mode
 
 Enable detailed logging by setting:
-```java
-private static final boolean DEBUG_MODE = true;
+```csharp
+private const bool DEBUG_MODE = true;
 ```
 
 ## Sample Files
@@ -256,12 +249,6 @@ private static final boolean DEBUG_MODE = true;
 - Split multi-page invoices
 - Organize scanned documents by content
 
-### Automation
-- Process large batches of documents
-- Automate document routing
-- Extract specific sections from reports
-- Organize scanned documents by content
-
 ## Next Steps
 
 - Implement batch processing for multiple files
@@ -272,14 +259,13 @@ private static final boolean DEBUG_MODE = true;
 
 ## Future Enhancements
 
-- **GUI Interface**: Create Swing or JavaFX application
+- **GUI Interface**: Create Windows Forms or WPF application
 - **Batch Processing**: Handle multiple PDF documents simultaneously
 - **Preview Feature**: Show split points before processing
 - **Custom Options**: Configure text detection sensitivity
 - **Advanced Options**: Support for multiple text patterns in one document
 - **Export Options**: Support for different output formats
 - **Regular Expressions**: Support for complex text matching patterns
-- **Maven/Gradle Integration**: Add proper dependency management
 
 ## License
 
@@ -289,5 +275,5 @@ This project is provided as-is for educational and development purposes.
 
 For issues related to:
 - **PDF4Me API**: Contact PDF4Me support
-- **Java Implementation**: Check the troubleshooting section above
+- **C# Implementation**: Check the troubleshooting section above
 - **General Questions**: Refer to PDF4Me documentation 
