@@ -1,10 +1,10 @@
-function readSwissQrCode() {
+function updateHyperlinksAnnotation() {
   // Set your PDF4me API key
   var apiKey = 'Get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/'; 
   
   // Set the PDF4me API endpoint URL
   var baseUrl = "https://api.pdf4me.com/";
-  var url = `${baseUrl}api/v2/ReadSwissQrBill`;
+  var url = `${baseUrl}api/v2/UpdateHyperlinkAnnotation`;
   
   // Set the folder and file name for the input PDF
   var folderName = 'PDF4ME input'; // <-- Set your folder name here
@@ -20,8 +20,21 @@ function readSwissQrCode() {
   //          The file ID is: 1A2B3C4D5E6F7G8H9I0J
   //          ===  Set the file ID for the input PDF ===
 
-  // Set the output folder name for Swiss QR code data
+  // Set the output folder name for updated PDF
   var outputFolderName = 'PDF4ME output'; // <-- Set your output folder name here
+
+  // Hyperlink update configuration
+  var hyperlinkUpdates = [
+    {
+      SearchOn: "Text",                                    // Search criteria type
+      SearchValue: "http://www.google.com",               // Search for the hyperlinked text
+      IsExpression: true,                                  // Whether to use expression matching
+      TextCurrentValue: "http://www.google.com",          // Current hyperlinked text to replace
+      TextNewValue: "https://pdf4me.com",                 // New display text for the hyperlink
+      URLCurrentValue: "http://www.google.com",           // Current URL destination to replace
+      URLNewValue: "https://pdf4me.com"                   // New URL destination
+    }
+  ];
 
   try {
     // === Folder structure file input START ===
@@ -59,15 +72,16 @@ function readSwissQrCode() {
     var pdfBase64 = Utilities.base64Encode(pdfBlob.getBytes());
 
     // Prepare the payload for the API request
-    // What reading Swiss QR codes does:
-    // - Reads Swiss QR codes from PDF documents containing Swiss QR bills
-    // - Extracts structured data from Swiss QR code format
-    // - Provides payment information, recipient details, and bill data
-    // - Useful for payment processing, invoice analysis, and financial document handling
+    // What PDF4me hyperlinks annotation update does:
+    // - Updates hyperlink text and URL destinations in PDF documents
+    // - Supports multiple hyperlink updates in a single operation
+    // - Uses expression matching for flexible text search
+    // - Maintains PDF structure and formatting
     var payload = {
-      docContent: pdfBase64,                        // Base64 encoded PDF document content
-      docName: file.getName(),                      // Name of the input PDF file
-      async: true                                   // Asynchronous processing (recommended for large files)
+      docName: "output.pdf",                               // Name of the file
+      docContent: pdfBase64,                               // Base64 encoded PDF content
+      updatehyperlinkannotationlist: hyperlinkUpdates,    // List of hyperlink updates
+      async: true                                          // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request
@@ -84,9 +98,10 @@ function readSwissQrCode() {
       muteHttpExceptions: true
     };
 
-    // Send the initial Swiss QR code reading request to the API
-    Logger.log('Sending Swiss QR code reading request to PDF4me API...');
-    Logger.log('Processing Swiss QR code reading: ' + fileName);
+    // Send the initial hyperlinks annotation update request to the API
+    Logger.log('Sending hyperlinks annotation update request to PDF4me API...');
+    Logger.log('Processing hyperlinks update: ' + fileName);
+    Logger.log('Number of hyperlink updates: ' + hyperlinkUpdates.length);
 
     var response = UrlFetchApp.fetch(url, options);
     var code = response.getResponseCode();
@@ -95,19 +110,19 @@ function readSwissQrCode() {
 
     // Handle different response scenarios based on status code
     if (code === 200) {
-      // 200 means "Success" - Swiss QR code reading completed successfully
-      Logger.log('Success! Swiss QR code reading completed!');
+      // 200 means "Success" - Hyperlinks annotation update completed successfully
+      Logger.log('Success! Hyperlinks annotation update completed!');
       
-      // Save the Swiss QR code data
+      // Save the updated PDF
       try {
-        // Parse the JSON response containing Swiss QR code data
-        var swissQrData = JSON.parse(response.getContentText());
+        // Get the binary content from the response
+        var updatedPdfBlob = response.getBlob();
         
-        // Process and save Swiss QR code data
-        processSwissQrData(swissQrData, outputFolderName, file.getName());
+        // Process and save updated PDF
+        processUpdatedPdf(updatedPdfBlob, outputFolderName, file.getName());
         
       } catch (e) {
-        Logger.log('Error processing Swiss QR code data: ' + e);
+        Logger.log('Error processing updated PDF: ' + e);
         // Save raw response content as fallback
         var outputFolders = DriveApp.getFoldersByName(outputFolderName);
         if (outputFolders.hasNext()) {
@@ -119,7 +134,7 @@ function readSwissQrCode() {
       }
       
     } else if (code === 202) {
-      // 202 means "Accepted" - API is processing the Swiss QR code reading asynchronously
+      // 202 means "Accepted" - API is processing the hyperlinks annotation update asynchronously
       Logger.log('202 - Request accepted. Processing asynchronously...');
       
       // Get the polling URL from the Location header
@@ -131,42 +146,42 @@ function readSwissQrCode() {
       }
 
       // Retry logic for polling the result
-      var maxRetries = 20;    // Maximum number of polling attempts (increased for Swiss QR processing)
+      var maxRetries = 10;    // Maximum number of polling attempts
       var retryDelay = 10 * 1000; // 10 seconds between each polling attempt
 
-      // Poll the API until Swiss QR code reading is complete
+      // Poll the API until hyperlinks annotation update is complete
       for (var attempt = 0; attempt < maxRetries; attempt++) {
         Logger.log('Checking status... (Attempt ' + (attempt + 1) + '/' + maxRetries + ')');
         Utilities.sleep(retryDelay);  // Wait before next attempt
 
         // Check the processing status by calling the polling URL
-        var responseExtraction = UrlFetchApp.fetch(locationUrl, {
+        var responseUpdate = UrlFetchApp.fetch(locationUrl, {
           method: 'get',
           headers: headers,
           muteHttpExceptions: true
         });
         
-        var pollCode = responseExtraction.getResponseCode();
+        var pollCode = responseUpdate.getResponseCode();
 
         if (pollCode === 200) {
           // 200 - Success: Processing completed
-          Logger.log('Success! Swiss QR code reading completed!');
+          Logger.log('Success! Hyperlinks annotation update completed!');
           
-          // Save the Swiss QR code data
+          // Save the updated PDF
           try {
-            // Parse the JSON response containing Swiss QR code data
-            var swissQrData = JSON.parse(responseExtraction.getContentText());
+            // Get the binary content from the polling response
+            var updatedPdfBlob = responseUpdate.getBlob();
             
-            // Process and save Swiss QR code data
-            processSwissQrData(swissQrData, outputFolderName, file.getName());
+            // Process and save updated PDF
+            processUpdatedPdf(updatedPdfBlob, outputFolderName, file.getName());
             
           } catch (e) {
-            Logger.log('Error processing Swiss QR code data: ' + e);
+            Logger.log('Error processing updated PDF: ' + e);
             // Save raw response content as fallback
             var outputFolders = DriveApp.getFoldersByName(outputFolderName);
             if (outputFolders.hasNext()) {
               var outputFolder = outputFolders.next();
-              var rawBlob = Utilities.newBlob(responseExtraction.getContentText(), 'text/plain', 'raw_response.txt');
+              var rawBlob = Utilities.newBlob(responseUpdate.getContentText(), 'text/plain', 'raw_response.txt');
               outputFolder.createFile(rawBlob);
               Logger.log('Raw response saved: raw_response.txt');
             }
@@ -179,13 +194,13 @@ function readSwissQrCode() {
           continue;
         } else {
           // Error occurred during processing
-          Logger.log('Error during processing: ' + pollCode + ' - ' + responseExtraction.getContentText());
+          Logger.log('Error during processing: ' + pollCode + ' - ' + responseUpdate.getContentText());
           return;
         }
       }
 
       // If we reach here, polling timed out
-      Logger.log('Timeout: Swiss QR code reading did not complete after multiple retries');
+      Logger.log('Timeout: Hyperlinks annotation update did not complete after multiple retries');
       
     } else {
       // Other status codes - Error
@@ -199,8 +214,8 @@ function readSwissQrCode() {
   }
 }
 
-function processSwissQrData(swissQrData, outputFolderName, fileName) {
-  // Process and save Swiss QR code data in JSON format
+function processUpdatedPdf(updatedPdfBlob, outputFolderName, fileName) {
+  // Process and save updated PDF
   try {
     var outputFolders = DriveApp.getFoldersByName(outputFolderName);
     if (!outputFolders.hasNext()) {
@@ -209,72 +224,36 @@ function processSwissQrData(swissQrData, outputFolderName, fileName) {
     }
     var outputFolder = outputFolders.next();
     
-    // Save complete Swiss QR code data as JSON
-    var jsonContent = JSON.stringify(swissQrData, null, 2);
-    var jsonBlob = Utilities.newBlob(jsonContent, 'application/json', 'read_swissqr_code_output.json');
-    outputFolder.createFile(jsonBlob);
-    Logger.log('Swiss QR code data saved: read_swissqr_code_output.json');
+    // Create output filename
+    var baseName = fileName.replace(/\.pdf$/i, '');
+    var outputFileName = baseName + '_hyperlinks_updated.pdf';
     
-    // Display Swiss QR code data summary
-    if (typeof swissQrData === 'object') {
-      Logger.log('Swiss QR Code Data:');
-      
-      // Check for common Swiss QR code fields
-      var qrFields = ['qrCode', 'swissQrCode', 'billData', 'paymentData', 'recipient', 'amount', 'currency', 'reference'];
-      var foundFields = [];
-      
-      for (var i = 0; i < qrFields.length; i++) {
-        var field = qrFields[i];
-        if (swissQrData[field]) {
-          foundFields.push(field);
-          Logger.log('  ' + field + ': ' + swissQrData[field]);
-        }
-      }
-      
-      if (foundFields.length === 0) {
-        // Display top-level data if no specific Swiss QR fields found
-        var keys = Object.keys(swissQrData);
-        var maxKeys = Math.min(keys.length, 5);
-        for (var i = 0; i < maxKeys; i++) {
-          var key = keys[i];
-          var value = swissQrData[key];
-          Logger.log('  ' + key + ': ' + value);
-        }
-        
-        if (keys.length > 5) {
-          Logger.log('  ... and ' + (keys.length - 5) + ' more fields');
-        }
-      }
-      
-      // Log summary information
-      if (foundFields.length > 0) {
-        Logger.log('Swiss QR Code Fields Found: ' + foundFields.join(', '));
-      } else {
-        Logger.log('Available data fields: ' + Object.keys(swissQrData).join(', '));
-      }
-      
-    } else {
-      Logger.log('No Swiss QR code data found in the PDF');
-      
-      // Log info message
-      Logger.log('No Swiss QR code data was found in the PDF document.');
-    }
+    // Set the MIME type for PDF
+    updatedPdfBlob.setContentType('application/pdf');
+    
+    // Save the updated PDF file
+    var savedFile = outputFolder.createFile(updatedPdfBlob);
+    savedFile.setName(outputFileName);
+    
+    Logger.log('Updated PDF saved: ' + outputFileName);
+    Logger.log('Updated file size: ' + savedFile.getSize() + ' bytes');
+    Logger.log('Hyperlinks annotation update completed successfully!');
     
   } catch (e) {
-    Logger.log('Error processing Swiss QR code data: ' + e);
+    Logger.log('Error processing updated PDF: ' + e);
     
     // Create error file
-    var errorContent = 'Swiss QR Code Reading Error\n' +
-                      '===========================\n' +
+    var errorContent = 'Hyperlinks Annotation Update Error\n' +
+                      '==================================\n' +
                       'Error occurred on: ' + new Date().toString() + '\n\n' +
                       'Error details: ' + e + '\n';
     
-    var errorBlob = Utilities.newBlob(errorContent, 'text/plain', 'reading_error.txt');
+    var errorBlob = Utilities.newBlob(errorContent, 'text/plain', 'hyperlinks_update_error.txt');
     var outputFolders = DriveApp.getFoldersByName(outputFolderName);
     if (outputFolders.hasNext()) {
       var outputFolder = outputFolders.next();
       outputFolder.createFile(errorBlob);
-      Logger.log('Error info saved: reading_error.txt');
+      Logger.log('Error info saved: hyperlinks_update_error.txt');
     }
   }
-}
+} 

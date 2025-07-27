@@ -1,10 +1,10 @@
-function readSwissQrCode() {
+function repairPdfDocument() {
   // Set your PDF4me API key
   var apiKey = 'Get the API key from https://dev.pdf4me.com/dashboard/#/api-keys/'; 
   
   // Set the PDF4me API endpoint URL
   var baseUrl = "https://api.pdf4me.com/";
-  var url = `${baseUrl}api/v2/ReadSwissQrBill`;
+  var url = `${baseUrl}api/v2/RepairPdf`;
   
   // Set the folder and file name for the input PDF
   var folderName = 'PDF4ME input'; // <-- Set your folder name here
@@ -20,7 +20,7 @@ function readSwissQrCode() {
   //          The file ID is: 1A2B3C4D5E6F7G8H9I0J
   //          ===  Set the file ID for the input PDF ===
 
-  // Set the output folder name for Swiss QR code data
+  // Set the output folder name for repaired PDF
   var outputFolderName = 'PDF4ME output'; // <-- Set your output folder name here
 
   try {
@@ -59,14 +59,14 @@ function readSwissQrCode() {
     var pdfBase64 = Utilities.base64Encode(pdfBlob.getBytes());
 
     // Prepare the payload for the API request
-    // What reading Swiss QR codes does:
-    // - Reads Swiss QR codes from PDF documents containing Swiss QR bills
-    // - Extracts structured data from Swiss QR code format
-    // - Provides payment information, recipient details, and bill data
-    // - Useful for payment processing, invoice analysis, and financial document handling
+    // What PDF document repair does:
+    // - Repairs corrupted or damaged PDF documents
+    // - Fixes structural issues and file integrity problems
+    // - Recovers content from partially damaged PDFs
+    // - Ensures PDF files are properly formatted and accessible
     var payload = {
       docContent: pdfBase64,                        // Base64 encoded PDF document content
-      docName: file.getName(),                      // Name of the input PDF file
+      docName: "sample.pdf",                        // Output document name
       async: true                                   // Asynchronous processing (recommended for large files)
     };
 
@@ -84,9 +84,9 @@ function readSwissQrCode() {
       muteHttpExceptions: true
     };
 
-    // Send the initial Swiss QR code reading request to the API
-    Logger.log('Sending Swiss QR code reading request to PDF4me API...');
-    Logger.log('Processing Swiss QR code reading: ' + fileName);
+    // Send the initial PDF repair request to the API
+    Logger.log('Sending PDF repair request to PDF4me API...');
+    Logger.log('Processing PDF repair: ' + fileName);
 
     var response = UrlFetchApp.fetch(url, options);
     var code = response.getResponseCode();
@@ -95,19 +95,19 @@ function readSwissQrCode() {
 
     // Handle different response scenarios based on status code
     if (code === 200) {
-      // 200 means "Success" - Swiss QR code reading completed successfully
-      Logger.log('Success! Swiss QR code reading completed!');
+      // 200 means "Success" - PDF repair completed successfully
+      Logger.log('Success! PDF repair completed!');
       
-      // Save the Swiss QR code data
+      // Save the repaired PDF
       try {
-        // Parse the JSON response containing Swiss QR code data
-        var swissQrData = JSON.parse(response.getContentText());
+        // Get the binary content from the response
+        var repairedPdfBlob = response.getBlob();
         
-        // Process and save Swiss QR code data
-        processSwissQrData(swissQrData, outputFolderName, file.getName());
+        // Process and save repaired PDF
+        processRepairedPdf(repairedPdfBlob, outputFolderName, file.getName());
         
       } catch (e) {
-        Logger.log('Error processing Swiss QR code data: ' + e);
+        Logger.log('Error processing repaired PDF: ' + e);
         // Save raw response content as fallback
         var outputFolders = DriveApp.getFoldersByName(outputFolderName);
         if (outputFolders.hasNext()) {
@@ -119,7 +119,7 @@ function readSwissQrCode() {
       }
       
     } else if (code === 202) {
-      // 202 means "Accepted" - API is processing the Swiss QR code reading asynchronously
+      // 202 means "Accepted" - API is processing the PDF repair asynchronously
       Logger.log('202 - Request accepted. Processing asynchronously...');
       
       // Get the polling URL from the Location header
@@ -131,42 +131,42 @@ function readSwissQrCode() {
       }
 
       // Retry logic for polling the result
-      var maxRetries = 20;    // Maximum number of polling attempts (increased for Swiss QR processing)
+      var maxRetries = 10;    // Maximum number of polling attempts
       var retryDelay = 10 * 1000; // 10 seconds between each polling attempt
 
-      // Poll the API until Swiss QR code reading is complete
+      // Poll the API until PDF repair is complete
       for (var attempt = 0; attempt < maxRetries; attempt++) {
         Logger.log('Checking status... (Attempt ' + (attempt + 1) + '/' + maxRetries + ')');
         Utilities.sleep(retryDelay);  // Wait before next attempt
 
         // Check the processing status by calling the polling URL
-        var responseExtraction = UrlFetchApp.fetch(locationUrl, {
+        var responseRepair = UrlFetchApp.fetch(locationUrl, {
           method: 'get',
           headers: headers,
           muteHttpExceptions: true
         });
         
-        var pollCode = responseExtraction.getResponseCode();
+        var pollCode = responseRepair.getResponseCode();
 
         if (pollCode === 200) {
           // 200 - Success: Processing completed
-          Logger.log('Success! Swiss QR code reading completed!');
+          Logger.log('Success! PDF repair completed!');
           
-          // Save the Swiss QR code data
+          // Save the repaired PDF
           try {
-            // Parse the JSON response containing Swiss QR code data
-            var swissQrData = JSON.parse(responseExtraction.getContentText());
+            // Get the binary content from the polling response
+            var repairedPdfBlob = responseRepair.getBlob();
             
-            // Process and save Swiss QR code data
-            processSwissQrData(swissQrData, outputFolderName, file.getName());
+            // Process and save repaired PDF
+            processRepairedPdf(repairedPdfBlob, outputFolderName, file.getName());
             
           } catch (e) {
-            Logger.log('Error processing Swiss QR code data: ' + e);
+            Logger.log('Error processing repaired PDF: ' + e);
             // Save raw response content as fallback
             var outputFolders = DriveApp.getFoldersByName(outputFolderName);
             if (outputFolders.hasNext()) {
               var outputFolder = outputFolders.next();
-              var rawBlob = Utilities.newBlob(responseExtraction.getContentText(), 'text/plain', 'raw_response.txt');
+              var rawBlob = Utilities.newBlob(responseRepair.getContentText(), 'text/plain', 'raw_response.txt');
               outputFolder.createFile(rawBlob);
               Logger.log('Raw response saved: raw_response.txt');
             }
@@ -179,13 +179,13 @@ function readSwissQrCode() {
           continue;
         } else {
           // Error occurred during processing
-          Logger.log('Error during processing: ' + pollCode + ' - ' + responseExtraction.getContentText());
+          Logger.log('Error during processing: ' + pollCode + ' - ' + responseRepair.getContentText());
           return;
         }
       }
 
       // If we reach here, polling timed out
-      Logger.log('Timeout: Swiss QR code reading did not complete after multiple retries');
+      Logger.log('Timeout: PDF repair did not complete after multiple retries');
       
     } else {
       // Other status codes - Error
@@ -199,8 +199,8 @@ function readSwissQrCode() {
   }
 }
 
-function processSwissQrData(swissQrData, outputFolderName, fileName) {
-  // Process and save Swiss QR code data in JSON format
+function processRepairedPdf(repairedPdfBlob, outputFolderName, fileName) {
+  // Process and save repaired PDF
   try {
     var outputFolders = DriveApp.getFoldersByName(outputFolderName);
     if (!outputFolders.hasNext()) {
@@ -209,72 +209,36 @@ function processSwissQrData(swissQrData, outputFolderName, fileName) {
     }
     var outputFolder = outputFolders.next();
     
-    // Save complete Swiss QR code data as JSON
-    var jsonContent = JSON.stringify(swissQrData, null, 2);
-    var jsonBlob = Utilities.newBlob(jsonContent, 'application/json', 'read_swissqr_code_output.json');
-    outputFolder.createFile(jsonBlob);
-    Logger.log('Swiss QR code data saved: read_swissqr_code_output.json');
+    // Create output filename with repair info
+    var baseName = fileName.replace(/\.pdf$/i, '');
+    var outputFileName = baseName + '.repaired.pdf';
     
-    // Display Swiss QR code data summary
-    if (typeof swissQrData === 'object') {
-      Logger.log('Swiss QR Code Data:');
-      
-      // Check for common Swiss QR code fields
-      var qrFields = ['qrCode', 'swissQrCode', 'billData', 'paymentData', 'recipient', 'amount', 'currency', 'reference'];
-      var foundFields = [];
-      
-      for (var i = 0; i < qrFields.length; i++) {
-        var field = qrFields[i];
-        if (swissQrData[field]) {
-          foundFields.push(field);
-          Logger.log('  ' + field + ': ' + swissQrData[field]);
-        }
-      }
-      
-      if (foundFields.length === 0) {
-        // Display top-level data if no specific Swiss QR fields found
-        var keys = Object.keys(swissQrData);
-        var maxKeys = Math.min(keys.length, 5);
-        for (var i = 0; i < maxKeys; i++) {
-          var key = keys[i];
-          var value = swissQrData[key];
-          Logger.log('  ' + key + ': ' + value);
-        }
-        
-        if (keys.length > 5) {
-          Logger.log('  ... and ' + (keys.length - 5) + ' more fields');
-        }
-      }
-      
-      // Log summary information
-      if (foundFields.length > 0) {
-        Logger.log('Swiss QR Code Fields Found: ' + foundFields.join(', '));
-      } else {
-        Logger.log('Available data fields: ' + Object.keys(swissQrData).join(', '));
-      }
-      
-    } else {
-      Logger.log('No Swiss QR code data found in the PDF');
-      
-      // Log info message
-      Logger.log('No Swiss QR code data was found in the PDF document.');
-    }
+    // Set the MIME type for PDF
+    repairedPdfBlob.setContentType('application/pdf');
+    
+    // Save the repaired PDF file
+    var savedFile = outputFolder.createFile(repairedPdfBlob);
+    savedFile.setName(outputFileName);
+    
+    Logger.log('Repaired PDF saved: ' + outputFileName);
+    Logger.log('Repaired file size: ' + savedFile.getSize() + ' bytes');
+    Logger.log('PDF repair completed successfully!');
     
   } catch (e) {
-    Logger.log('Error processing Swiss QR code data: ' + e);
+    Logger.log('Error processing repaired PDF: ' + e);
     
     // Create error file
-    var errorContent = 'Swiss QR Code Reading Error\n' +
-                      '===========================\n' +
+    var errorContent = 'PDF Repair Error\n' +
+                      '================\n' +
                       'Error occurred on: ' + new Date().toString() + '\n\n' +
                       'Error details: ' + e + '\n';
     
-    var errorBlob = Utilities.newBlob(errorContent, 'text/plain', 'reading_error.txt');
+    var errorBlob = Utilities.newBlob(errorContent, 'text/plain', 'repair_error.txt');
     var outputFolders = DriveApp.getFoldersByName(outputFolderName);
     if (outputFolders.hasNext()) {
       var outputFolder = outputFolders.next();
       outputFolder.createFile(errorBlob);
-      Logger.log('Error info saved: reading_error.txt');
+      Logger.log('Error info saved: repair_error.txt');
     }
   }
-}
+} 
