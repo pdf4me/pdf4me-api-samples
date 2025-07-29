@@ -1,0 +1,211 @@
+{
+  "service": {
+    "service": "pdf4me-barcode",
+    "serviceObject": {
+      "name": "pdf4me-barcode"
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs18.x",
+      "region": "us-east-1",
+      "environment": {
+        "PDF4ME_API_KEY": "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys"
+      },
+      "stage": "dev",
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "AddBarcodeToPdfLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/pdf4me-barcode-dev-addBarcodeToPdf"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "pdf4me-barcode",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/pdf4me-barcode-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/pdf4me-barcode-dev*:*:*"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "pdf4me-barcode",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "AddBarcodeToPdfLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-bd79ef30-b55b",
+                "S3Key": "serverless/pdf4me-barcode/dev/1753026576509-2025-07-20T15:49:36.509Z/pdf4me-barcode.zip"
+              },
+              "Handler": "add_barcode_to_pdf.handler",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "pdf4me-barcode-dev-addBarcodeToPdf",
+              "MemorySize": 512,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "PDF4ME_API_KEY": "get the API key from https://dev.pdf4me.com/dashboard/#/api-keys"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "AddBarcodeToPdfLogGroup"
+            ]
+          },
+          "AddBarcodeToPdfLambdaVersionkSXRsKRdgX6sJXnHKoqdZCAjbwGF1FwdWu7OSuOuw": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "AddBarcodeToPdfLambdaFunction"
+              },
+              "CodeSha256": "TAR7rIHCoZ08aExrXYKD+ud+B49ff7Cc9P0jymkD9Qg="
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-us-east-1-bd79ef30-b55b",
+            "Export": {
+              "Name": "sls-pdf4me-barcode-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "AddBarcodeToPdfLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "AddBarcodeToPdfLambdaVersionkSXRsKRdgX6sJXnHKoqdZCAjbwGF1FwdWu7OSuOuw"
+            },
+            "Export": {
+              "Name": "sls-pdf4me-barcode-dev-AddBarcodeToPdfLambdaFunctionQualifiedArn"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "pluginsData": {},
+    "functions": {
+      "addBarcodeToPdf": {
+        "handler": "add_barcode_to_pdf.handler",
+        "timeout": 30,
+        "memorySize": 512,
+        "events": [],
+        "name": "pdf4me-barcode-dev-addBarcodeToPdf",
+        "package": {},
+        "memory": 512,
+        "runtime": "nodejs18.x",
+        "vpc": {},
+        "versionLogicalId": "AddBarcodeToPdfLambdaVersionkSXRsKRdgX6sJXnHKoqdZCAjbwGF1FwdWu7OSuOuw"
+      }
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless",
+    "initialServerlessConfig": {
+      "service": "pdf4me-barcode",
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "functions": {
+        "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "package": {
+        "include": [
+          "add_barcode_to_pdf.js",
+          "sample.pdf",
+          "node_modules/**",
+          "package.json",
+          "package-lock.json"
+        ],
+        "artifactsS3KeyDirname": "serverless/pdf4me-barcode/dev/code-artifacts",
+        "deploymentBucket": "serverless-framework-deployments-us-east-1-bd79ef30-b55b",
+        "artifact": "C:\\Users\\manda\\OneDrive\\Desktop\\Project\\PDF4me\\AWSLambdaPDF4me\\test\\.serverless\\pdf4me-barcode.zip",
+        "artifactDirectoryName": "serverless/pdf4me-barcode/dev/1753026576509-2025-07-20T15:49:36.509Z"
+      }
+    },
+    "appId": null,
+    "orgId": null,
+    "layers": {},
+    "artifact": "C:\\Users\\manda\\OneDrive\\Desktop\\Project\\PDF4me\\AWSLambdaPDF4me\\test\\.serverless\\pdf4me-barcode.zip"
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/pdf4me-barcode/dev/1753026576509-2025-07-20T15:49:36.509Z",
+    "artifact": "pdf4me-barcode.zip"
+  }
+}

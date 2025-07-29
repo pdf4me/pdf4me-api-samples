@@ -1,0 +1,30 @@
+{
+  "name": "pdf4me-unlock-pdf-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for PDF4me PDF document unlocking",
+  "main": "unlock_pdf_lambda.js",
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  },
+  "scripts": {
+    "start": "node unlock_pdf_lambda.js",
+    "deploy": "serverless deploy",
+    "deploy:prod": "serverless deploy --stage prod",
+    "remove": "serverless remove",
+    "offline": "serverless offline",
+    "logs": "serverless logs -f unlockPdf -t"
+  },
+  "keywords": [
+    "pdf4me",
+    "pdf-unlocking",
+    "document-security",
+    "aws-lambda",
+    "serverless"
+  ],
+  "author": "PDF4me",
+  "license": "MIT"
+} 

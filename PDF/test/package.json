@@ -1,0 +1,12 @@
+{
+  "name": "pdf4me-barcode-minimal",
+  "version": "1.0.0",
+  "description": "Minimal PDF4me barcode sample",
+  "main": "add_barcode_to_pdf.js",
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
+  "scripts": {
+    "start": "node add_barcode_to_pdf.js"
+  }
+}
