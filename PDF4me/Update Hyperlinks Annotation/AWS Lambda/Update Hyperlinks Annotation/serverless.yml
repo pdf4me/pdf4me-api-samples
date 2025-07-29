@@ -1,0 +1,84 @@
+service: pdf4me-update-hyperlinks-lambda
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1 # Change to your preferred AWS region
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  timeout: 300 # 5 minutes timeout for PDF processing
+  memorySize: 512 # 512MB memory allocation
+
+functions:
+  updateHyperlinksAnnotation:
+    handler: update_hyperlinks_annotation_lambda.handler
+    timeout: 300
+    memorySize: 512
+    events:
+      - httpApi:
+          path: /update-hyperlinks
+          method: post
+      - s3:
+          bucket: pdf-hyperlinks-input-bucket # Change to your S3 bucket name
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .pdf
+    environment:
+      PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+
+package:
+  include:
+    - update_hyperlinks_annotation_lambda.js
+    - sample.pdf
+    - node_modules/**
+    - package.json
+    - package-lock.json
+
+resources:
+  Resources:
+    # S3 bucket for input PDFs (optional)
+    PdfHyperlinksInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-hyperlinks-input-bucket-${self:provider.stage}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders: ['*']
+              AllowedMethods: [GET, PUT, POST, DELETE]
+              AllowedOrigins: ['*']
+              MaxAge: 3000
+
+    # IAM role permissions
+    IamRoleCustomResourcesLambdaExecution:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: lambda.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        Policies:
+          - PolicyName: S3Access
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - s3:GetObject
+                    - s3:PutObject
+                    - s3:DeleteObject
+                  Resource: 
+                    - !GetAtt PdfHyperlinksInputBucket.Arn
+                    - !Sub "${PdfHyperlinksInputBucket.Arn}/*"
+
+plugins:
+  - serverless-offline # For local testing
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 

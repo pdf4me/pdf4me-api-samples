@@ -1,0 +1,29 @@
+{
+  "name": "pdf4me-get-metadata-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for PDF4me PDF metadata extraction",
+  "main": "get_pdf_metadata_lambda.js",
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  },
+  "scripts": {
+    "start": "node get_pdf_metadata_lambda.js",
+    "deploy": "serverless deploy",
+    "deploy:prod": "serverless deploy --stage prod",
+    "remove": "serverless remove",
+    "offline": "serverless offline",
+    "logs": "serverless logs -f getPdfMetadata -t"
+  },
+  "keywords": [
+    "pdf4me",
+    "pdf-metadata",
+    "aws-lambda",
+    "serverless"
+  ],
+  "author": "PDF4me",
+  "license": "MIT"
+} 

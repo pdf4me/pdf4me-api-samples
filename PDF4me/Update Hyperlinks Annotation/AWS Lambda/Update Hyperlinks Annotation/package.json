@@ -1,0 +1,30 @@
+{
+  "name": "pdf4me-update-hyperlinks-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for PDF4me PDF hyperlinks annotation update",
+  "main": "update_hyperlinks_annotation_lambda.js",
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  },
+  "scripts": {
+    "start": "node update_hyperlinks_annotation_lambda.js",
+    "deploy": "serverless deploy",
+    "deploy:prod": "serverless deploy --stage prod",
+    "remove": "serverless remove",
+    "offline": "serverless offline",
+    "logs": "serverless logs -f updateHyperlinksAnnotation -t"
+  },
+  "keywords": [
+    "pdf4me",
+    "pdf-hyperlinks",
+    "annotation-update",
+    "aws-lambda",
+    "serverless"
+  ],
+  "author": "PDF4me",
+  "license": "MIT"
+} 
