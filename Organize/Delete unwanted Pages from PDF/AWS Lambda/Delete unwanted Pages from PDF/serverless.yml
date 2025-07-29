@@ -1,0 +1,53 @@
+service: pdf4me-delete-unwanted-pages-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  timeout: 300
+  memorySize: 512
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::pdf-unwanted-pages-input-bucket/*"
+            - "arn:aws:s3:::pdf-unwanted-pages-output-bucket/*"
+
+functions:
+  deleteUnwantedPages:
+    handler: delete_unwanted_pages_from_pdf_lambda.handler
+    events:
+      - httpApi:
+          path: /delete-unwanted-pages
+          method: POST
+      - s3:
+          bucket: pdf-unwanted-pages-input-bucket
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .pdf
+          existing: true
+
+package:
+  patterns:
+    - '!node_modules/.prisma/**'
+    - '!node_modules/@prisma/engines/**'
+    - '!node_modules/prisma/**'
+    - '!tests/**'
+    - '!test/**'
+    - '!*.test.js'
+    - '!*.spec.js'
+    - '!.git/**'
+    - '!.vscode/**'
+    - '!README.md'
+    - '!serverless.yml'
+    - '!package.json'
+    - '!package-lock.json' 

@@ -1,0 +1,53 @@
+service: pdf4me-rotate-page-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  timeout: 300
+  memorySize: 512
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::pdf-rotate-page-input-bucket/*"
+            - "arn:aws:s3:::pdf-rotate-page-output-bucket/*"
+
+functions:
+  rotatePage:
+    handler: rotate_page_lambda.handler
+    events:
+      - httpApi:
+          path: /rotate-page
+          method: POST
+      - s3:
+          bucket: pdf-rotate-page-input-bucket
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .pdf
+          existing: true
+
+package:
+  patterns:
+    - '!node_modules/.prisma/**'
+    - '!node_modules/@prisma/engines/**'
+    - '!node_modules/prisma/**'
+    - '!tests/**'
+    - '!test/**'
+    - '!*.test.js'
+    - '!*.spec.js'
+    - '!.git/**'
+    - '!.vscode/**'
+    - '!README.md'
+    - '!serverless.yml'
+    - '!package.json'
+    - '!package-lock.json' 

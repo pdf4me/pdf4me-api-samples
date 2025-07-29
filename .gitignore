@@ -409,3 +409,90 @@ FodyWeavers.xsd
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# PDF4me API Samples - Generated Output Files
+# Optimize Compress
+**/Optimize Compress/**/compress_PDF_output.pdf
+**/Optimize Compress/**/sample.optimized.pdf
+
+# Organize
+**/Organize/**/Delete Blank Pages from PDF/**/sample.no_blank_pages.pdf
+**/Organize/**/Delete unwanted Pages from PDF/**/Delete_unwanted_pages_from_PDF_output.pdf
+**/Organize/**/Extract Pages/**/Extract_pages_PDF_output.pdf
+**/Organize/**/Extract Pages/**/sample.extracted
+**/Organize/**/Rotate Document/**/Rotate_document_PDF_output.pdf
+**/Organize/**/Rotate Document/**/sample.rotated.pdf
+**/Organize/**/Rotate Page/**/Rotate_page_PDF_output.pdf
+**/Organize/**/Rotate Page/**/sample.page_rotated.pdf
+
+# PDF
+**/PDF/**/Get PDF Metadata/**/sample.metadata.json
+**/PDF/**/Repair PDF Document/**/sample.repaired.pdf
+
+# PDF4me
+**/PDF4me/**/Get Document from PDF4me/**/swiss_qr_split_output/
+**/PDF4me/**/Get Document from PDF4me/**/swiss_qr_split_result.zip
+**/PDF4me/**/Update Hyperlinks Annotation/**/hyperlinks_updated_PDF_output.pdf
+**/PDF4me/**/Update Hyperlinks Annotation/**/swiss_qr_split_output/
+
+# Security
+**/Security/**/Protect Document/**/sample.protected.pdf
+**/Security/**/Unlock PDF/**/sample.unlocked.pdf
+
+# Word
+**/Word/**/Disable Tracking changes In Word/**/sample.tracking_disabled.docx
+
+# Java specific files
+**/Java/**/*.class
+**/Java/**/target/
+**/Java/**/.idea/
+**/Java/**/*.iml
+
+# JavaScript/Node.js specific files
+**/JavaScript/**/node_modules/
+**/JavaScript/**/package-lock.json
+**/JavaScript/**/yarn.lock
+
+# Python specific files
+**/Python/**/__pycache__/
+**/Python/**/*.pyc
+**/Python/**/*.pyo
+**/Python/**/*.pyd
+**/Python/**/.Python
+**/Python/**/env/
+**/Python/**/venv/
+**/Python/**/ENV/
+**/Python/**/env.bak/
+**/Python/**/venv.bak/
+
+# C# specific files
+**/CSharp(C#)/**/bin/
+**/CSharp(C#)/**/obj/
+**/CSharp(C#)/**/.vs/
+
+# AWS Lambda specific files
+**/AWS Lambda/**/node_modules/
+**/AWS Lambda/**/package-lock.json
+**/AWS Lambda/**/.serverless/
+
+# Google Script specific files
+**/Google Script/**/.clasp.json
+
+# Salesforce specific files
+**/Salesforce/**/*.log
+**/Salesforce/**/force-app/main/default/classes/*.cls-meta.xml
+
+# Temporary and generated files
+**/*_output.pdf
+**/*_output.*
+**/*.optimized.pdf
+**/*.repaired.pdf
+**/*.protected.pdf
+**/*.unlocked.pdf
+**/*.no_blank_pages.pdf
+**/*.page_rotated.pdf
+**/*.rotated.pdf
+**/*.tracking_disabled.*
+**/*.extracted
+**/*.metadata.json
+**/*.zip
