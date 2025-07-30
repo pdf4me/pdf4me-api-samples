@@ -1,0 +1,30 @@
+{
+  "name": "add-page-number-to-pdf-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to add page numbers to PDF documents using PDF4me API",
+  "main": "add_page_number_to_pdf_lambda.js",
+  "scripts": {
+    "start": "node add_page_number_to_pdf_lambda.js",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "offline": "serverless offline",
+    "logs": "serverless logs -f addPageNumberToPdf"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "pdf",
+    "pdf4me",
+    "page-number",
+    "serverless"
+  ],
+  "author": "PDF4me",
+  "license": "MIT"
+} 

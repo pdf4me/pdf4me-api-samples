@@ -1,0 +1,60 @@
+service: convert-pdf-to-word-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::pdf-to-word-input-bucket/*"
+            - "arn:aws:s3:::pdf-to-word-output-bucket/*"
+
+functions:
+  convertPdfToWord:
+    handler: convert_pdf_to_word_lambda.handler
+    events:
+      - httpApi:
+          path: /convert-pdf-to-word
+          method: POST
+      - s3:
+          bucket: pdf-to-word-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: pdf-to-word-output-bucket
+
+resources:
+  Resources:
+    PdfToWordInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-to-word-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    PdfToWordOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-to-word-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 

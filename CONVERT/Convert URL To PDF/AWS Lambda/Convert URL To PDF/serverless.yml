@@ -1,0 +1,60 @@
+service: convert-url-to-pdf-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::converturltopdf-input-bucket/*"
+            - "arn:aws:s3:::converturltopdf-output-bucket/*"
+
+functions:
+  convertUrlToPdf:
+    handler: convertUrlToPdf_lambda.handler
+    events:
+      - httpApi:
+          path: /convert-url-to-pdf
+          method: POST
+      - s3:
+          bucket: converturltopdf-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: converturltopdf-output-bucket
+
+resources:
+  Resources:
+    ConvertUrlToPdfInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: converturltopdf-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    ConvertUrlToPdfOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: converturltopdf-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline

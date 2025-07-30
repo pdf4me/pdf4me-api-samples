@@ -1,0 +1,60 @@
+service: linearize-pdf-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::linearizepdf-input-bucket/*"
+            - "arn:aws:s3:::linearizepdf-output-bucket/*"
+
+functions:
+  linearizePdf:
+    handler: linearizePdf_lambda.handler
+    events:
+      - httpApi:
+          path: /linearize-pdf
+          method: POST
+      - s3:
+          bucket: linearizepdf-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: linearizepdf-output-bucket
+
+resources:
+  Resources:
+    LinearizePdfInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: linearizepdf-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    LinearizePdfOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: linearizepdf-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline

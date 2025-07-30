@@ -1,0 +1,62 @@
+service: pdf4me-read-barcode-from-pdf-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  memorySize: 512
+  timeout: 300
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource:
+            - arn:aws:s3:::pdf-barcode-read-input-bucket/*
+            - arn:aws:s3:::pdf-barcode-read-output-bucket/*
+
+functions:
+  readBarcodeFromPdf:
+    handler: read_barcode_from_pdf_lambda.handler
+    events:
+      - httpApi:
+          path: /read-barcode-from-pdf
+          method: POST
+      - s3:
+          bucket: pdf-barcode-read-input-bucket
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .pdf
+          existing: true
+
+resources:
+  Resources:
+    InputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-barcode-read-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    OutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-barcode-read-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 
