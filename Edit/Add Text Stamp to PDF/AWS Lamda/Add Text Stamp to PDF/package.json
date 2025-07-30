@@ -1,0 +1,31 @@
+{
+  "name": "add-text-stamp-to-pdf-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to add text stamps to PDF documents using PDF4me API",
+  "main": "add_text_stamp_to_pdf_lambda.js",
+  "scripts": {
+    "start": "node add_text_stamp_to_pdf_lambda.js",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "offline": "serverless offline",
+    "logs": "serverless logs -f addTextStampToPdf"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "pdf",
+    "pdf4me",
+    "text-stamp",
+    "watermark",
+    "serverless"
+  ],
+  "author": "PDF4me",
+  "license": "MIT"
+} 

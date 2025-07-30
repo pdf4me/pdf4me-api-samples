@@ -1,0 +1,60 @@
+service: extract-table-from-pdf-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::extracttable-input-bucket/*"
+            - "arn:aws:s3:::extracttable-output-bucket/*"
+
+functions:
+  extractTableFromPdf:
+    handler: extract_table_from_pdf_lambda.handler
+    events:
+      - httpApi:
+          path: /extract-table-from-pdf
+          method: POST
+      - s3:
+          bucket: extracttable-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: extracttable-output-bucket
+
+resources:
+  Resources:
+    ExtractTableInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: extracttable-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    ExtractTableOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: extracttable-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 

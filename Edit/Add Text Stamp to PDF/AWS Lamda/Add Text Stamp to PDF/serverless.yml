@@ -1,0 +1,60 @@
+service: add-text-stamp-to-pdf-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::pdf-text-stamp-input-bucket/*"
+            - "arn:aws:s3:::pdf-text-stamp-output-bucket/*"
+
+functions:
+  addTextStampToPdf:
+    handler: add_text_stamp_to_pdf_lambda.handler
+    events:
+      - httpApi:
+          path: /add-text-stamp-to-pdf
+          method: POST
+      - s3:
+          bucket: pdf-text-stamp-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: pdf-text-stamp-output-bucket
+
+resources:
+  Resources:
+    PdfTextStampInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-text-stamp-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    PdfTextStampOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-text-stamp-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 

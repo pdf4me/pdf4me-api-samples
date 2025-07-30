@@ -1,0 +1,60 @@
+service: convert-pdf-to-excel-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::pdf-to-excel-input-bucket/*"
+            - "arn:aws:s3:::pdf-to-excel-output-bucket/*"
+
+functions:
+  convertPdfToExcel:
+    handler: convert_pdf_to_excel_lambda.handler
+    events:
+      - httpApi:
+          path: /convert-pdf-to-excel
+          method: POST
+      - s3:
+          bucket: pdf-to-excel-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: pdf-to-excel-output-bucket
+
+resources:
+  Resources:
+    PdfToExcelInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-to-excel-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    PdfToExcelOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: pdf-to-excel-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 

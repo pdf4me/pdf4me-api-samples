@@ -1,0 +1,31 @@
+{
+  "name": "classify-document-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to classify documents using PDF4me API",
+  "main": "classify_document_lambda.js",
+  "scripts": {
+    "start": "node classify_document_lambda.js",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "offline": "serverless offline",
+    "logs": "serverless logs -f classifyDocument"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "pdf",
+    "pdf4me",
+    "classify",
+    "document",
+    "serverless"
+  ],
+  "author": "PDF4me",
+  "license": "MIT"
+} 

@@ -1,0 +1,60 @@
+service: extract-text-from-word-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::extractwordtext-input-bucket/*"
+            - "arn:aws:s3:::extractwordtext-output-bucket/*"
+
+functions:
+  extractTextFromWord:
+    handler: extract_text_from_word_lambda.handler
+    events:
+      - httpApi:
+          path: /extract-text-from-word
+          method: POST
+      - s3:
+          bucket: extractwordtext-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: extractwordtext-output-bucket
+
+resources:
+  Resources:
+    ExtractWordTextInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: extractwordtext-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    ExtractWordTextOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: extractwordtext-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 
