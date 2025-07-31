@@ -1,0 +1,42 @@
+service: split-pdf-by-text
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_S3_BUCKET: ${env:OUTPUT_S3_BUCKET}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+        - s3:DeleteObject
+      Resource: 
+        - "arn:aws:s3:::${env:OUTPUT_S3_BUCKET}/*"
+        - "arn:aws:s3:::${env:INPUT_S3_BUCKET}/*"
+
+functions:
+  splitPdfByText:
+    handler: split_pdf_by_text_lambda.handler
+    name: split-pdf-by-text
+    description: Split PDF documents by text using PDF4me API
+    memorySize: 512
+    timeout: 300
+    events:
+      - http:
+          path: split-pdf-by-text
+          method: post
+          cors: true
+    environment:
+      PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+      OUTPUT_S3_BUCKET: ${env:OUTPUT_S3_BUCKET}
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 
