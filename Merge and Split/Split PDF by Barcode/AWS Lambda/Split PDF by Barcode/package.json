@@ -1,0 +1,21 @@
+{
+  "name": "split-pdf-by-barcode-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to split PDF documents by barcode using PDF4me API",
+  "main": "split_pdf_by_barcode_lambda.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove"
+  },
+  "keywords": ["aws", "lambda", "pdf", "split", "barcode", "pdf4me", "serverless"],
+  "author": "PDF4me",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1001.0",
+    "axios": "^0.24.0"
+  },
+  "devDependencies": {
+    "serverless": "^2.60.0"
+  }
+} 

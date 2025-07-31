@@ -1,0 +1,28 @@
+{
+  "name": "merge-two-pdf-files-overlay-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to merge two PDF files as overlay using PDF4me API",
+  "main": "merge_two_pdf_files_one_over_another_as_overlay_lambda.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "pdf",
+    "overlay",
+    "pdf4me",
+    "serverless"
+  ],
+  "author": "PDF4me",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1001.0",
+    "axios": "^0.24.0"
+  },
+  "devDependencies": {
+    "serverless": "^2.60.0"
+  }
+}
