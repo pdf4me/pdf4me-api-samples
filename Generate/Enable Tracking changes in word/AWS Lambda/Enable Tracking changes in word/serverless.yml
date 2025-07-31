@@ -1,0 +1,60 @@
+service: enable-tracking-changes-in-word-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource:
+            - "arn:aws:s3:::enablewordtracking-input-bucket/*"
+            - "arn:aws:s3:::enablewordtracking-output-bucket/*"
+
+functions:
+  enableTrackingChangesInWord:
+    handler: enable_tracking_changes_in_word_lambda.handler
+    events:
+      - httpApi:
+          path: /enable-tracking-changes-in-word
+          method: POST
+      - s3:
+          bucket: enablewordtracking-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: enablewordtracking-output-bucket
+
+resources:
+  Resources:
+    EnableWordTrackingInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: enablewordtracking-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    EnableWordTrackingOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: enablewordtracking-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 

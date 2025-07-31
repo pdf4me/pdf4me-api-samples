@@ -1,0 +1,66 @@
+service: pdf4me-crop-image-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_BUCKET: ${env:OUTPUT_BUCKET, ''}
+    CROP_X: ${env:CROP_X, '0'}
+    CROP_Y: ${env:CROP_Y, '0'}
+    CROP_WIDTH: ${env:CROP_WIDTH, '100'}
+    CROP_HEIGHT: ${env:CROP_HEIGHT, '100'}
+    MAINTAIN_ASPECT_RATIO: ${env:MAINTAIN_ASPECT_RATIO, 'false'}
+    OUTPUT_FORMAT: ${env:OUTPUT_FORMAT, 'PNG'}
+    QUALITY: ${env:QUALITY, '85'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::${env:INPUT_BUCKET, '*'}"
+            - "arn:aws:s3:::${env:OUTPUT_BUCKET, '*'}"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  cropImage:
+    handler: crop_image_lambda.handler
+    description: Crop images using PDF4me API
+    timeout: 300
+    memorySize: 512
+    events:
+      - http:
+          path: /crop-image
+          method: post
+          cors: true
+      - s3:
+          bucket: ${env:INPUT_BUCKET, 'pdf4me-input-bucket'}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .jpg
+            - suffix: .jpeg
+            - suffix: .png
+            - suffix: .gif
+            - suffix: .bmp
+            - suffix: .tiff
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 

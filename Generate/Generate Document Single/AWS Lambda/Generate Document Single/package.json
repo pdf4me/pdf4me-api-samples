@@ -1,0 +1,34 @@
+{
+  "name": "generate-document-single-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to generate single documents using PDF4me API",
+  "main": "generate_document_single_lambda.js",
+  "scripts": {
+    "start": "node generate_document_single_lambda.js",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "offline": "serverless offline",
+    "logs": "serverless logs -f generateDocumentSingle"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "aws-sdk": "^2.1531.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "pdf",
+    "pdf4me",
+    "generate",
+    "document",
+    "single",
+    "template",
+    "serverless"
+  ],
+  "author": "PDF4me",
+  "license": "MIT"
+} 

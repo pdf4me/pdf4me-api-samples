@@ -1,0 +1,78 @@
+service: create-swissqr-bill-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    IBAN: ${env:IBAN, 'CH0200700110003765824'}
+    CR_NAME: ${env:CR_NAME, 'Test AG'}
+    CR_ADDRESS_TYPE: ${env:CR_ADDRESS_TYPE, 'S'}
+    CR_STREET: ${env:CR_STREET, 'Test Strasse'}
+    CR_STREET_NUMBER: ${env:CR_STREET_NUMBER, '1'}
+    CR_POSTAL_CODE: ${env:CR_POSTAL_CODE, '8000'}
+    CR_CITY: ${env:CR_CITY, 'Zurich'}
+    AMOUNT: ${env:AMOUNT, '1000'}
+    CURRENCY: ${env:CURRENCY, 'CHF'}
+    UD_NAME: ${env:UD_NAME, 'Test Debt AG'}
+    UD_ADDRESS_TYPE: ${env:UD_ADDRESS_TYPE, 'S'}
+    UD_STREET: ${env:UD_STREET, 'Test Deb Strasse'}
+    UD_STREET_NUMBER: ${env:UD_STREET_NUMBER, '2'}
+    UD_POSTAL_CODE: ${env:UD_POSTAL_CODE, '8000'}
+    UD_CITY: ${env:UD_CITY, 'Zurich'}
+    REFERENCE_TYPE: ${env:REFERENCE_TYPE, 'NON'}
+    LANGUAGE_TYPE: ${env:LANGUAGE_TYPE, 'English'}
+    SEPERATOR_LINE: ${env:SEPERATOR_LINE, 'LineWithScissor'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource:
+            - "arn:aws:s3:::createswissqrbill-input-bucket/*"
+            - "arn:aws:s3:::createswissqrbill-output-bucket/*"
+
+functions:
+  createSwissQrBill:
+    handler: create_swissqr_bill_lambda.handler
+    events:
+      - httpApi:
+          path: /create-swissqr-bill
+          method: POST
+      - s3:
+          bucket: createswissqrbill-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: createswissqrbill-output-bucket
+
+resources:
+  Resources:
+    CreateSwissQrBillInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: createswissqrbill-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    CreateSwissQrBillOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: createswissqrbill-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 

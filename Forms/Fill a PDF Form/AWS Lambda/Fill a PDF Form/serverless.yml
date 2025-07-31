@@ -1,0 +1,60 @@
+service: fill-pdf-form-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::fillpdfform-input-bucket/*"
+            - "arn:aws:s3:::fillpdfform-output-bucket/*"
+
+functions:
+  fillPdfForm:
+    handler: fill_pdf_form_lambda.handler
+    events:
+      - httpApi:
+          path: /fill-pdf-form
+          method: POST
+      - s3:
+          bucket: fillpdfform-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: fillpdfform-output-bucket
+
+resources:
+  Resources:
+    FillPdfFormInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: fillpdfform-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    FillPdfFormOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: fillpdfform-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 

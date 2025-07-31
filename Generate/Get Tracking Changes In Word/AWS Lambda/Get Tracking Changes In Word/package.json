@@ -1,0 +1,27 @@
+{
+  "name": "pdf4me-get-tracking-changes-in-word-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for PDF4me Get Tracking Changes In Word API",
+  "main": "get_tracking_changes_in_word_lambda.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove"
+  },
+  "keywords": [
+    "pdf4me",
+    "aws",
+    "lambda",
+    "word",
+    "tracking-changes"
+  ],
+  "author": "PDF4me",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "aws-sdk": "^2.1500.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0"
+  }
+} 

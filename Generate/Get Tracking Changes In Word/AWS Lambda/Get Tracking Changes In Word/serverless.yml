@@ -1,0 +1,55 @@
+service: pdf4me-get-tracking-changes-in-word-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_BUCKET: ${env:OUTPUT_BUCKET, ''}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::${env:INPUT_BUCKET, '*'}"
+            - "arn:aws:s3:::${env:OUTPUT_BUCKET, '*'}"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  getTrackingChangesInWord:
+    handler: get_tracking_changes_in_word_lambda.handler
+    description: Get tracking changes from Word documents using PDF4me API
+    timeout: 300
+    memorySize: 512
+    events:
+      - http:
+          path: /get-tracking-changes
+          method: post
+          cors: true
+      - s3:
+          bucket: ${env:INPUT_BUCKET, 'pdf4me-input-bucket'}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .docx
+            - suffix: .doc
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 

@@ -1,0 +1,63 @@
+service: pdf4me-get-image-metadata-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_BUCKET: ${env:OUTPUT_BUCKET, ''}
+    INCLUDE_EXIF: ${env:INCLUDE_EXIF, 'true'}
+    INCLUDE_IPTC: ${env:INCLUDE_IPTC, 'true'}
+    INCLUDE_XMP: ${env:INCLUDE_XMP, 'true'}
+    INCLUDE_ICC: ${env:INCLUDE_ICC, 'true'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::${env:INPUT_BUCKET, '*'}"
+            - "arn:aws:s3:::${env:OUTPUT_BUCKET, '*'}"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  getImageMetadata:
+    handler: get_image_metadata_lambda.handler
+    description: Get image metadata using PDF4me API
+    timeout: 300
+    memorySize: 512
+    events:
+      - http:
+          path: /get-image-metadata
+          method: post
+          cors: true
+      - s3:
+          bucket: ${env:INPUT_BUCKET, 'pdf4me-input-bucket'}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .jpg
+            - suffix: .jpeg
+            - suffix: .png
+            - suffix: .gif
+            - suffix: .bmp
+            - suffix: .tiff
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 

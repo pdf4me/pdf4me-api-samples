@@ -1,0 +1,63 @@
+service: find-and-replace-text-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    FIND_TEXT: ${env:OLD_TEXT, 'old text'}
+    REPLACE_TEXT: ${env:NEW_TEXT, 'new text'}
+    PAGE_SEQUENCE: ${env:PAGE_SEQUENCE, 'all'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::findreplacetext-input-bucket/*"
+            - "arn:aws:s3:::findreplacetext-output-bucket/*"
+
+functions:
+  findAndReplaceText:
+    handler: find_and_replace_text_lambda.handler
+    events:
+      - httpApi:
+          path: /find-and-replace-text
+          method: POST
+      - s3:
+          bucket: findreplacetext-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: findreplacetext-output-bucket
+
+resources:
+  Resources:
+    FindReplaceTextInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: findreplacetext-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    FindReplaceTextOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: findreplacetext-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 

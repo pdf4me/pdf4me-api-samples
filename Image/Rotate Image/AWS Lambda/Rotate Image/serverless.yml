@@ -1,0 +1,65 @@
+service: pdf4me-rotate-image-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_BUCKET: ${env:OUTPUT_BUCKET, ''}
+    ROTATION_ANGLE: ${env:ROTATION_ANGLE, '90'}
+    ROTATION_DIRECTION: ${env:ROTATION_DIRECTION, 'Clockwise'}
+    BACKGROUND_COLOR: ${env:BACKGROUND_COLOR, '#FFFFFF'}
+    OUTPUT_FORMAT: ${env:OUTPUT_FORMAT, 'PNG'}
+    QUALITY: ${env:QUALITY, '85'}
+    MAINTAIN_TRANSPARENCY: ${env:MAINTAIN_TRANSPARENCY, 'true'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::${env:INPUT_BUCKET, '*'}"
+            - "arn:aws:s3:::${env:OUTPUT_BUCKET, '*'}"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  rotateImage:
+    handler: rotate_image_lambda.handler
+    description: Rotate images using PDF4me API
+    timeout: 300
+    memorySize: 512
+    events:
+      - http:
+          path: /rotate-image
+          method: post
+          cors: true
+      - s3:
+          bucket: ${env:INPUT_BUCKET, 'pdf4me-input-bucket'}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .jpg
+            - suffix: .jpeg
+            - suffix: .png
+            - suffix: .gif
+            - suffix: .bmp
+            - suffix: .tiff
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 

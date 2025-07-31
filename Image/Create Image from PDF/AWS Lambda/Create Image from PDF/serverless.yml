@@ -1,0 +1,61 @@
+service: pdf4me-create-image-from-pdf-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_BUCKET: ${env:OUTPUT_BUCKET, ''}
+    IMAGE_FORMAT: ${env:IMAGE_FORMAT, 'PNG'}
+    RESOLUTION: ${env:RESOLUTION, '150'}
+    PAGE_NUMBER: ${env:PAGE_NUMBER, '1'}
+    QUALITY: ${env:QUALITY, '85'}
+    WIDTH: ${env:WIDTH, ''}
+    HEIGHT: ${env:HEIGHT, ''}
+    MAINTAIN_ASPECT_RATIO: ${env:MAINTAIN_ASPECT_RATIO, 'true'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::${env:INPUT_BUCKET, '*'}"
+            - "arn:aws:s3:::${env:OUTPUT_BUCKET, '*'}"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  createImageFromPdf:
+    handler: create_image_from_pdf_lambda.handler
+    description: Create images from PDFs using PDF4me API
+    timeout: 300
+    memorySize: 512
+    events:
+      - http:
+          path: /create-image-from-pdf
+          method: post
+          cors: true
+      - s3:
+          bucket: ${env:INPUT_BUCKET, 'pdf4me-input-bucket'}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .pdf
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 

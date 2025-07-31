@@ -1,0 +1,60 @@
+service: pdf4me-replace-text-with-image-in-word-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_BUCKET: ${env:OUTPUT_BUCKET, ''}
+    TEXT_TO_REPLACE: ${env:TEXT_TO_REPLACE, '{{LOGO}}'}
+    IMAGE_DATA: ${env:IMAGE_DATA, ''}
+    IMAGE_NAME: ${env:IMAGE_NAME, 'logo.png'}
+    IMAGE_WIDTH: ${env:IMAGE_WIDTH, '100'}
+    IMAGE_HEIGHT: ${env:IMAGE_HEIGHT, '50'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::${env:INPUT_BUCKET, '*'}"
+            - "arn:aws:s3:::${env:OUTPUT_BUCKET, '*'}"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  replaceTextWithImageInWord:
+    handler: replace_text_with_image_in_word_lambda.handler
+    description: Replace text with images in Word documents using PDF4me API
+    timeout: 300
+    memorySize: 512
+    events:
+      - http:
+          path: /replace-text-with-image
+          method: post
+          cors: true
+      - s3:
+          bucket: ${env:INPUT_BUCKET, 'pdf4me-input-bucket'}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .docx
+            - suffix: .doc
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 

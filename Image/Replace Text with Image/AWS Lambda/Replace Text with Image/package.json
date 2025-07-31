@@ -1,0 +1,27 @@
+{
+  "name": "pdf4me-replace-text-with-image-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for PDF4me Replace Text with Image API",
+  "main": "replace_text_with_image_lambda.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove"
+  },
+  "keywords": [
+    "pdf4me",
+    "aws",
+    "lambda",
+    "image",
+    "text-replacement"
+  ],
+  "author": "PDF4me",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "aws-sdk": "^2.1500.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0"
+  }
+} 

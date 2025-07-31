@@ -1,0 +1,64 @@
+service: pdf4me-add-image-watermark-to-image-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_BUCKET: ${env:OUTPUT_BUCKET, ''}
+    WATERMARK_IMAGE_DATA: ${env:WATERMARK_IMAGE_DATA, ''}
+    WATERMARK_IMAGE_NAME: ${env:WATERMARK_IMAGE_NAME, 'watermark.png'}
+    WATERMARK_POSITION: ${env:WATERMARK_POSITION, 'Center'}
+    WATERMARK_OPACITY: ${env:WATERMARK_OPACITY, '50'}
+    WATERMARK_SCALE: ${env:WATERMARK_SCALE, '100'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource: 
+            - "arn:aws:s3:::${env:INPUT_BUCKET, '*'}"
+            - "arn:aws:s3:::${env:OUTPUT_BUCKET, '*'}"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  addImageWatermarkToImage:
+    handler: add_image_watermark_to_image_lambda.handler
+    description: Add image watermarks to images using PDF4me API
+    timeout: 300
+    memorySize: 512
+    events:
+      - http:
+          path: /add-image-watermark
+          method: post
+          cors: true
+      - s3:
+          bucket: ${env:INPUT_BUCKET, 'pdf4me-input-bucket'}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .jpg
+            - suffix: .jpeg
+            - suffix: .png
+            - suffix: .gif
+            - suffix: .bmp
+            - suffix: .tiff
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 

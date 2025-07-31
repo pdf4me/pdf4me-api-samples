@@ -1,0 +1,64 @@
+service: generate-document-single-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    TEMPLATE_FILE_TYPE: ${env:TEMPLATE_FILE_TYPE, 'html'}
+    DOCUMENT_DATA_TYPE: ${env:DOCUMENT_DATA_TYPE, 'text'}
+    OUTPUT_TYPE: ${env:OUTPUT_TYPE, 'html'}
+    DOCUMENT_DATA_TEXT: ${env:DOCUMENT_DATA_TEXT, '{"invoice_number":"INV-001","customer_name":"John Doe","amount":"$100.00","date":"2024-01-15"}'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource:
+            - "arn:aws:s3:::generatedocsingle-input-bucket/*"
+            - "arn:aws:s3:::generatedocsingle-output-bucket/*"
+
+functions:
+  generateDocumentSingle:
+    handler: generate_document_single_lambda.handler
+    events:
+      - httpApi:
+          path: /generate-document-single
+          method: POST
+      - s3:
+          bucket: generatedocsingle-input-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+    environment:
+      OUTPUT_BUCKET: generatedocsingle-output-bucket
+
+resources:
+  Resources:
+    GenerateDocSingleInputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: generatedocsingle-input-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    GenerateDocSingleOutputBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: generatedocsingle-output-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+plugins:
+  - serverless-offline 
