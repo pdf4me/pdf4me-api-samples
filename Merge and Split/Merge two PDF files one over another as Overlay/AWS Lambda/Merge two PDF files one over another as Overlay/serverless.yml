@@ -1,0 +1,42 @@
+service: merge-two-pdf-files-overlay
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  environment:
+    PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+    OUTPUT_S3_BUCKET: ${env:OUTPUT_S3_BUCKET}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+        - s3:DeleteObject
+      Resource: 
+        - "arn:aws:s3:::${env:OUTPUT_S3_BUCKET}/*"
+        - "arn:aws:s3:::${env:INPUT_S3_BUCKET}/*"
+
+functions:
+  mergeTwoPdfFilesOverlay:
+    handler: merge_two_pdf_files_one_over_another_as_overlay_lambda.handler
+    name: merge-two-pdf-files-overlay
+    description: Merge two PDF files as overlay using PDF4me API
+    memorySize: 512
+    timeout: 300
+    events:
+      - http:
+          path: merge-overlay
+          method: post
+          cors: true
+    environment:
+      PDF4ME_API_KEY: ${env:PDF4ME_API_KEY}
+      OUTPUT_S3_BUCKET: ${env:OUTPUT_S3_BUCKET}
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true 
