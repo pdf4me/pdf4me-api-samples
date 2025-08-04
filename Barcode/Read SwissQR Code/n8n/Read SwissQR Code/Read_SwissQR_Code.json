@@ -1,0 +1,52 @@
+﻿{
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -160,
+          -16
+        ],
+        "id": "YOUR_CREDENTIAL_ID_HERE",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "operation": "Read SwissQR Code"
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          48,
+          -16
+        ],
+        "id": "YOUR_CREDENTIAL_ID_HERE",
+        "name": "PDF4ME",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "YOUR_CREDENTIAL_ID_HERE",
+            "name": "PDF4ME API Credentials"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "PDF4ME",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "YOUR_INSTANCE_ID_HERE"
+    }
+  }

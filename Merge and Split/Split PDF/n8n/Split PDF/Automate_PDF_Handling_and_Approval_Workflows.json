@@ -1,0 +1,253 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          },
+          "triggerOn": "specificFolder",
+          "folderToWatch": {
+            "__rl": true,
+            "value": "1efPA4j5RcJldkU5uB0cIZedLqvHwB9ir",
+            "mode": "list",
+            "cachedResultName": "Payroll - For Signature",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1efPA4j5RcJldkU5uB0cIZedLqvHwB9ir"
+          },
+          "event": "fileCreated",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDriveTrigger",
+        "typeVersion": 1,
+        "position": [
+          592,
+          96
+        ],
+        "id": "ba939a62-fd37-482d-9b03-78867bf408b5",
+        "name": "Google Drive Trigger"
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $json.id }}",
+            "mode": "id"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          816,
+          96
+        ],
+        "id": "9b374232-35d3-4709-8aea-2f634e9f0f42",
+        "name": "Google Drive"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "body",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          1680,
+          96
+        ],
+        "id": "53d766f6-0f5d-448c-bed0-5b3384c1fb70",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "driveId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1XQCd2SUNphPsnOiXG5i60Qv1RrSF1qlL",
+            "mode": "list",
+            "cachedResultName": "Payroll - Approved",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1XQCd2SUNphPsnOiXG5i60Qv1RrSF1qlL"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          2352,
+          96
+        ],
+        "id": "34deaf12-4164-4289-bf36-3aa2eff15c42",
+        "name": "Upload to Google Drive"
+      },
+      {
+        "parameters": {
+          "operation": "Unlock PDF"
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          1120,
+          96
+        ],
+        "id": "78ecc3c1-2209-449b-ab50-bc1395888975",
+        "name": "Unlock PDF",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "Split PDF",
+          "advancedOptions": {}
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          1392,
+          96
+        ],
+        "id": "c2fe4248-a8e7-48fd-8c86-b04b465f25e6",
+        "name": "Split PDF",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "Add Text Stamp To PDF",
+          "advancedOptions": {}
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          2112,
+          96
+        ],
+        "id": "1a1ea10a-c37f-4bee-bda8-11f87608a7d2",
+        "name": "Add Image To PDF",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "Find And Replace Text"
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          1888,
+          96
+        ],
+        "id": "05c570b5-5761-4ef0-bbcd-6950a72140a0",
+        "name": "PDF4ME",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Google Drive Trigger": {
+        "main": [
+          [
+            {
+              "node": "Google Drive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Drive": {
+        "main": [
+          [
+            {
+              "node": "Unlock PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "PDF4ME",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Unlock PDF": {
+        "main": [
+          [
+            {
+              "node": "Split PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split PDF": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Add Image To PDF": {
+        "main": [
+          [
+            {
+              "node": "Upload to Google Drive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF4ME": {
+        "main": [
+          [
+            {
+              "node": "Add Image To PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "ee5cd5d192d9bc4d9e695233584dabe002fedc44533c120b9ec73f5629f9c27c"
+    }
+  }

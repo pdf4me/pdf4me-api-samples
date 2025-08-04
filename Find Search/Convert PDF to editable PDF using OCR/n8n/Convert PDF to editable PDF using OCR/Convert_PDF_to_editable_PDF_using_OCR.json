@@ -1,0 +1,52 @@
+{
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          128,
+          176
+        ],
+        "id": "da6af998-aac7-4142-8db8-3d09f8d20c23",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "operation": "Convert PDF To Editable PDF Using OCR"
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          336,
+          176
+        ],
+        "id": "70a1a0dc-9809-497d-bdae-25c618e26fff",
+        "name": "PDF4ME",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "PDF4ME",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "ee5cd5d192d9bc4d9e695233584dabe002fedc44533c120b9ec73f5629f9c27c"
+    }
+  }
