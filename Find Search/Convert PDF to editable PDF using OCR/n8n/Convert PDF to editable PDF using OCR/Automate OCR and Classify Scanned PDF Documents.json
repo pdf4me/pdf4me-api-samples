@@ -1,0 +1,153 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "={{ $json.body.classes[0].class }}",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1F7nJ7E2KdxNyifE2xim-lZ-GZSw2INUM",
+            "mode": "list",
+            "cachedResultName": "N8N Tester",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1F7nJ7E2KdxNyifE2xim-lZ-GZSw2INUM"
+          },
+          "whatToSearch": "folders"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        656,
+        272
+      ],
+      "id": "f4ea8b31-c32b-4ecc-ae49-b9806ed58edf",
+      "name": "Search files and folders"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1F7nJ7E2KdxNyifE2xim-lZ-GZSw2INUM",
+          "mode": "list",
+          "cachedResultName": "N8N Tester",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1F7nJ7E2KdxNyifE2xim-lZ-GZSw2INUM"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        272
+      ],
+      "id": "15ec85d2-23ca-49e1-817d-81306bc7dc5f",
+      "name": "Google Drive Trigger1"
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        960,
+        272
+      ],
+      "id": "29eb41e5-3da8-49af-b3fe-6130c69cc42a",
+      "name": "Upload file1"
+    },
+    {
+      "parameters": {
+        "operation": "Classify Document",
+        "advancedOptions": {}
+      },
+      "type": "n8n-nodes-pdf4me.pdf4me",
+      "typeVersion": 1,
+      "position": [
+        400,
+        272
+      ],
+      "id": "4b17775a-0011-4c5c-9575-fad6b1eaa8cc",
+      "name": "PDF4ME2",
+      "credentials": {
+        "pdf4meApi": {
+          "id": "zE96DQ2pWv51jVj1",
+          "name": "PDF4ME account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "Create Swiss QR Bill",
+        "advancedOptions": {}
+      },
+      "type": "n8n-nodes-pdf4me.pdf4me",
+      "typeVersion": 1,
+      "position": [
+        192,
+        272
+      ],
+      "id": "d8f1d091-af55-457e-8ed1-b06d18ca6968",
+      "name": "PDF4ME3",
+      "credentials": {
+        "pdf4meApi": {
+          "id": "zE96DQ2pWv51jVj1",
+          "name": "PDF4ME account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger1": {
+      "main": [
+        [
+          {
+            "node": "PDF4ME3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ee5cd5d192d9bc4d9e695233584dabe002fedc44533c120b9ec73f5629f9c27c"
+  }
+}

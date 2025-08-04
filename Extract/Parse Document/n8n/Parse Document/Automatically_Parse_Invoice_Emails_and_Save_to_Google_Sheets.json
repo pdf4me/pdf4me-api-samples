@@ -1,0 +1,295 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          },
+          "simple": false,
+          "filters": {
+            "q": "has:attachment subject:New Invoice"
+          },
+          "options": {
+            "downloadAttachments": true
+          }
+        },
+        "type": "n8n-nodes-base.gmailTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          240,
+          128
+        ],
+        "id": "2a697864-1d2c-43c4-a5ba-6e19856764ab",
+        "name": "Gmail Trigger"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.pdf4me.com/api/v2/ParseDocument",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Your_PDF4me_API_Key"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "data",
+                "value": "={{ $data }}"
+              },
+              {
+                "name": "templateId",
+                "value": "1"
+              },
+              {
+                "name": "inline",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          752,
+          128
+        ],
+        "id": "4bdc4349-21e2-4bc7-ac23-b9203cd7f29d",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1zKeGjx5l2zGB_gmYDrjrul3dFBnrziMPZsgzJ1U0hG0",
+            "mode": "list",
+            "cachedResultName": "ACME Invoices",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zKeGjx5l2zGB_gmYDrjrul3dFBnrziMPZsgzJ1U0hG0/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zKeGjx5l2zGB_gmYDrjrul3dFBnrziMPZsgzJ1U0hG0/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Vendor": "={{ $json.companyName }}",
+              "Customer": "={{ $json.companyName2 }}",
+              "Invoice ID": "={{ $json.invoiceId }}",
+              "Invoice Date": "={{ $json.dateIssued }}",
+              "Quantity": "={{ $json.column1 }}",
+              "Description": "={{ $json.column2 }}",
+              "Unit Price": "={{ $json.column3 }}",
+              "Total": "={{ $json.column4 }}",
+              "Grand Total": "={{ $json.total }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Vendor",
+                "displayName": "Vendor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Customer",
+                "displayName": "Customer",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Invoice ID",
+                "displayName": "Invoice ID",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Invoice Date",
+                "displayName": "Invoice Date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Quantity",
+                "displayName": "Quantity",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Description",
+                "displayName": "Description",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Unit Price",
+                "displayName": "Unit Price",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Total",
+                "displayName": "Total",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Grand Total",
+                "displayName": "Grand Total",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          1328,
+          128
+        ],
+        "id": "2b4f2b53-507b-431d-9a38-c339304cd56a",
+        "name": "Append row in sheet"
+      },
+      {
+        "parameters": {
+          "jsCode": "const inputData = $input.all();\n\n// Function to process Document Parser results\nfunction processParserResult(parserResult) {\n    const data = Array.isArray(parserResult) ? parserResult[0] : parserResult;\n    \n    if (!data?.body?.objects) {\n        console.log(\"Invalid parser result structure\");\n        return { invoiceFields: {}, tableItems: [] };\n    }\n    \n    const invoiceFields = {};\n    let tableObject = null;\n    \n    // Single pass through objects to extract both fields and table\n    for (const obj of data.body.objects) {\n        if (obj.objectType === \"field\") {\n            invoiceFields[obj.name] = obj.value;\n        } else if (obj.objectType === \"table\" && !tableObject) {\n            tableObject = obj;\n        }\n    }\n    \n    if (!tableObject?.rows) {\n        return { invoiceFields, tableItems: [] };\n    }\n    \n    // Process table rows with optimized column detection\n    const tableItems = tableObject.rows.map((row, index) => {\n        const item = { itemNumber: index + 1 };\n        \n        // Process all columns in the row\n        for (const [key, columnData] of Object.entries(row)) {\n            if (key.startsWith('column') && columnData?.value !== undefined) {\n                const value = columnData.value;\n                // Smart type conversion: check if it's a valid number\n                const numValue = Number(value);\n                item[key] = (!isNaN(numValue) && value !== '' && value !== null) ? numValue : value;\n            }\n        }\n        \n        return item;\n    });\n    \n    return { invoiceFields, tableItems };\n}\n\n// Process all inputs efficiently\nconst results = inputData.flatMap(item => {\n    const { invoiceFields, tableItems } = processParserResult(item.json);\n    \n    // Return array of results (one per table item)\n    return tableItems.map(tableItem => ({\n        json: { ...invoiceFields, ...tableItem }\n    }));\n});\n\nreturn results;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1040,
+          128
+        ],
+        "id": "b5ac01c0-96e1-4d6d-ab0a-44ab648e0b9b",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "operation": "Upload Files to Pdf4me"
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          448,
+          128
+        ],
+        "id": "8be684e6-d1eb-47a1-ae41-26b3547da14c",
+        "name": "PDF4ME",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Gmail Trigger": {
+        "main": [
+          [
+            {
+              "node": "PDF4ME",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF4ME": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "ee5cd5d192d9bc4d9e695233584dabe002fedc44533c120b9ec73f5629f9c27c"
+    }
+  }

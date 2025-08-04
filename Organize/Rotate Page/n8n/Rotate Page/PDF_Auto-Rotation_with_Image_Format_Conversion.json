@@ -1,0 +1,137 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          },
+          "triggerOn": "specificFolder",
+          "folderToWatch": {
+            "__rl": true,
+            "value": "1F7nJ7E2KdxNyifE2xim-lZ-GZSw2INUM",
+            "mode": "list",
+            "cachedResultName": "N8N Tester",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1F7nJ7E2KdxNyifE2xim-lZ-GZSw2INUM"
+          },
+          "event": "fileCreated",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDriveTrigger",
+        "typeVersion": 1,
+        "position": [
+          32,
+          96
+        ],
+        "id": "3d7094ae-665d-4013-a2b1-584d89e91cc6",
+        "name": "Google Drive Trigger"
+      },
+      {
+        "parameters": {
+          "driveId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "My Drive"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "1YjRqWA-Be_1wSUDQpV0P5JBHkdzpQEuY",
+            "mode": "list",
+            "cachedResultName": "Save Images",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1YjRqWA-Be_1wSUDQpV0P5JBHkdzpQEuY"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          704,
+          96
+        ],
+        "id": "f82a8f2a-3340-4d6a-8b0b-c5c29bf826c4",
+        "name": "Upload file"
+      },
+      {
+        "parameters": {
+          "operation": "Rotate Page",
+          "advancedOptions": {}
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          240,
+          96
+        ],
+        "id": "e3cdff9e-e46e-434e-9496-dc52c5c5ff8d",
+        "name": "PDF4ME",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "Convert From PDF"
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          448,
+          96
+        ],
+        "id": "91bcbfd4-9098-4ca3-a3ea-963d45ce0ca9",
+        "name": "PDF4ME1",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Google Drive Trigger": {
+        "main": [
+          [
+            {
+              "node": "PDF4ME",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF4ME": {
+        "main": [
+          [
+            {
+              "node": "PDF4ME1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF4ME1": {
+        "main": [
+          [
+            {
+              "node": "Upload file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "ee5cd5d192d9bc4d9e695233584dabe002fedc44533c120b9ec73f5629f9c27c"
+    }
+  }

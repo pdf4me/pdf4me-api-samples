@@ -1,0 +1,138 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1-OMDh0Ghte4rDoa7bliJOzv1hdzJJjIvGCwkKvXmt7A",
+          "mode": "list",
+          "cachedResultName": "Sales Quotes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-OMDh0Ghte4rDoa7bliJOzv1hdzJJjIvGCwkKvXmt7A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-OMDh0Ghte4rDoa7bliJOzv1hdzJJjIvGCwkKvXmt7A/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        224
+      ],
+      "id": "e9d0c7dd-e4c8-4bc7-a393-4bbd56aed10d",
+      "name": "Google Sheets Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "function convertSerialDate(serial) {\n  const base = new Date(Date.UTC(1899, 11, 30));\n  const ms = serial * 24 * 60 * 60 * 1000;\n  return new Date(base.getTime() + ms).toLocaleDateString('en-US', {\n    year: 'numeric',\n    month: 'long',\n    day: 'numeric'\n  });\n}\n\nconst groupedQuotes = {};\n\nfor (const item of items) {\n  const row = item.json;\n  const quoteId = row[\"Quote ID\"];\n\n  if (!groupedQuotes[quoteId]) {\n    groupedQuotes[quoteId] = {\n      quote_accepted: false,\n      quote_expired: false,\n      quote_id: quoteId,\n      quote_date: convertSerialDate(row[\"Quote Date\"]),\n      quote_validUntil: convertSerialDate(row[\"Valid Until\"]),\n      sales_rep: row[\"Sales Representative\"],\n      client_name: row[\"Client Full Name\"],\n      client_company: row[\"Client Organization\"],\n      client_address: row[\"Client Address\"],\n      client_email: row[\"Client Email\"],\n      client_phone: row[\"Client Phone Number\"],\n      discount: parseFloat(row[\"Discount (%)\"]) || 0,\n      tax: parseFloat(row[\"Applicable Tax\"]) || 0,\n      issuer_name: \"Ravi Kapoor\",\n      issuer_company: \"DataStream Analytics Pvt. Ltd.\",\n      issuer_address: \"601 Tech Park, HSR Layout, Bengaluru, KA 560102\",\n      issuer_email: \"sales@datastream-analytics.com\",\n      issuer_phone: \"+91 98765 43210\",\n      issuer_website: \"www.datastream-analytics.com\",\n      terms: \"Invoices are due within 15 days from the date of issue.\",\n      note: \"Looking forward to a long-term collaboration. Let us know for any clarifications.\",\n      items: []\n    };\n  }\n\n  groupedQuotes[quoteId].items.push({\n    name: row[\"Service Name\"],\n    description: row[\"Service Details\"],\n    quantity: parseInt(row[\"Units\"]) || 1,\n    price: parseFloat(row[\"Unit Price (INR)\"]) || 0\n  });\n}\n\nconst quote = Object.values(groupedQuotes)[0]; // Return the first (and likely only) quote\nreturn [{ json: quote }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        224
+      ],
+      "id": "b4ff0f83-14ff-4054-beff-f2fb6a235455",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1IDhvtI7Qr3NsCtn7wLvz8QUSdrViBWYX",
+          "mode": "list",
+          "cachedResultName": "Sales Quotes",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1IDhvtI7Qr3NsCtn7wLvz8QUSdrViBWYX"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        544,
+        224
+      ],
+      "id": "30c6be7b-8117-49a1-b78a-3cfbf8961926",
+      "name": "Upload file"
+    },
+    {
+      "parameters": {
+        "operation": "Convert HTML To PDF",
+        "margins": {},
+        "pdfOptions": {},
+        "advancedOptions": {}
+      },
+      "type": "n8n-nodes-pdf4me.pdf4me",
+      "typeVersion": 1,
+      "position": [
+        352,
+        224
+      ],
+      "id": "9a08a9f9-65bf-4128-aa4b-7f3e357051ed",
+      "name": "PDF4ME",
+      "credentials": {
+        "pdf4meApi": {
+          "id": "zE96DQ2pWv51jVj1",
+          "name": "PDF4ME account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "PDF4ME",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF4ME": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ee5cd5d192d9bc4d9e695233584dabe002fedc44533c120b9ec73f5629f9c27c"
+  }
+}

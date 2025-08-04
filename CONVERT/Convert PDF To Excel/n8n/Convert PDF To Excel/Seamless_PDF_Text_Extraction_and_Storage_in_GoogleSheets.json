@@ -1,0 +1,152 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1ffa9df_6VcL1V63Ni-IKdLuH3hXYUNxyqxyAOy80lTs",
+            "mode": "list",
+            "cachedResultName": "Document Tracker",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ffa9df_6VcL1V63Ni-IKdLuH3hXYUNxyqxyAOy80lTs/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ffa9df_6VcL1V63Ni-IKdLuH3hXYUNxyqxyAOy80lTs/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Document Name": "={{ $('PDF4me Api').item.json.name }}",
+              "Text": "={{ $json.data }}",
+              "Page Count": "={{ $('PDF4me Api').item.json.pageCount }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Document Name",
+                "displayName": "Document Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Text",
+                "displayName": "Text",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Page Count",
+                "displayName": "Page Count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          608,
+          176
+        ],
+        "id": "ca86d374-f3a0-43b0-87d3-44837ce0d1d4",
+        "name": "Append row in sheet"
+      },
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          },
+          "triggerOn": "specificFolder",
+          "folderToWatch": {
+            "__rl": true,
+            "value": "1F7nJ7E2KdxNyifE2xim-lZ-GZSw2INUM",
+            "mode": "list",
+            "cachedResultName": "N8N Tester",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1F7nJ7E2KdxNyifE2xim-lZ-GZSw2INUM"
+          },
+          "event": "fileCreated",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDriveTrigger",
+        "typeVersion": 1,
+        "position": [
+          144,
+          176
+        ],
+        "id": "273217eb-89b1-44e1-a2f8-31f77b0c5067",
+        "name": "Google Drive Trigger"
+      },
+      {
+        "parameters": {
+          "operation": "Convert PDF To Excel"
+        },
+        "type": "n8n-nodes-pdf4me.pdf4me",
+        "typeVersion": 1,
+        "position": [
+          352,
+          176
+        ],
+        "id": "3592647c-4060-43fe-b8da-fb62819dbab5",
+        "name": "PDF4ME",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "zE96DQ2pWv51jVj1",
+            "name": "PDF4ME account 2"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Google Drive Trigger": {
+        "main": [
+          [
+            {
+              "node": "PDF4ME",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF4ME": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "ee5cd5d192d9bc4d9e695233584dabe002fedc44533c120b9ec73f5629f9c27c"
+    }
+  }
