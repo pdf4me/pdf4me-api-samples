@@ -68,7 +68,9 @@ async function extractResources(pdfBase64, filename, extractionConfig = {}) {
     const payload = {
         docContent: pdfBase64,                     // Base64 encoded PDF content (Required)
         docName: filename,                         // Output document name (Required)
-        async: true                                // Asynchronous processing as requested
+        extractText: true,                                       // Extract text content from PDF
+        extractImages: true,                                      // Extract images from PDF
+        async: true                                              // Enable asynchronous processing
     };
 
     console.log('Sending PDF to PDF4me API for resource extraction...');

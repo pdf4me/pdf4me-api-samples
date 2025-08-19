@@ -39,7 +39,7 @@ public with sharing class ExtractResources {
                 'docContent' => pdfBase64,
                 'docName' => docName,
                 'extractText' => extractText,
-                'extractImage' => extractImage,
+                'extractImages' => extractImages,
                 'async' => false
             };
             String jsonBody = JSON.serialize(payload);
