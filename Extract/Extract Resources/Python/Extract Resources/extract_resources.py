@@ -45,7 +45,7 @@ def extract_resources():
         "docContent": pdf_base64,                                  # Base64 encoded PDF document content
         "docName": "sample.pdf",                                   # Name of the input PDF file
         "extractText": True,                                       # Extract text content from PDF
-        "extractImage": True,                                      # Extract images from PDF
+        "extractImages": True,                                      # Extract images from PDF
         "async": True                                              # Enable asynchronous processing
     }
 

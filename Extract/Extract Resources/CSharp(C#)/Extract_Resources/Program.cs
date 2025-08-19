@@ -109,7 +109,7 @@ public class ImageResourceExtractor
                 docContent = imageBase64,
                 docName = "sample.pdf",
                 extractText = true,
-                extractImage = true,
+                extractImages = true,
                 async = true                                        // For big files and too many calls async is recommended to reduce the server load
             };
 

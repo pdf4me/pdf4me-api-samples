@@ -52,7 +52,7 @@ def read_swissqr_code():
     
     # Make the API request to read Swiss QR code from the PDF
     try:
-        response = requests.post(url, json=payload, headers=headers, verify=False)
+        response = requests.post(url, json=payload, headers=headers)
     except Exception as e:
         print(f"Error making API request: {e}")
         return
@@ -99,8 +99,11 @@ def read_swissqr_code():
         # Get the polling URL from the Location header for checking status
         location_url = response.headers.get('Location')
         if not location_url:
-            print("Error: No polling URL found in response")
-            return
+           # header locations 
+            location_url = response.headers.get('location')  # lowercase
+            if not location_url:
+                print("Error: No polling URL found in response headers")
+                return
 
         # Retry logic for polling the result
         max_retries = 20
@@ -113,7 +116,7 @@ def read_swissqr_code():
 
             # Check the processing status by calling the polling URL
             try:
-                response_conversion = requests.get(location_url, headers=headers, verify=False)
+                response_conversion = requests.get(location_url, headers=headers)
             except Exception as e:
                 print(f"Error polling status: {e}")
                 continue

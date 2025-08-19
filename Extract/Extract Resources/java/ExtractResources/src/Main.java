@@ -37,7 +37,7 @@ public class Main {
             payload.put("docContent", pdfBase64);
             payload.put("docName", new File(inputPdfPath).getName());
             payload.put("extractText", true);
-            payload.put("extractImage", true);
+            payload.put("extractImages", true);
             payload.put("async", true);
             executeExtractResources(payload, outputDir);
         } catch (Exception ex) {

@@ -71,7 +71,7 @@ async function processResourceExtraction() {
         docContent: pdfBase64,           // Base64 encoded PDF document content
         docName: "sample.pdf",           // Name of the input PDF file
         extractText: true,               // Extract text content from PDF
-        extractImage: true,              // Extract images from PDF
+        extractImages: true,              // Extract images from PDF
         async: true                      // Enable asynchronous processing
     };
 
