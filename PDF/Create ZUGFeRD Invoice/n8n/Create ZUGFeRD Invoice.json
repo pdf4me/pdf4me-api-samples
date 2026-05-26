@@ -1,0 +1,276 @@
+{
+    "name": "My workflow 23",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -64,
+          16
+        ],
+        "id": "caa55c5c-2017-4eae-85e5-5f7f4dc2cfe5",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "download",
+          "path": "/Blog Data/Zugferd Invoice/SimplePdf.pdf",
+          "binaryPropertyName": "pdf"
+        },
+        "type": "n8n-nodes-base.dropbox",
+        "typeVersion": 1,
+        "position": [
+          416,
+          -112
+        ],
+        "id": "33b965c8-ad24-4cdd-9e12-d9c04d055fba",
+        "name": "Download a file1",
+        "credentials": {
+          "dropboxOAuth2Api": {
+            "id": "tXUfaKkimByZO4Ei",
+            "name": "Dropbox OAuth2 API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "invoice",
+          "operation": "Zugferd Invoice",
+          "docName": "test.pdf",
+          "invoiceXmlData": "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <!--   ZUGFeRD 2.0 / Factur-X 1.0 Electronic Invoice   Profile: EN 16931 (COMFORT)   Standard: UN/CEFACT Cross Industry Invoice (CII) D16B --> <rsm:CrossIndustryInvoice   xmlns:rsm=\"urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100\"   xmlns:ram=\"urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100\"   xmlns:udt=\"urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100\"   xmlns:qdt=\"urn:un:unece:uncefact:data:standard:QualifiedDataType:100\"   xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">    <!-- =====================================================        EXCHANGED DOCUMENT CONTEXT        Identifies the ZUGFeRD version and profile        ===================================================== -->   <rsm:ExchangedDocumentContext>     <ram:GuidelineSpecifiedDocumentContextParameter>       <!-- EN 16931 COMFORT profile -->       <ram:ID>urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:en16931</ram:ID>     </ram:GuidelineSpecifiedDocumentContextParameter>   </rsm:ExchangedDocumentContext>    <!-- =====================================================        EXCHANGED DOCUMENT        Invoice header information        ===================================================== -->   <rsm:ExchangedDocument>     <!-- Invoice number -->     <ram:ID>INV-2024-00123</ram:ID>     <!-- Document type code: 380 = Commercial Invoice -->     <ram:TypeCode>380</ram:TypeCode>     <!-- Invoice issue date: YYYYMMDD format -->     <ram:IssueDateTime>       <udt:DateTimeString format=\"102\">20240515</udt:DateTimeString>     </ram:IssueDateTime>     <!-- Optional notes -->     <ram:IncludedNote>       <ram:Content>Thank you for your business. Payment is due within 30 days.</ram:Content>       <ram:SubjectCode>AAI</ram:SubjectCode>     </ram:IncludedNote>   </rsm:ExchangedDocument>    <!-- =====================================================        SUPPLY CHAIN TRADE TRANSACTION        Core trade details: parties, delivery, settlement        ===================================================== -->   <rsm:SupplyChainTradeTransaction>      <!-- =================================================          LINE ITEMS          ================================================= -->      <!-- Line Item 1 -->     <ram:IncludedSupplyChainTradeLineItem>       <ram:AssociatedDocumentLineDocument>         <ram:LineID>1</ram:LineID>       </ram:AssociatedDocumentLineDocument>       <ram:SpecifiedTradeProduct>         <ram:GlobalID schemeID=\"0160\">1234567890123</ram:GlobalID>         <ram:SellerAssignedID>PROD-001</ram:SellerAssignedID>         <ram:Name>Professional Consulting Services</ram:Name>         <ram:Description>IT strategy consulting – May 2024</ram:Description>       </ram:SpecifiedTradeProduct>       <ram:SpecifiedLineTradeAgreement>         <ram:GrossPriceProductTradePrice>           <ram:ChargeAmount>150.00</ram:ChargeAmount>           <ram:BasisQuantity unitCode=\"HUR\">1</ram:BasisQuantity>         </ram:GrossPriceProductTradePrice>         <ram:NetPriceProductTradePrice>           <ram:ChargeAmount>150.00</ram:ChargeAmount>           <ram:BasisQuantity unitCode=\"HUR\">1</ram:BasisQuantity>         </ram:NetPriceProductTradePrice>       </ram:SpecifiedLineTradeAgreement>       <ram:SpecifiedLineTradeDelivery>         <ram:BilledQuantity unitCode=\"HUR\">10</ram:BilledQuantity>       </ram:SpecifiedLineTradeDelivery>       <ram:SpecifiedLineTradeSettlement>         <ram:ApplicableTradeTax>           <ram:TypeCode>VAT</ram:TypeCode>           <ram:CategoryCode>S</ram:CategoryCode>           <ram:RateApplicablePercent>19</ram:RateApplicablePercent>         </ram:ApplicableTradeTax>         <ram:SpecifiedTradeSettlementLineMonetarySummation>           <ram:LineTotalAmount>1500.00</ram:LineTotalAmount>         </ram:SpecifiedTradeSettlementLineMonetarySummation>       </ram:SpecifiedLineTradeSettlement>     </ram:IncludedSupplyChainTradeLineItem>      <!-- Line Item 2 -->     <ram:IncludedSupplyChainTradeLineItem>       <ram:AssociatedDocumentLineDocument>         <ram:LineID>2</ram:LineID>       </ram:AssociatedDocumentLineDocument>       <ram:SpecifiedTradeProduct>         <ram:SellerAssignedID>PROD-002</ram:SellerAssignedID>         <ram:Name>Software License</ram:Name>         <ram:Description>Annual software license – Project Management Tool</ram:Description>       </ram:SpecifiedTradeProduct>       <ram:SpecifiedLineTradeAgreement>         <ram:GrossPriceProductTradePrice>           <ram:ChargeAmount>500.00</ram:ChargeAmount>           <ram:BasisQuantity unitCode=\"C62\">1</ram:BasisQuantity>         </ram:GrossPriceProductTradePrice>         <ram:NetPriceProductTradePrice>           <ram:ChargeAmount>500.00</ram:ChargeAmount>           <ram:BasisQuantity unitCode=\"C62\">1</ram:BasisQuantity>         </ram:NetPriceProductTradePrice>       </ram:SpecifiedLineTradeAgreement>       <ram:SpecifiedLineTradeDelivery>         <ram:BilledQuantity unitCode=\"C62\">2</ram:BilledQuantity>       </ram:SpecifiedLineTradeDelivery>       <ram:SpecifiedLineTradeSettlement>         <ram:ApplicableTradeTax>           <ram:TypeCode>VAT</ram:TypeCode>           <ram:CategoryCode>S</ram:CategoryCode>           <ram:RateApplicablePercent>19</ram:RateApplicablePercent>         </ram:ApplicableTradeTax>         <ram:SpecifiedTradeSettlementLineMonetarySummation>           <ram:LineTotalAmount>1000.00</ram:LineTotalAmount>         </ram:SpecifiedTradeSettlementLineMonetarySummation>       </ram:SpecifiedLineTradeSettlement>     </ram:IncludedSupplyChainTradeLineItem>      <!-- =================================================          HEADER TRADE AGREEMENT          Seller and Buyer information          ================================================= -->     <ram:ApplicableHeaderTradeAgreement>        <!-- Buyer Reference / Order Reference -->       <ram:BuyerReference>ORDER-2024-456</ram:BuyerReference>        <!-- SELLER -->       <ram:SellerTradeParty>         <ram:GlobalID schemeID=\"0088\">4012345678901</ram:GlobalID>         <ram:Name>Acme Technologies GmbH</ram:Name>         <ram:DefinedTradeContact>           <ram:PersonName>Jane Doe</ram:PersonName>           <ram:DepartmentName>Accounting</ram:DepartmentName>           <ram:TelephoneUniversalCommunication>             <ram:CompleteNumber>+49 30 12345678</ram:CompleteNumber>           </ram:TelephoneUniversalCommunication>           <ram:EmailURIUniversalCommunication>             <ram:URIID>billing@acme-tech.de</ram:URIID>           </ram:EmailURIUniversalCommunication>         </ram:DefinedTradeContact>         <ram:PostalTradeAddress>           <ram:PostcodeCode>10115</ram:PostcodeCode>           <ram:LineOne>Unter den Linden 1</ram:LineOne>           <ram:CityName>Berlin</ram:CityName>           <ram:CountryID>DE</ram:CountryID>         </ram:PostalTradeAddress>         <ram:URIUniversalCommunication>           <ram:URIID schemeID=\"EM\">billing@acme-tech.de</ram:URIID>         </ram:URIUniversalCommunication>         <ram:SpecifiedTaxRegistration>           <!-- VAT registration number -->           <ram:ID schemeID=\"VA\">DE123456789</ram:ID>         </ram:SpecifiedTaxRegistration>         <ram:SpecifiedTaxRegistration>           <!-- Local tax number -->           <ram:ID schemeID=\"FC\">12/345/67890</ram:ID>         </ram:SpecifiedTaxRegistration>       </ram:SellerTradeParty>        <!-- BUYER -->       <ram:BuyerTradeParty>         <ram:GlobalID schemeID=\"0088\">4098765432109</ram:GlobalID>         <ram:Name>Global Corp AG</ram:Name>         <ram:DefinedTradeContact>           <ram:PersonName>John Smith</ram:PersonName>           <ram:DepartmentName>Procurement</ram:DepartmentName>           <ram:EmailURIUniversalCommunication>             <ram:URIID>invoices@globalcorp.com</ram:URIID>           </ram:EmailURIUniversalCommunication>         </ram:DefinedTradeContact>         <ram:PostalTradeAddress>           <ram:PostcodeCode>80331</ram:PostcodeCode>           <ram:LineOne>Maximilianstrasse 10</ram:LineOne>           <ram:CityName>Munich</ram:CityName>           <ram:CountryID>DE</ram:CountryID>         </ram:PostalTradeAddress>         <ram:URIUniversalCommunication>           <ram:URIID schemeID=\"EM\">invoices@globalcorp.com</ram:URIID>         </ram:URIUniversalCommunication>         <ram:SpecifiedTaxRegistration>           <ram:ID schemeID=\"VA\">DE987654321</ram:ID>         </ram:SpecifiedTaxRegistration>       </ram:BuyerTradeParty>        <!-- Purchase Order Reference -->       <ram:BuyerOrderReferencedDocument>         <ram:IssuerAssignedID>PO-2024-0056</ram:IssuerAssignedID>       </ram:BuyerOrderReferencedDocument>      </ram:ApplicableHeaderTradeAgreement>      <!-- =================================================          HEADER TRADE DELIVERY          Delivery / service period information          ================================================= -->     <ram:ApplicableHeaderTradeDelivery>       <ram:ShipToTradeParty>         <ram:Name>Global Corp AG</ram:Name>         <ram:PostalTradeAddress>           <ram:PostcodeCode>80331</ram:PostcodeCode>           <ram:LineOne>Maximilianstrasse 10</ram:LineOne>           <ram:CityName>Munich</ram:CityName>           <ram:CountryID>DE</ram:CountryID>         </ram:PostalTradeAddress>       </ram:ShipToTradeParty>       <!-- Actual delivery / billing period -->       <ram:ActualDeliverySupplyChainEvent>         <ram:OccurrenceDateTime>           <udt:DateTimeString format=\"102\">20240501</udt:DateTimeString>         </ram:OccurrenceDateTime>       </ram:ActualDeliverySupplyChainEvent>     </ram:ApplicableHeaderTradeDelivery>      <!-- =================================================          HEADER TRADE SETTLEMENT          Payment, tax, and monetary summary          ================================================= -->     <ram:ApplicableHeaderTradeSettlement>        <!-- Currency -->       <ram:InvoiceCurrencyCode>EUR</ram:InvoiceCurrencyCode>        <!-- Payment reference -->       <ram:PaymentReference>INV-2024-00123</ram:PaymentReference>        <!-- Payment means (30 = Credit transfer) -->       <ram:SpecifiedTradeSettlementPaymentMeans>         <ram:TypeCode>30</ram:TypeCode>         <ram:Information>Bank transfer</ram:Information>         <ram:PayeePartyCreditorFinancialAccount>           <ram:IBANID>DE89370400440532013000</ram:IBANID>           <ram:AccountName>Acme Technologies GmbH</ram:AccountName>         </ram:PayeePartyCreditorFinancialAccount>         <ram:PayeeSpecifiedCreditorFinancialInstitution>           <ram:BICID>COBADEFFXXX</ram:BICID>         </ram:PayeeSpecifiedCreditorFinancialInstitution>       </ram:SpecifiedTradeSettlementPaymentMeans>        <!-- VAT breakdown -->       <ram:ApplicableTradeTax>         <ram:CalculatedAmount>475.00</ram:CalculatedAmount>         <ram:TypeCode>VAT</ram:TypeCode>         <ram:BasisAmount>2500.00</ram:BasisAmount>         <ram:CategoryCode>S</ram:CategoryCode>         <ram:RateApplicablePercent>19</ram:RateApplicablePercent>       </ram:ApplicableTradeTax>        <!-- Billing period -->       <ram:BillingSpecifiedPeriod>         <ram:StartDateTime>           <udt:DateTimeString format=\"102\">20240501</udt:DateTimeString>         </ram:StartDateTime>         <ram:EndDateTime>           <udt:DateTimeString format=\"102\">20240531</udt:DateTimeString>         </ram:EndDateTime>       </ram:BillingSpecifiedPeriod>        <!-- Payment terms -->       <ram:SpecifiedTradePaymentTerms>         <ram:Description>Net 30 days – Due by 2024-06-14</ram:Description>         <ram:DueDateDateTime>           <udt:DateTimeString format=\"102\">20240614</udt:DateTimeString>         </ram:DueDateDateTime>       </ram:SpecifiedTradePaymentTerms>        <!-- Monetary summary -->       <ram:SpecifiedTradeSettlementHeaderMonetarySummation>         <!-- Sum of all line totals (net) -->         <ram:LineTotalAmount>2500.00</ram:LineTotalAmount>         <!-- Charges at header level -->         <ram:ChargeTotalAmount>0.00</ram:ChargeTotalAmount>         <!-- Allowances at header level -->         <ram:AllowanceTotalAmount>0.00</ram:AllowanceTotalAmount>         <!-- Tax basis = net total -->         <ram:TaxBasisTotalAmount>2500.00</ram:TaxBasisTotalAmount>         <!-- Total VAT amount -->         <ram:TaxTotalAmount currencyID=\"EUR\">475.00</ram:TaxTotalAmount>         <!-- Grand total including VAT -->         <ram:GrandTotalAmount>2975.00</ram:GrandTotalAmount>         <!-- Amount already paid -->         <ram:TotalPrepaidAmount>0.00</ram:TotalPrepaidAmount>         <!-- Amount due for payment -->         <ram:DuePayableAmount>2975.00</ram:DuePayableAmount>       </ram:SpecifiedTradeSettlementHeaderMonetarySummation>      </ram:ApplicableHeaderTradeSettlement>    </rsm:SupplyChainTradeTransaction>  </rsm:CrossIndustryInvoice>",
+          "advancedOptions": {}
+        },
+        "type": "n8n-nodes-pdf4me.PDF4me",
+        "typeVersion": 1,
+        "position": [
+          928,
+          32
+        ],
+        "id": "dc48b479-01aa-425b-a91a-f06222021968",
+        "name": "Create Zugferd invoice",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "3wzEJgnJ6553UVxy",
+            "name": "PDF4ME account 3"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## Provide PDF file \n",
+          "height": 224,
+          "width": 256
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          336,
+          -160
+        ],
+        "typeVersion": 1,
+        "id": "7c2ed092-dec7-474b-92ee-ac17368f64fa",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "## Provide XML/Json/CSV file \n",
+          "height": 224,
+          "width": 256
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          336,
+          128
+        ],
+        "typeVersion": 1,
+        "id": "cf4291e6-2294-4537-a9e0-4ac77ed0873e",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "download",
+          "path": "/Blog Data/Zugferd Invoice/1version2.xml"
+        },
+        "type": "n8n-nodes-base.dropbox",
+        "typeVersion": 1,
+        "position": [
+          400,
+          192
+        ],
+        "id": "80b1aadf-dd7b-41dd-8e30-a6a43e20fada",
+        "name": "Download a file",
+        "credentials": {
+          "dropboxOAuth2Api": {
+            "id": "tXUfaKkimByZO4Ei",
+            "name": "Dropbox OAuth2 API"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          736,
+          32
+        ],
+        "id": "782e4fe3-44bd-4093-8ca6-2892486e83d5",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "resource": "invoice",
+          "operation": "Zugferd Invoice",
+          "docName": "test.pdf",
+          "inputFormat": "JSON",
+          "invoiceJsonData": "{   \"InvoiceId\": \"RE-2026-00471\",   \"IssueDate\": \"2026-05-19T00:00:00\",   \"InvoiceType\": \"RECHNUNG\",   \"TypeCode\": \"380\",   \"IsTest\": false,   \"BusinessProcessType\": \"A1\",   \"SpecificationIdentifier\": \"urn:cen.eu:en16931:2017#compliant#urn:zugferd.de:2p0:basic\",   \"Currency\": \"EUR\",   \"Notes\": [     \"Rechnung gemäß Bestellung vom 02.05.2026.\",     \"Zahlbar innerhalb 30 Tagen netto bis 18.06.2026, 3% Skonto innerhalb 10 Tagen bis 29.05.2026.\",     \"Lieferant GmbH\\nLieferantenstraße 20\\n80333 München\\nDeutschland\\nGeschäftsführer: Hans Muster\\nHandelsregisternummer: HRA 123 (Amtsgericht München)\\nUmsatzsteuer-ID: DE123456789\"   ],   \"BuyerOrderReferencedDocumentId\": \"PO-2026-01088\",   \"ContractReferencedDocumentId\": \"MSA-2024-005\",   \"Seller\": {     \"Name\": \"Lieferant GmbH\",     \"TradingBusinessName\": \"Lieferant GmbH\",     \"Description\": \"Bürobedarf und Druckmaterial Großhandel\",     \"Address\": {       \"Street\": \"Lieferantenstraße 20\",       \"LineTwo\": \"Eingang B, 3. OG\",       \"City\": \"München\",       \"PostalCode\": \"80333\",       \"CountrySubDivisionName\": \"Bayern\",       \"Country\": \"DE\"     },     \"Contact\": {       \"PersonName\": \"Anna Becker\",       \"DepartmentName\": \"Vertrieb / Sales\",       \"PhoneNumber\": \"+49 89 1234 5678\",       \"FaxNumber\": \"+49 89 1234 5670\",       \"EmailAddress\": \"vertrieb@lieferant.de\"     },     \"ElectronicAddress\": \"vertrieb@lieferant.de\",     \"ElectronicAddressScheme\": \"EM\",     \"TaxId\": \"201/113/40209\",     \"VatId\": \"DE123456789\",     \"GLN\": \"4000001123452\",     \"LegalOrganisationId\": \"DE123456789\",     \"LegalOrganisationIdScheme\": \"0088\"   },   \"Buyer\": {     \"Id\": \"GE2026-1088\",     \"Name\": \"Kunden AG Mitte\",     \"Description\": \"Großhandel Bürobedarf Mitteldeutschland\",     \"Address\": {       \"Street\": \"Kundenstraße 15\",       \"LineTwo\": \"z. Hd. Herr Hans Muster\",       \"City\": \"Frankfurt am Main\",       \"PostalCode\": \"60311\",       \"CountrySubDivisionName\": \"Hessen\",       \"Country\": \"DE\"     },     \"Contact\": {       \"PersonName\": \"Hans Muster\",       \"DepartmentName\": \"Einkauf / Procurement\",       \"PhoneNumber\": \"+49 69 9876 5432\",       \"EmailAddress\": \"einkauf@kunden-ag-mitte.de\"     },     \"ElectronicAddress\": \"einkauf@kunden-ag-mitte.de\",     \"ElectronicAddressScheme\": \"EM\",     \"VatId\": \"DE987654321\",     \"GLN\": \"4000001987658\",     \"LegalOrganisationId\": \"DE987654321\",     \"LegalOrganisationIdScheme\": \"0088\"   },   \"ShipTo\": {     \"Name\": \"Kunden AG Mitte, Lager Süd\",     \"Address\": {       \"Street\": \"Logistikstraße 7\",       \"City\": \"Offenbach am Main\",       \"PostalCode\": \"63065\",       \"Country\": \"DE\"     }   },   \"DeliveryDate\": \"2026-05-15T00:00:00\",   \"DespatchAdviceReferencedDocumentId\": \"LS-2026-04471\",   \"BillingPeriod\": {     \"StartDate\": \"2026-05-01T00:00:00\",     \"EndDate\": \"2026-05-31T00:00:00\"   },   \"Payment\": {     \"PaymentReference\": \"RE-2026-00471\",     \"Currency\": \"EUR\",     \"PaymentMeansCode\": \"58\",     \"PaymentMeansInformation\": \"SEPA-Überweisung\",     \"IBAN\": \"DE08700901001234567890\",     \"BIC\": \"GENODEF1M04\",     \"AccountName\": \"Lieferant GmbH\",     \"DueDate\": \"2026-06-18T00:00:00\",     \"Terms\": \"Zahlbar innerhalb 30 Tagen netto. 3% Skonto bei Zahlung innerhalb 10 Tagen.\"   },   \"LineItems\": [     {       \"LineId\": \"1\",       \"Quantity\": 20.0,       \"UnitCode\": \"C62\",       \"UnitPrice\": 9.90,       \"NetUnitPrice\": 9.90,       \"GrossUnitPrice\": 11.78,       \"BasisQuantity\": 1.0,       \"LineTotal\": 198.00,       \"ProductName\": \"Trennblätter A4 farbig\",       \"Description\": \"Kartonierte Trennblätter A4, 5er-Set, sortiert (rot, gelb, grün, blau, weiß)\",       \"GTIN\": \"4012345001235\",       \"SellerProductId\": \"TB100A4\",       \"BuyerProductId\": \"ART-TB-A4-01\",       \"TaxCategoryCode\": \"S\",       \"TaxTypeCode\": \"VAT\",       \"TaxPercent\": 19.0     },     {       \"LineId\": \"2\",       \"Quantity\": 50.0,       \"UnitCode\": \"H87\",       \"UnitPrice\": 4.50,       \"NetUnitPrice\": 4.50,       \"GrossUnitPrice\": 5.36,       \"BasisQuantity\": 1.0,       \"LineTotal\": 225.00,       \"ProductName\": \"Kugelschreiber Standard blau\",       \"Description\": \"Kugelschreiber mit Kappe, Schreibfarbe blau, Strichbreite M\",       \"GTIN\": \"4012345009999\",       \"SellerProductId\": \"KS200BL\",       \"TaxCategoryCode\": \"S\",       \"TaxTypeCode\": \"VAT\",       \"TaxPercent\": 19.0     },     {       \"LineId\": \"3\",       \"Quantity\": 5.0,       \"UnitCode\": \"H87\",       \"UnitPrice\": 24.90,       \"NetUnitPrice\": 24.90,       \"GrossUnitPrice\": 29.63,       \"BasisQuantity\": 1.0,       \"LineTotal\": 124.50,       \"ProductName\": \"Ordner A4 80mm schwarz\",       \"Description\": \"Aktenordner Format A4, Rückenbreite 80mm, mit Hebelmechanik, Farbe schwarz\",       \"GTIN\": \"4012345002468\",       \"SellerProductId\": \"OR80BK\",       \"TaxCategoryCode\": \"S\",       \"TaxTypeCode\": \"VAT\",       \"TaxPercent\": 19.0     }   ],   \"AllowanceCharges\": [     {       \"ChargeIndicator\": false,       \"Reason\": \"Rabatt Stammkunde 5%\",       \"ReasonCode\": \"95\",       \"ActualAmount\": 27.38,       \"BaseAmount\": 547.50,       \"CalculationPercent\": 5.0,       \"TaxCategoryCode\": \"S\",       \"TaxTypeCode\": \"VAT\",       \"TaxPercent\": 19.0     }   ],   \"TaxBreakdown\": [     {       \"TaxAmount\": 98.82,       \"BasisAmount\": 520.12,       \"TaxCategoryCode\": \"S\",       \"TaxTypeCode\": \"VAT\",       \"TaxPercent\": 19.0,       \"ExemptionReason\": null     }   ],   \"Totals\": {     \"LineTotal\": 547.50,     \"ChargeTotal\": 0.00,     \"AllowanceTotal\": 27.38,     \"TaxBasisTotal\": 520.12,     \"TaxTotal\": 98.82,     \"GrandTotal\": 618.94,     \"PrepaidAmount\": 0.00,     \"DuePayableAmount\": 618.94,     \"RoundingAmount\": 0.00,     \"TaxPercent\": 19.0,     \"Currency\": \"EUR\"   },   \"AdditionalReferencedDocuments\": [     {       \"Id\": \"PO-2026-01088\",       \"TypeCode\": \"130\",       \"Name\": \"Kundenbestellung\",       \"IssueDate\": \"2026-05-02T00:00:00\"     },     {       \"Id\": \"LS-2026-04471\",       \"TypeCode\": \"270\",       \"Name\": \"Lieferschein\",       \"IssueDate\": \"2026-05-15T00:00:00\"     }   ] }",
+          "advancedOptions": {}
+        },
+        "type": "n8n-nodes-pdf4me.PDF4me",
+        "typeVersion": 1,
+        "position": [
+          672,
+          800
+        ],
+        "id": "519096e7-1e0c-4033-9744-d8e3fdd0250a",
+        "name": "Create Zugferd invoice1",
+        "credentials": {
+          "pdf4meApi": {
+            "id": "3wzEJgnJ6553UVxy",
+            "name": "PDF4ME account 3"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "operation": "download",
+          "path": "/Blog Data/Zugferd Invoice/1version2.xml"
+        },
+        "type": "n8n-nodes-base.dropbox",
+        "typeVersion": 1,
+        "position": [
+          336,
+          800
+        ],
+        "id": "7351fd3e-ad70-4dc2-8af9-65b3c50d063d",
+        "name": "Download a File",
+        "credentials": {
+          "dropboxOAuth2Api": {
+            "id": "tXUfaKkimByZO4Ei",
+            "name": "Dropbox OAuth2 API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "path": "/zugferd_n8n01.pdf",
+          "binaryData": true
+        },
+        "type": "n8n-nodes-base.dropbox",
+        "typeVersion": 1,
+        "position": [
+          1104,
+          32
+        ],
+        "id": "a3d42191-e38a-4028-8e3e-083f78e3f084",
+        "name": "Upload a file",
+        "credentials": {
+          "dropboxOAuth2Api": {
+            "id": "tXUfaKkimByZO4Ei",
+            "name": "Dropbox OAuth2 API"
+          }
+        }
+      }
+    ],
+    "pinData": {},
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Download a file1",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Download a file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download a file1": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download a file": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Create Zugferd invoice",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download a File": {
+        "main": [
+          [
+            {
+              "node": "Create Zugferd invoice1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create Zugferd invoice": {
+        "main": [
+          [
+            {
+              "node": "Upload a file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "active": false,
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate"
+    },
+    "versionId": "121ab0eb-8387-49bd-a4eb-23e117e8f3a3",
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "10c13d7e89aad68c44f47f5bc6fac820a6cdd2fa5c6469874cb616456ee6fc60"
+    },
+    "id": "qIm0mllCT63RZImT",
+    "tags": []
+  }
+  
