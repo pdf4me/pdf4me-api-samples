@@ -77,7 +77,7 @@ def unlock_pdf_document(base64_content, filename):
         "docName": "output.pdf",                                   # Output document name (Required)
         "docContent": base64_content,                              # Base64 encoded PDF content (Required)
         "password": "1234",                                        # Password for the protected PDF (Required)
-        "async": True                                              # Asynchronous processing as requested
+        "isAsync": True                                              # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for document unlocking...")

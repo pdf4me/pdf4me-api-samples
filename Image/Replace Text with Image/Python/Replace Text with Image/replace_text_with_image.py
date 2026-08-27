@@ -53,7 +53,7 @@ def replace_text_with_image():
         "imageContent": image_base64,                              # Base64 encoded replacement image content
         "imageHeight": 50,                                         # Height of the replacement image (integer)
         "imageWidth": 100,                                         # Width of the replacement image (integer)
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

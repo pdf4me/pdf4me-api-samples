@@ -31,7 +31,7 @@ public class Main {
                 "\"docContent\":\"" + imgBase64 + "\"," +
                 "\"docName\":\"" + imgPath.getFileName() + "\"," +
                 "\"orientationType\":\"Vertical\"," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             String url = BASE_URL + "api/v2/FlipImage";
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

@@ -72,7 +72,7 @@ This Google Apps Script resizes images using the PDF4Me API. It can change the d
   "height": 600,
   "maintainAspectRatio": true,
   "quality": 90,
-  "async": true
+  "isAsync": true
 }
 ```
 

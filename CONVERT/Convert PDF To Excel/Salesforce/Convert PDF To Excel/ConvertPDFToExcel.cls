@@ -45,7 +45,7 @@ public with sharing class ConvertPDFToExcel {
                 'language' => language,
                 'outputFormat' => outputFormat,
                 'ocrWhenNeeded' => ocrWhenNeeded,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

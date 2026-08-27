@@ -44,7 +44,7 @@ async function convertUrlToPdf(targetUrl, filename, conversionConfig = {}) {
     const payload = {
         url: targetUrl,                           // URL to convert to PDF (Required)
         docName: filename,                        // Output document name (Required)
-        async: true                               // Asynchronous processing as requested
+        isAsync: true                               // Asynchronous processing as requested
     };
 
     console.log('Sending URL to PDF4me API for PDF conversion...');

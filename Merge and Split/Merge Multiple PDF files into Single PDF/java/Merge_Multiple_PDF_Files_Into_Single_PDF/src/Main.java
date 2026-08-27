@@ -49,7 +49,7 @@ public class Main {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("docContent", pdfBase64List);
             payload.put("docName", outputFileName);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executeMerge(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in mergeMultiplePdfs: " + ex.getMessage());

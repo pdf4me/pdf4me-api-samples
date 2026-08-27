@@ -32,7 +32,7 @@ function rotateImage() {
       imageName: outputFileName,
       imageContent: imageBase64,
       angle: angle,
-      async: true
+      isAsync: true
     };
     
     // Make API request

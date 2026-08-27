@@ -49,7 +49,7 @@ public class Main {
             payload.put("text", text);
             payload.put("splitTextPage", splitTextPage);
             payload.put("fileNaming", fileNaming);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             executeSplitByText(payload, outputDir);
         } catch (Exception ex) {
             System.err.println("Error in splitPdfByText: " + ex.getMessage());

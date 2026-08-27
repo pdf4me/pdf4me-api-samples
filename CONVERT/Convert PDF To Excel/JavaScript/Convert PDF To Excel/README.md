@@ -68,7 +68,7 @@ const payload = {
     mergeAllSheets: true,        // Merge all pages into single spreadsheet
     outputFormat: true,          // Enable output formatting
     ocrWhenNeeded: true,         // Use OCR for scanned content
-    async: true                  // Enable async processing
+    isAsync: true                  // Enable async processing
 };
 ```
 

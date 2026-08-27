@@ -127,7 +127,7 @@ public class ReplaceTextWithImageInWord
                 IsFirstPageSkip = false,           // Whether to skip the first page
                 PageNumbers = "1",                 // Page numbers to process
                 SearchText = "Djokovic",           // Text to search and replace
-                async = true                       // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                       // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteTextReplacementAsync(payload);

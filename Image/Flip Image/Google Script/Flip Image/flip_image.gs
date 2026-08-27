@@ -32,7 +32,7 @@ function flipImage() {
       imageName: outputFileName,
       imageContent: imageBase64,
       flipDirection: flipDirection,
-      async: true
+      isAsync: true
     };
     
     // Make API request

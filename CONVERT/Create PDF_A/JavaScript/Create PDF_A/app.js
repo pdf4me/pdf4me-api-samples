@@ -69,7 +69,7 @@ async function processPdfToPdfAConversion() {
         compliance: "PdfA1b",         // PDF/A compliance level (PdfA1b = Level B basic conformance)
         allowUpgrade: true,           // Allow upgrading to higher compliance if needed
         allowDowngrade: true,         // Allow downgrading to lower compliance if necessary
-        async: true                   // Enable asynchronous processing
+        isAsync: true                   // Enable asynchronous processing
     };
 
     // Available PDF/A compliance options:

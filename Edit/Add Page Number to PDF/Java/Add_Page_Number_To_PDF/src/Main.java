@@ -49,7 +49,7 @@ public class Main {
             payload.put("marginYInMM", 10);
             payload.put("opacity", 100);
             payload.put("isBackground", false);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executePageNumberAddition(payload, outputPath);
         } catch (Exception ex) {
             System.out.println("Error in addPageNumbersToPdf: " + ex.getMessage());

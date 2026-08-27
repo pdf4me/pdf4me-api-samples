@@ -94,7 +94,7 @@ def generate_documents_multiple(api_key, base_url, template_file_path, json_data
             "documentDataType": "Json",                    # Type of data being provided
             "outputType": "Docx",                          # Desired output format
             "documentDataText": json_data,                 # JSON data to merge into template
-            "async": True                                  # For big files and too many calls async is recommended to reduce the server load
+            "isAsync": True                                  # For big files and too many calls async is recommended to reduce the server load
         }
         
         # Alternative payload examples for different scenarios:
@@ -108,7 +108,7 @@ def generate_documents_multiple(api_key, base_url, template_file_path, json_data
         #     "outputType": "PDF",                         # Output format (PDF/Word/Excel/HTML)
         #     "documentDataText": json_data,               # JSON data as text
         #     "metaDataJson": "{}",                        # Additional metadata for fields in JSON format
-        #     "async": True                                # Asynchronous processing recommended
+        #     "isAsync": True                                # Asynchronous processing recommended
         # }
         
         # Example 2: HTML template with JSON data outputting to PDF
@@ -120,7 +120,7 @@ def generate_documents_multiple(api_key, base_url, template_file_path, json_data
         #     "outputType": "PDF",                         # Output as PDF document
         #     "documentDataText": json_data,               # JSON data as text
         #     "metaDataJson": "{}",                        # Additional metadata
-        #     "async": True                                # Asynchronous processing
+        #     "isAsync": True                                # Asynchronous processing
         # }
         
         # Example 3: Word template with XML data outputting to Excel
@@ -132,7 +132,7 @@ def generate_documents_multiple(api_key, base_url, template_file_path, json_data
         #     "outputType": "Excel",                       # Output as Excel file
         #     "documentDataText": xml_data,                # XML data as text (replace json_data with xml_data)
         #     "metaDataJson": "{}",                        # Additional metadata
-        #     "async": True                                # Asynchronous processing
+        #     "isAsync": True                                # Asynchronous processing
         # }
         
         # Example 4: PDF template with JSON data outputting to Word
@@ -144,7 +144,7 @@ def generate_documents_multiple(api_key, base_url, template_file_path, json_data
         #     "outputType": "Word",                        # Output as Word document
         #     "documentDataText": json_data,               # JSON data as text
         #     "metaDataJson": "{}",                        # Additional metadata
-        #     "async": True                                # Asynchronous processing
+        #     "isAsync": True                                # Asynchronous processing
         # }
         
         # Example 5: Word template with data file (instead of text) outputting to HTML
@@ -156,7 +156,7 @@ def generate_documents_multiple(api_key, base_url, template_file_path, json_data
         #     "outputType": "HTML",                        # Output as HTML file
         #     "documentDataFile": data_file_base64,        # Base64 encoded data file (alternative to documentDataText)
         #     "metaDataJson": "{}",                        # Additional metadata for fields
-        #     "async": True                                # Asynchronous processing
+        #     "isAsync": True                                # Asynchronous processing
         # }
         
         # Example 6: HTML template with JSON data and file metadata outputting to PDF
@@ -169,7 +169,7 @@ def generate_documents_multiple(api_key, base_url, template_file_path, json_data
         #     "documentDataText": json_data,               # JSON data as text
         #     "fileMetaData": '{"author": "PDF4me", "title": "Generated Invoice"}',  # File metadata
         #     "metaDataJson": '{"customField": "value"}',  # Additional metadata for template fields
-        #     "async": True                                # Asynchronous processing
+        #     "isAsync": True                                # Asynchronous processing
         # }
         
         # Example 7: Complete payload with all possible parameters
@@ -183,7 +183,7 @@ def generate_documents_multiple(api_key, base_url, template_file_path, json_data
         #     "documentDataText": json_data,               # Manual data entry (use if documentDataFile not provided)
         #     "fileMetaData": '{"author": "PDF4me", "subject": "Generated Document", "creator": "PDF4me API"}',  # File metadata
         #     "metaDataJson": '{"headerColor": "#FF0000", "footerText": "Confidential"}',  # Template field metadata
-        #     "async": True                                # Asynchronous processing for better performance
+        #     "isAsync": True                                # Asynchronous processing for better performance
         # }
         
         print("Sending generate documents multiple request...")

@@ -78,7 +78,7 @@ function addImageWatermarkToImage() {
         position: position,               // Watermark position
         opacity: opacity,                 // Watermark opacity
         scale: scale,                     // Watermark scale
-        async: true                       // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                       // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Set the headers for the API request

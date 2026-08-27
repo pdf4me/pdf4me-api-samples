@@ -54,7 +54,7 @@ public class Main {
             payload.put("splitBarcodePage", splitBarcodePage);
             payload.put("combinePagesWithSameConsecutiveBarcodes", combinePagesWithSameConsecutiveBarcodes);
             payload.put("pdfRenderDpi", pdfRenderDpi);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             executeSplitBySwissQR(payload, outputDir);
         } catch (Exception ex) {
             System.err.println("Error in splitPdfBySwissQR: " + ex.getMessage());

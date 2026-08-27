@@ -36,7 +36,7 @@ public with sharing class SplitPDFBySwissQR {
                 'pdfRenderDpi' => pdfRenderDpi,
                 'combinePagesWithSameBarcodes' => combinePagesWithSameBarcodes,
                 'returnAsZip' => returnAsZip,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

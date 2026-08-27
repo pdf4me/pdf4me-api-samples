@@ -84,7 +84,7 @@ var payload = {
   "splitAction": "SplitAfterPage",
   "splitActionNumber": 1, // Splits after page 1
   "fileNaming": "NameAsPerOrder",
-  "async": true
+  "isAsync": true
 };
 ```
 
@@ -98,7 +98,7 @@ var payload = {
   "splitAction": "RecurringSplitAfterPage",
   "splitActionNumber": 4, // Creates PDFs of 4 pages each
   "fileNaming": "NameAsPerOrder",
-  "async": true
+  "isAsync": true
 };
 ```
 
@@ -112,7 +112,7 @@ var payload = {
   "splitAction": "SplitSequence",
   "splitSequence": [1, 3, 8], // Split points
   "fileNaming": "NameAsPerOrder",
-  "async": true
+  "isAsync": true
 };
 ```
 
@@ -126,7 +126,7 @@ var payload = {
   "splitAction": "SplitRanges",
   "splitRanges": "1-4, 8, 10-12", // Extract pages 1-4, 8, and 10-12
   "fileNaming": "NameAsPerOrder",
-  "async": true
+  "isAsync": true
 };
 ```
 

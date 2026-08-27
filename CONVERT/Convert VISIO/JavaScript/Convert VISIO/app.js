@@ -74,7 +74,7 @@ async function processVisioToPdfConversion() {
         SaveForegroundPage: true,         // Save foreground elements
         SaveToolBar: true,                // Include toolbar in conversion
         AutoFit: true,                    // Auto-fit content to page
-        async: true                       // Enable asynchronous processing
+        isAsync: true                       // Enable asynchronous processing
     };
 
     // Alternative payload examples for other output formats:
@@ -97,7 +97,7 @@ async function processVisioToPdfConversion() {
     //     Scale: 1.0,                        // Scaling factor (1.0 = original size)
     //     SmoothingMode: "HighQuality",      // Anti-aliasing quality
     //     AutoFit: true,
-    //     async: true
+    //     isAsync: true
     // };
 
     // For PNG Output - Lossless image format with transparency support
@@ -117,7 +117,7 @@ async function processVisioToPdfConversion() {
     //     Scale: 1.0,
     //     SmoothingMode: "HighQuality",
     //     AutoFit: true,
-    //     async: true
+    //     isAsync: true
     // };
 
     // For TIFF Output - High-quality format often used for archival/printing
@@ -135,7 +135,7 @@ async function processVisioToPdfConversion() {
     //     Scale: 1.0,
     //     SmoothingMode: "HighQuality",
     //     AutoFit: true,
-    //     async: true
+    //     isAsync: true
     // };
 
     // Set up HTTP headers for authentication and content type

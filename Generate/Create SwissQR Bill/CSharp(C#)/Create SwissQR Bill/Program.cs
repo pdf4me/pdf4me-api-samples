@@ -123,7 +123,7 @@ public class SwissQrBillCreator
                 referenceType = "NON",                    // Reference type (NON = No reference)
                 languageType = "English",                 // Language for the QR bill
                 seperatorLine = "LineWithScissor",        // Separator line style
-                async = true                              // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                              // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteSwissQrBillCreationAsync(payload);

@@ -53,7 +53,7 @@ exports.handler = async (event, context) => {
                 quality: process.env.QUALITY || 85, // 0-100 (for JPEG)
                 compressionLevel: process.env.COMPRESSION_LEVEL || 6, // 0-9 (for PNG)
                 maintainTransparency: process.env.MAINTAIN_TRANSPARENCY || true,
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

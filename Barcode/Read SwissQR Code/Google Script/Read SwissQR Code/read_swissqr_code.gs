@@ -67,7 +67,7 @@ function readSwissQrCode() {
     var payload = {
       docContent: pdfBase64,                        // Base64 encoded PDF document content
       docName: file.getName(),                      // Name of the input PDF file
-      async: true                                   // Asynchronous processing (recommended for large files)
+      isAsync: true                                   // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request

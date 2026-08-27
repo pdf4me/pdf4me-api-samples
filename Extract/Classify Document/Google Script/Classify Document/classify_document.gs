@@ -68,7 +68,7 @@ function classifyDocument() {
     var payload = {
       docContent: pdfBase64,                        // Base64 encoded PDF document content
       docName: file.getName(),                      // Source PDF file name with .pdf extension
-      async: true                                   // Asynchronous processing
+      isAsync: true                                   // Asynchronous processing
     };
 
     // Set the headers for the API request

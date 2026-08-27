@@ -140,7 +140,7 @@ public class PdfPageNumberAdder
                 // Whether page numbers are in background
                 isBackground = false,
                 // For big files and too many calls async is recommended to reduce the server load
-                async = true
+                isAsync = true
             };
 
             // Execute the page number addition operation

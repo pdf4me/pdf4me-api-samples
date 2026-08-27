@@ -97,7 +97,7 @@ function fillPdfForm() {
       metaData: "",                                // Additional metadata (Optional)
       metaDataJson: "",                            // Additional JSON metadata (Optional)
       InputFormData: inputFormData,                // Array of form field objects (Required)
-      async: true                                  // Asynchronous processing
+      isAsync: true                                  // Asynchronous processing
     };
 
     // Set the headers for the API request

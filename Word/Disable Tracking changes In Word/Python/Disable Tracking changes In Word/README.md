@@ -124,7 +124,7 @@ The implementation supports these settings:
 {
   "docName": "output.docx",
   "docContent": "base64-encoded-docx-content",
-  "async": true
+  "isAsync": true
 }
 ```
 

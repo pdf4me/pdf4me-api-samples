@@ -52,7 +52,7 @@ public class Main {
             payload.put("marginBottom", 20);
             payload.put("marginLeft", 20);
             payload.put("marginRight", 20);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executeMarginAddition(payload, outputPath);
         } catch (Exception ex) {
             System.out.println("Error in addMarginToPdf: " + ex.getMessage());

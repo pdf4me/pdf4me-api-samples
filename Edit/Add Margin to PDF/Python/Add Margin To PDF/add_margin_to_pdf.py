@@ -41,7 +41,7 @@ def add_margin_to_pdf():
         "marginRight": 20,                               # Right margin in millimeters (0-100)
         "marginTop": 25,                                 # Top margin in millimeters (0-100)
         "marginBottom": 25,                              # Bottom margin in millimeters (0-100)
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

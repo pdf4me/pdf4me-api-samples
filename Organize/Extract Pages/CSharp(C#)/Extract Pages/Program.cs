@@ -105,7 +105,7 @@ public class ExtractPages
                 docContent = pdfBase64,             // Base64 encoded PDF content
                 docName = "output.pdf",             // Output document name
                 pageNumbers = "1-3",                // Page numbers to extract (range or comma-separated)
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecutePageExtractionAsync(payload);

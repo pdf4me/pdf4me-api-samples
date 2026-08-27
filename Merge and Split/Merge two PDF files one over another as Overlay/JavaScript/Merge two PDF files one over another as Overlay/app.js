@@ -81,7 +81,7 @@ async function mergeOverlay(basePdfPath, layerPdfPath) {
             baseDocName: path.basename(basePdfPath),
             layerDocContent: layerPdfBase64,
             layerDocName: path.basename(layerPdfPath),
-            async: true
+            isAsync: true
         };
         
         console.log("🚀 Sending overlay merge request to PDF4Me API...");

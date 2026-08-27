@@ -51,7 +51,7 @@ def create_image_from_pdf():
             }
         },
         "pageNrs": "1-2",                                          # Page range as string (e.g., "1", "1,3,5", "2-5", "1,3,7-10", "2-")
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

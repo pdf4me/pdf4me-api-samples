@@ -33,7 +33,7 @@ public with sharing class SplitPDFByText {
                 'text' => text,
                 'splitTextPage' => splitTextPage,
                 'fileNaming' => fileNaming,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

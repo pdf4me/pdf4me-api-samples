@@ -47,7 +47,7 @@ def split_pdf_by_swiss_qr():
         "pdfRenderDpi": "150",                                      # PDF render DPI: 100, 150, 200, 250
         "combinePagesWithSameBarcodes": False,                      # Combine consecutive pages with same QR
         "returnAsZip": False,                                       # Return individual files, not ZIP
-        "async": False                                               # Enable asynchronous processing
+        "isAsync": True                                               # Enable asynchronous processing
     }
 
     print("Sending PDF Swiss QR split request to PDF4me API...")

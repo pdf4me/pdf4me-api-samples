@@ -36,7 +36,7 @@ public class Main {
             String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
             byte[] imgBytes = Files.readAllBytes(imgPath);
             String imgBase64 = Base64.getEncoder().encodeToString(imgBytes);
-            String payload = String.format("{\"docContent\":\"%s\",\"docName\":\"output.pdf\",\"replaceText\":\"%s\",\"pageSequence\":\"all\",\"imageContent\":\"%s\",\"imageHeight\":10,\"imageWidth\":10,\"async\":true}", pdfBase64, replaceText, imgBase64);
+            String payload = String.format("{\"docContent\":\"%s\",\"docName\":\"output.pdf\",\"replaceText\":\"%s\",\"pageSequence\":\"all\",\"imageContent\":\"%s\",\"imageHeight\":10,\"imageWidth\":10,\"isAsync\":true}", pdfBase64, replaceText, imgBase64);
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/ReplaceTextWithImage"))
                 .header("Content-Type", "application/json")

@@ -167,7 +167,7 @@ POST /api/v2/CreateSwissQrBill
   "referenceType": "NON",
   "languageType": "English",
   "seperatorLine": "LineWithScissor",
-  "async": true
+  "isAsync": true
 }
 ```
 

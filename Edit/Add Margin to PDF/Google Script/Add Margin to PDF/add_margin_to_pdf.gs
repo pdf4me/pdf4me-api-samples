@@ -73,7 +73,7 @@ function addMarginToPdf() {
       marginRight: 20,                              // Right margin in millimeters (0-100)
       marginTop: 25,                                // Top margin in millimeters (0-100)
       marginBottom: 25,                             // Bottom margin in millimeters (0-100)
-      async: true                                   // Enable asynchronous processing
+      isAsync: true                                   // Enable asynchronous processing
     };
 
     // Set the headers for the API request

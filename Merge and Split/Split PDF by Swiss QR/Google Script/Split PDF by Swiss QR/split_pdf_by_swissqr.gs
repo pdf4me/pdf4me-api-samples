@@ -103,7 +103,7 @@ function splitPdfBySwissQr() {
       "pdfRenderDpi": "150",                                     // PDF render DPI: 100, 150, 200, 250
       "combinePagesWithSameBarcodes": false,                     // Combine consecutive pages with same QR
       "returnAsZip": false,                                      // Return individual files, not ZIP
-      "async": false                                             // Enable asynchronous processing
+      "isAsync": true                                             // Enable asynchronous processing
     };
 
     // Request headers with authentication

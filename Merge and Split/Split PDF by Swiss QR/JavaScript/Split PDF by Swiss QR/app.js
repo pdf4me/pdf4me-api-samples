@@ -96,7 +96,7 @@ async function splitPdfBySwissQR(inputPdfPath, outputFolder, barcodeString, barc
             splitBarcodePage: splitBarcodePage,
             combinePagesWithSameConsecutiveBarcodes: combinePagesWithSameConsecutiveBarcodes,
             pdfRenderDpi: pdfRenderDpi,
-            async: true
+            isAsync: true
         };
         
         console.log("🚀 Sending Swiss QR split request to PDF4Me API...");

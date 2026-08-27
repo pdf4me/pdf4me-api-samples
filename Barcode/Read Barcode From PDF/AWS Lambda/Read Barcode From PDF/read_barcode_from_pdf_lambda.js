@@ -70,7 +70,7 @@ async function readBarcodeFromPdf(base64Content, filename, barcodeConfig = {}) {
         docName: filename,                       // Output document name (Required)
         barcodeType: barcodeConfig.barcodeType || ["all"], // Barcode types: ["all"], ["qrCode"], ["dataMatrix"], ["code128"], etc.
         pages: barcodeConfig.pages || "all",     // Page options: "all", "1", "1,3,5", "2-5", "1,3,7-10", "2-"
-        async: true                              // Asynchronous processing as requested
+        isAsync: true                              // Asynchronous processing as requested
     };
 
     console.log('Sending PDF to PDF4me API for barcode reading...');

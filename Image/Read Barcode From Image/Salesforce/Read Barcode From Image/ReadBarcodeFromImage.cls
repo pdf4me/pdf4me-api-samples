@@ -23,7 +23,7 @@ public with sharing class ReadBarcodeFromImage {
             Map<String, Object> payload = new Map<String, Object>{
                 'docName' => imageFileName,
                 'docContent' => imageBase64,
-                'async' => false
+                'isAsync' => true
             };
             if (imageType != null) payload.put('imageType', imageType);
             String jsonBody = JSON.serialize(payload);

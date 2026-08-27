@@ -56,7 +56,7 @@ public with sharing class SignPDF {
             'opacity' => 100,
             'showOnlyInPrint' => false,
             'isBackground' => false,
-                'async' => false
+                'isAsync' => true
         };
             String jsonBody = JSON.serialize(payload);
 

@@ -38,7 +38,7 @@ function resizeImage() {
       height: height,
       maintainAspectRatio: maintainAspectRatio,
       quality: quality,
-      async: true
+      isAsync: true
     };
     
     // Make API request

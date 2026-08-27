@@ -67,7 +67,7 @@ function convertPdfToPdfA() {
       "compliance": "PdfA1b",        // PDF/A level: PdfA1a/PdfA1b/PdfA2a/PdfA2b/PdfA2u/PdfA3a/PdfA3b/PdfA3u
       "allowUpgrade": true,          // Allow upgrading to higher compliance (true/false)
       "allowDowngrade": true,        // Allow downgrading to lower compliance (true/false)
-      "async": true                  // Enable asynchronous processing
+      "isAsync": true                  // Enable asynchronous processing
     };
 
     // Available PDF/A compliance options:

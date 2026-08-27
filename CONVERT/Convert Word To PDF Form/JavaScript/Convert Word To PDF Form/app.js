@@ -67,7 +67,7 @@ async function processWordToPdfFormConversion() {
     const payload = {
         docContent: wordBase64,    // Base64 encoded Word document content
         docName: "output.pdf",     // Name for the output PDF file
-        async: true                // Enable asynchronous processing
+        isAsync: true                // Enable asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

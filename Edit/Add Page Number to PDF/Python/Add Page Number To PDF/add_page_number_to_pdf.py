@@ -46,7 +46,7 @@ def add_page_number_to_pdf():
         "isBold": True,                                  # Make page numbers bold (true/false)
         "isItalic": False,                               # Make page numbers italic (true/false)
         "skipFirstPage": False,                          # Skip numbering on first page (true/false)
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

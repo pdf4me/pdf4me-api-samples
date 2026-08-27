@@ -38,6 +38,7 @@ public class Main {
         Map<String, Object> payload = new HashMap<>();
         payload.put("docContent", fileBase64);
         payload.put("docName", "Flatten_output.pdf");
+        payload.put("isAsync", true);
 
         ApiResponse resp = post(API_URL, API_KEY, payload);
         if (resp.status == 200) {

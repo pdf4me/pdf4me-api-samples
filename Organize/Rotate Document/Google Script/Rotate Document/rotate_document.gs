@@ -71,7 +71,7 @@ function rotateDocument() {
       docName: "output.pdf",                               // Name of the file
       docContent: pdfBase64,                               // Base64 encoded PDF content
       rotationType: rotationType,                          // Rotation type for the document
-      async: true                                          // Asynchronous processing (recommended for large files)
+      isAsync: true                                          // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request

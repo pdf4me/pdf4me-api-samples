@@ -118,7 +118,7 @@ public class PdfTextSplitter
                 text = text,                        // Text string to search for
                 splitTextPage = splitTextPage,      // Where to split relative to text
                 fileNaming = fileNaming,            // File naming convention
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteTextSplitAsync(payload);

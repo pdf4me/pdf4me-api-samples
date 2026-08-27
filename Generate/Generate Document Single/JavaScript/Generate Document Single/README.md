@@ -95,7 +95,7 @@ const payload = {
     "documentDataType": "text",              // JSON/XML data type
     "outputType": fileType,                  // Same as input type
     "documentDataText": jsonData,           // Your data
-    "async": true
+    "isAsync": true
 };
 ```
 

@@ -72,7 +72,7 @@ async function processPdfToWordConversion() {
         mergeAllSheets: true,            // Combine multiple pages into single document flow
         outputFormat: true,              // Preserve original formatting when possible
         ocrWhenNeeded: true,             // Use OCR (Optical Character Recognition) for scanned PDFs
-        async: true                      // Enable asynchronous processing
+        isAsync: true                      // Enable asynchronous processing
     };
 
     // Additional payload options you can customize:

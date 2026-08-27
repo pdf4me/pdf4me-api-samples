@@ -74,7 +74,7 @@ public class Main {
             payload.put("IsFirstPageSkip", false);           // Whether to skip the first page
             payload.put("PageNumbers", "1");                 // Page numbers to process
             payload.put("SearchText", "PDF4me");           // Text to search and replace
-            payload.put("async", true);                      // For big files and too many calls async is recommended to reduce the server load
+            payload.put("isAsync", true);                      // For big files and too many calls async is recommended to reduce the server load
 
             return executeTextReplacement(payload, outputDocxPath);
         } catch (Exception ex) {

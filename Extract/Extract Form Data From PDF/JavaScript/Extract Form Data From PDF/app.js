@@ -65,7 +65,7 @@ async function processFormDataExtraction() {
     const payload = {
         docName: "output.pdf",            // Source PDF file name with .pdf extension
         docContent: pdfBase64,            // Base64 encoded PDF document content
-        async: true                       // Enable asynchronous processing
+        isAsync: true                       // Enable asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

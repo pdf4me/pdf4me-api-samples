@@ -44,7 +44,7 @@ public with sharing class AddMarginToPDF {
                 'marginRight' => 50.0,   // Increased to 50 points for visibility
                 'marginTop' => 60.0,     // Increased to 60 points for visibility
                 'marginBottom' => 60.0,  // Increased to 60 points for visibility
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

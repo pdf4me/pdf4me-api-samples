@@ -80,7 +80,7 @@ const payload = {
     SaveForegroundPage: true,
     SaveToolBar: true,
     AutoFit: true,
-    async: true
+    isAsync: true
 };
 ```
 
@@ -98,7 +98,7 @@ const payload = {
     ImageColorMode: "RGB",             // RGB or Grayscale
     Resolution: 300,                   // DPI
     Scale: 1.0,                        // Scaling factor
-    async: true
+    isAsync: true
 };
 ```
 
@@ -113,7 +113,7 @@ const payload = {
     ImageColorMode: "RGBA",            // Supports transparency
     Resolution: 300,
     Scale: 1.0,
-    async: true
+    isAsync: true
 };
 ```
 
@@ -129,7 +129,7 @@ const payload = {
     TiffCompression: "LZW",            // LZW, None, or CCITT4
     Resolution: 300,
     Scale: 1.0,
-    async: true
+    isAsync: true
 };
 ```
 

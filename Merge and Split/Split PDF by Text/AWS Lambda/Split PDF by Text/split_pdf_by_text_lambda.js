@@ -77,7 +77,7 @@ async function splitPdfByText(base64Content, filename, textString = 'Chapter', t
         splitTextPage: splitTextPage,           // Split position: before, after, remove
         caseSensitive: caseSensitive,           // Case sensitive text matching
         combinePagesWithSameText: combinePagesWithSameText, // Combine consecutive pages with same text
-        async: true                              // Enable asynchronous processing
+        isAsync: true                              // Enable asynchronous processing
     };
 
     console.log('Sending PDF text split request to PDF4me API...');

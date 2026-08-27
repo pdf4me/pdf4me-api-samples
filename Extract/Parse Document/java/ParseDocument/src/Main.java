@@ -35,7 +35,7 @@ public class Main {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("docContent", pdfBase64);
             payload.put("docName", "output.pdf");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             executeParse(payload, outputPath);
         } catch (Exception ex) {
             System.err.println("Error in parseDocument: " + ex.getMessage());

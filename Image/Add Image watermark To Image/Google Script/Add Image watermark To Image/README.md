@@ -80,7 +80,7 @@ POST https://api.pdf4me.com/api/v2/AddImageWatermarkToImage
     "position": "center",
     "opacity": 0.5,
     "scale": 1.0,
-    "async": true
+    "isAsync": true
 }
 ```
 

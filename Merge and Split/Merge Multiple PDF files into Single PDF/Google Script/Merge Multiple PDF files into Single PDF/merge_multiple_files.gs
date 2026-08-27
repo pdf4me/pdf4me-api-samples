@@ -97,7 +97,7 @@ function mergePdfFiles() {
     var payload = {
       docContent: pdfContentsBase64,        // Array of base64 encoded PDF contents
       docName: outputFileName,              // Output merged PDF file name
-      async: true                           // Enable asynchronous processing
+      isAsync: true                           // Enable asynchronous processing
     };
 
     // Set the headers for the API request

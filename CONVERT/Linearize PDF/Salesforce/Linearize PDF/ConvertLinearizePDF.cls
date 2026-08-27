@@ -41,7 +41,7 @@ public with sharing class ConvertLinearizePDF {
                 'docContent' => pdfBase64,
                 'docName' => outputFileName + '.pdf',
                 'optimizeProfile' => optimizeProfile,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

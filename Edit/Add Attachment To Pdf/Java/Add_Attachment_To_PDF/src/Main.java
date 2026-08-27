@@ -54,7 +54,7 @@ public class Main {
             attachment.put("docName", "sample.txt");
             attachment.put("docContent", textBase64);
             payload.put("attachments", Arrays.asList(attachment));
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executeAttachmentAddition(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in addAttachmentToPdf: " + ex.getMessage());

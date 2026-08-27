@@ -94,7 +94,7 @@ const BASE_URL = "https://api.pdf4me.com/";
   "PageNumber": 1,
   "OutputFormat": "JPG",
   "Resolution": 300,
-  "async": true
+  "isAsync": true
 }
 ```
 

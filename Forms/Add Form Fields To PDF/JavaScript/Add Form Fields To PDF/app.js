@@ -88,7 +88,7 @@ async function processFormFieldAddition(formFieldConfig) {
         Size: formFieldConfig.size,                   // Size of the form field (Required)
         pages: formFieldConfig.pages,                 // Page indices as comma-separated values or ranges (Required)
         formFieldType: formFieldConfig.formFieldType, // Form field type - TextBox or CheckBox (Required)
-        async: true                                   // Asynchronous processing
+        isAsync: true                                   // Asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

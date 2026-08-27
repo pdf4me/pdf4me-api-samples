@@ -54,7 +54,7 @@ public class Main {
             payload.put("baseDocName", basePdfPath);
             payload.put("layerDocContent", layerPdfBase64);
             payload.put("layerDocName", layerPdfPath);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executeOverlayMerge(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in mergeOverlay: " + ex.getMessage());

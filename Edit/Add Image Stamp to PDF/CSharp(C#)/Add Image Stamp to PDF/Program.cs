@@ -162,7 +162,7 @@ public class PdfImageStampAdder
                 // Whether the stamp should only show in print
                 showOnlyInPrint = false,
                 // For big files and too many calls async is recommended to reduce the server load
-                async = false
+                isAsync = true
             };
 
             // Execute the image stamp addition operation

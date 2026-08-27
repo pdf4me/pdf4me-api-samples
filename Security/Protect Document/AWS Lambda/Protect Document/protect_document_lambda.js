@@ -70,7 +70,7 @@ async function protectPdfDocument(base64Content, filename, protectionConfig) {
         docContent: base64Content,
         password: protectionConfig.password || "1234",
         pdfPermission: protectionConfig.pdfPermission || "All",
-        async: true
+        isAsync: true
     };
 
     console.log('Sending PDF to PDF4me API for document protection...');

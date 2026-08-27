@@ -25,7 +25,7 @@ public with sharing class RotateDocument {
                 'docContent' => pdfBase64,
                 'docName' => outputFileName,
                 'rotationType' => rotationType,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

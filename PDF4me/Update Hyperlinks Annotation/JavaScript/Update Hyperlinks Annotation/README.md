@@ -89,7 +89,7 @@ const BASE_URL = "https://api.pdf4me.com/";
 {
   "docName": "output.pdf",
   "docContent": "base64-encoded-pdf-content",
-  "async": true
+  "isAsync": true
 }
 ```
 

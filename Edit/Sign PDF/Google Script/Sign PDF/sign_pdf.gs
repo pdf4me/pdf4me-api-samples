@@ -105,7 +105,7 @@ function signPdf() {
       opacity: "100",                               // Opacity (0-100): 0=invisible, 100=fully opaque
       showOnlyInPrint: true,                        // Show signature in view and print (true/false)
       isBackground: false,                          // Place signature in background/foreground (true/false)
-      async: true                                   // Enable asynchronous processing
+      isAsync: true                                   // Enable asynchronous processing
     };
 
     // Set the headers for the API request

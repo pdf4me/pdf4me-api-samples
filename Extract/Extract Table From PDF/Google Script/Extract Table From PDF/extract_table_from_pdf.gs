@@ -66,7 +66,7 @@ function extractTableFromPdf() {
     var payload = {
       docName: file.getName(),                      // Name of the input PDF file
       docContent: pdfBase64,                        // Base64 encoded PDF document content
-      async: true                                   // Asynchronous processing
+      isAsync: true                                   // Asynchronous processing
     };
 
     // Set the headers for the API request

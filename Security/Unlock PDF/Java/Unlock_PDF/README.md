@@ -78,7 +78,7 @@ Unlocked PDF saved to: sample.protected.unlocked.pdf
   "docName": "output.pdf",
   "docContent": "base64-encoded-pdf-content",
   "password": "1234",
-  "async": true
+  "isAsync": true
 }
 ```
 

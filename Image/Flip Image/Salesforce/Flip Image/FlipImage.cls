@@ -23,7 +23,7 @@ public with sharing class FlipImage {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => imageBase64,
                 'docName' => imageFileName,
-                'async' => false
+                'isAsync' => true
             };
             if (orientationType != null) payload.put('orientationType', orientationType);
             String jsonBody = JSON.serialize(payload);

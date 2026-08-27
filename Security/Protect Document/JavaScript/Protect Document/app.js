@@ -93,7 +93,7 @@ async function processDocumentProtection() {
         docContent: base64Content,    // Base64 encoded PDF content (Required)
         password: "1234",             // Password for the protected PDF (Required)
         pdfPermission: "All",         // PDF permissions (Required)
-        async: true                   // Asynchronous processing as requested
+        isAsync: true                   // Asynchronous processing as requested
     };
 
     // Set up HTTP headers for authentication and content type

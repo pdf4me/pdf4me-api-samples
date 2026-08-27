@@ -79,7 +79,7 @@ function findAndReplaceText() {
                                                    // Specify as comma-separated values or ranges
                                                    // Examples: "0, 1, 2-" or "1, 2, 3-7"
                                                    // If not specified, processes all pages
-      async: true                                   // Asynchronous processing
+      isAsync: true                                   // Asynchronous processing
     };
 
     // Set the headers for the API request

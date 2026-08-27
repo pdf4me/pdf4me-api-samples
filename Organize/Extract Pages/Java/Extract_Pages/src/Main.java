@@ -41,7 +41,7 @@ public class Main {
             payload.put("docContent", pdfBase64);
             payload.put("docName", "output.pdf");
             payload.put("pageNumbers", "1,3");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executePageExtraction(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in extractPagesFromPdf: " + ex.getMessage());

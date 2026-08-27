@@ -93,7 +93,7 @@ async function addTextWatermarkToImage(inputImagePath) {
             RotationAngle: 0.0,
             PositionX: 272.0,
             PositionY: 0.0,
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with text watermark parameters");

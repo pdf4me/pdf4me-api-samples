@@ -200,7 +200,7 @@ The application provides detailed logging:
     outputType: "pdf",                     // Output type
     inputDataType: "json",                 // Input data type
     InputFormData: [...],                  // Form field objects
-    async: true                            // Async processing
+    isAsync: true                            // Async processing
 }
 ```
 

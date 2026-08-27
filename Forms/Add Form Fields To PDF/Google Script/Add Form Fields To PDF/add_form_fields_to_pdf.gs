@@ -84,7 +84,7 @@ function addFormFieldsToPdf() {
       Size: fieldSize,                              // Size of the form field (Required)
       pages: pages,                                 // Page indices as comma-separated values or ranges (Required)
       formFieldType: formFieldType,                 // Form field type - TextBox or CheckBox (Required)
-      async: true                                   // Asynchronous processing
+      isAsync: true                                   // Asynchronous processing
     };
 
     // Set the headers for the API request

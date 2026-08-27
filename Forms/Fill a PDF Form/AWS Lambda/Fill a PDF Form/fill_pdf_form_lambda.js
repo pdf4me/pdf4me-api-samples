@@ -74,7 +74,7 @@ exports.handler = async (event, context) => {
                         fieldValue: "Option 1"
                     }
                 ],
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

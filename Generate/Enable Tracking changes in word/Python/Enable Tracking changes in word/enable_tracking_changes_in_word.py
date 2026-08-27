@@ -58,7 +58,7 @@ def enable_tracking_changes_word(api_key, base_url, word_file_path):
         payload = {
             "docName": "output.docx",      # Output document name
             "docContent": word_base64,     # Base64 encoded Word document content
-            "async": True                  # For big files and too many calls async is recommended to reduce the server load
+            "isAsync": True                  # For big files and too many calls async is recommended to reduce the server load
         }
         
         print("Sending enable tracking changes request...")

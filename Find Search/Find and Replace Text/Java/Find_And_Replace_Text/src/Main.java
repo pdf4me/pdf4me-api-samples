@@ -38,7 +38,7 @@ public class Main {
             String outputPdfPath = Paths.get(System.getProperty("user.dir"), outputFileName).toString();
             byte[] pdfBytes = Files.readAllBytes(Paths.get(inputPdfPath));
             String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
-            String jsonPayload = "{\"docContent\":\"" + pdfBase64 + "\",\"docName\":\"sample.pdf\",\"oldText\":\"Sample\",\"newText\":\"new Sample\",\"pageSequence\":\"1\"}";
+            String jsonPayload = "{\"docContent\":\"" + pdfBase64 + "\",\"docName\":\"sample.pdf\",\"oldText\":\"Sample\",\"newText\":\"new Sample\",\"pageSequence\":\"1\",\"isAsync\":true}";
             return executeFindReplace(jsonPayload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in findReplaceText: " + ex.getMessage());

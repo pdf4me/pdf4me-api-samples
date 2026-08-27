@@ -78,7 +78,7 @@ def compress_pdf(base64_content, filename, optimize_profile):
         "docContent": base64_content,               # Base64 encoded PDF content (Required)
         "docName": filename,                        # Output document name (Required)
         "optimizeProfile": optimize_profile,        # Optimization profile - Web, Print, Screen (Required)
-        "async": True                               # Asynchronous processing as requested
+        "isAsync": True                             # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for compression and optimization...")

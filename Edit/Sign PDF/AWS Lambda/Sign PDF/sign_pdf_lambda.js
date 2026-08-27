@@ -40,7 +40,7 @@ async function signPdf(pdfBase64, signatureBase64, signatureFileName, options = 
         opacity = "100",
         showOnlyInPrint = true,
         isBackground = false,
-        async = true
+        isAsync = true
     } = options;
 
     const payload = {

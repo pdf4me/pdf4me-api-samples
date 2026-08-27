@@ -41,7 +41,7 @@ public with sharing class ConvertMarkdownToPDF {
                 'docContent' => mdBase64,
                 'docName' => outputFileName + '.md',
                 'mdFilePath' => mdFilePath,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

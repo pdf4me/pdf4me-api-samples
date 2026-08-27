@@ -73,7 +73,7 @@ async function processTrackingChangesExtraction() {
     const payload = {
         docName: "output.docx",           // Output document name
         docContent: wordBase64,           // Base64 encoded Word document content
-        async: true                       // Enable asynchronous processing for big files
+        isAsync: true                       // Enable asynchronous processing for big files
     };
 
     // Set up HTTP headers for authentication and content type

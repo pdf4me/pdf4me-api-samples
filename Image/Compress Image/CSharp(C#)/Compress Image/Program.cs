@@ -100,7 +100,7 @@ public class ImageCompressor
             docContent = imageBase64,     // Base64 encoded image content
             docName = "output",           // Output document name
             Quality = 80,                 // Compression quality (0-100, higher = better quality, larger file)
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content

@@ -43,7 +43,7 @@ public class Main {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("docName", "output.docx");
             payload.put("docContent", docxBase64);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             
             return executeTrackingChangesDisable(payload, outputDocxPath);
         } catch (Exception ex) {

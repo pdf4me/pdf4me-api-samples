@@ -68,7 +68,7 @@ public class Main {
                 payload.put("marginRight", 20.0);                            // Right margin in pixels (double)
                 payload.put("marginTop", 50.0);                              // Top margin in pixels (double)
                 payload.put("marginBottom", 50.0);                           // Bottom margin in pixels (double)
-                payload.put("async", true);                                  // Enable asynchronous processing
+                payload.put("isAsync", true);                                  // Enable asynchronous processing
 
                 System.out.println("Sending HTML header/footer request to PDF4me API...");
 

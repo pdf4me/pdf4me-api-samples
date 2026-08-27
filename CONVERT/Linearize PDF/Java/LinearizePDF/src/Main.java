@@ -65,6 +65,7 @@ public class Main {
         payload.put("docContent", fileBase64);
         payload.put("docName", Paths.get(inputPath).getFileName().toString());
         payload.put("optimizeProfile", "web");
+        payload.put("isAsync", true);
 
         System.out.println("Sending request to PDF4me API...");
         ApiResponse resp = post(API_URL, API_KEY, payload);

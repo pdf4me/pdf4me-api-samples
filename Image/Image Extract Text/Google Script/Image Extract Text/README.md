@@ -67,7 +67,7 @@ This Google Apps Script extracts text from images using Optical Character Recogn
   "imageContent": "base64_encoded_image_content",
   "language": "en",
   "confidence": 0.8,
-  "async": true
+  "isAsync": true
 }
 ```
 

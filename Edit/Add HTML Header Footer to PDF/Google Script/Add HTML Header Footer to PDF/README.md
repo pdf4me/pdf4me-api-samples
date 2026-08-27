@@ -130,7 +130,7 @@ var payload = {
   marginRight: 20.0,                           // Right margin in pixels
   marginTop: 50.0,                             // Top margin in pixels
   marginBottom: 50.0,                          // Bottom margin in pixels
-  async: true                                  // Enable async processing
+  isAsync: true                                  // Enable async processing
 };
 ```
 

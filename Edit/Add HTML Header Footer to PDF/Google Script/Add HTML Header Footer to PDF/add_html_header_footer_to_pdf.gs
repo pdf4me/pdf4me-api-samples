@@ -76,7 +76,7 @@ function addHtmlHeaderFooterToPdf() {
       marginRight: 20.0,                           // Right margin in pixels (double)
       marginTop: 50.0,                             // Top margin in pixels (double)
       marginBottom: 50.0,                          // Bottom margin in pixels (double)
-      async: true                                  // Enable asynchronous processing
+      isAsync: true                                  // Enable asynchronous processing
     };
 
     // Set the headers for the API request

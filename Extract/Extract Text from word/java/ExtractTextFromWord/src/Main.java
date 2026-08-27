@@ -39,7 +39,7 @@ public class Main {
             payload.put("RemoveComments", true);
             payload.put("RemoveHeaderFooter", true);
             payload.put("AcceptChanges", true);
-            payload.put("async", false);
+            payload.put("isAsync", true);
             executeExtractText(payload, outputTextPath, outputJsonPath);
         } catch (Exception ex) {
             System.err.println("Error in extractTextFromWord: " + ex.getMessage());

@@ -105,7 +105,7 @@ public class TrackingChangesInWord
             {
                 docName = "output.docx",      // Output document name
                 docContent = docxBase64,      // Base64 encoded Word document content
-                async = true                  // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                  // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteTrackingChangesRetrievalAsync(payload);

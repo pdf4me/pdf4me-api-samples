@@ -55,7 +55,7 @@ def add_barcode_to_pdf():
         "hideText": False,                               # Hide barcode text (true/false)
         "showOnlyInPrint": False,                        # Show only in print (true/false)
         "isTextAbove": False,                            # Text position above barcode (true/false)
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

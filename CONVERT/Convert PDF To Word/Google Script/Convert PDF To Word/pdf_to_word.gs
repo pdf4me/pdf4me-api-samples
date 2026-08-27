@@ -66,7 +66,7 @@ function convertPdfToWord() {
       mergeAllSheets: true,
       outputFormat: true,
       ocrWhenNeeded: true,
-      async: true
+      isAsync: true
     };
 
     // Set the headers for the API request

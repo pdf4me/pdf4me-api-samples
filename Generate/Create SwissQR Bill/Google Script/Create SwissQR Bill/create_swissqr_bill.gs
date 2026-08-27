@@ -75,7 +75,7 @@ function createSwissQrBill() {
         referenceType: "NON",                              // Reference type (NON = No reference) (Required)
         languageType: "English",                           // Language for the QR bill (Required)
         seperatorLine: "LineWithScissor",                  // Separator line style (Required)
-        async: true                                        // Asynchronous processing
+        isAsync: true                                        // Asynchronous processing
     };
 
     // Set the headers for the API request

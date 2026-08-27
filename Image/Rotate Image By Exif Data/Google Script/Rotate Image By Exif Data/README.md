@@ -60,7 +60,7 @@ This Google Apps Script automatically rotates images based on their EXIF orienta
 {
   "imageName": "corrected.jpg",
   "imageContent": "base64_encoded_image_content",
-  "async": true
+  "isAsync": true
 }
 ```
 

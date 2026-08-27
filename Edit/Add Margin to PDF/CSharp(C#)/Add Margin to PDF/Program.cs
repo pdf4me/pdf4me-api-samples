@@ -129,7 +129,7 @@ public class PdfMarginAdder
                 // Right margin in millimeters
                 marginRight = 20,
                 // For big files and too many calls async is recommended to reduce the server load
-                async = true
+                isAsync = true
             };
 
             // Execute the margin addition operation

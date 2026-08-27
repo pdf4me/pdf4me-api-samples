@@ -135,7 +135,7 @@ The implementation supports these settings:
   "docContent": "base64-encoded-pdf-content",
   "docName": "output.pdf",
   "pageNumbers": "1,3,5",
-  "async": true
+  "isAsync": true
 }
 ```
 

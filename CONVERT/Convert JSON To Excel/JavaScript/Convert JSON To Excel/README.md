@@ -71,7 +71,7 @@ const payload = {
     ignoreNullValues: false,          // Include null/empty values
     firstRow: 1,                      // Starting row position
     firstColumn: 1,                   // Starting column position
-    async: true                       // Enable async processing
+    isAsync: true                       // Enable async processing
 };
 ```
 

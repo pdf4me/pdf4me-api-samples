@@ -103,7 +103,7 @@ public class ImageCropper
             Y = 100,                      // Y coordinate of the top-left corner of the crop area
             Width = 300,                  // Width of the crop area in pixels
             Height = 200,                 // Height of the crop area in pixels
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content

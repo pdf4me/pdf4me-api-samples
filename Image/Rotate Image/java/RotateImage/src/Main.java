@@ -28,7 +28,7 @@ public class Main {
             byte[] imageBytes = Files.readAllBytes(inputPath);
             String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
             String docName = inputPath.getFileName().toString();
-            String payload = String.format("{\"docContent\":\"%s\",\"docName\":\"%s\",\"Backgroundcolor\":\"#FFFFFF\",\"ProportionateResize\":true,\"RotationAngle\":90,\"async\":true}", imageBase64, docName);
+            String payload = String.format("{\"docContent\":\"%s\",\"docName\":\"%s\",\"Backgroundcolor\":\"#FFFFFF\",\"ProportionateResize\":true,\"RotationAngle\":90,\"isAsync\":true}", imageBase64, docName);
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/RotateImage"))
                 .header("Content-Type", "application/json")

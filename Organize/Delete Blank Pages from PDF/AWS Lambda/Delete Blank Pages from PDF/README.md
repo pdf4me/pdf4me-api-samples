@@ -217,7 +217,7 @@ Delete Blank Pages from PDF/
   "docContent": "base64-encoded-pdf-content",
   "docName": "output.pdf",
   "deletePageOption": "NoTextNoImages",
-  "async": true
+  "isAsync": true
 }
 ```
 

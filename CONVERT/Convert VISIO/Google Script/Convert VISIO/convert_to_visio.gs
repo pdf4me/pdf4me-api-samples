@@ -72,7 +72,7 @@ function convertVisioToPdf() {
       "SaveForegroundPage": true,          // Save foreground elements (true/false)
       "SaveToolBar": true,                 // Include toolbar (true/false)
       "AutoFit": true,                     // Auto-fit content to page (true/false)
-      "async": true                        // Enable asynchronous processing
+      "isAsync": true                        // Enable asynchronous processing
     };
 
     // Alternative payload examples for other output formats:

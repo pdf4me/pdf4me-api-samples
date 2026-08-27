@@ -85,7 +85,7 @@ async function cropImage(inputImagePath) {
             cropY: 100,                                            // Y coordinate of crop start
             cropWidth: 400,                                        // Width of cropped area
             cropHeight: 300,                                       // Height of cropped area
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with crop parameters");

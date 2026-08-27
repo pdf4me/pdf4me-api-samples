@@ -49,7 +49,7 @@ public with sharing class ExtractTextFromWord {
                 'RemoveComments' => removeComments,
                 'RemoveHeaderFooter' => removeHeaderFooter,
                 'AcceptChanges' => acceptChanges,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

@@ -67,7 +67,7 @@ async function disableTrackingChangesInWord(base64Content, filename) {
     const payload = {
         docName: "output.docx",
         docContent: base64Content,
-        async: true
+        isAsync: true
     };
 
     console.log('Sending Word document to PDF4me API for disabling tracking changes...');

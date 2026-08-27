@@ -71,7 +71,7 @@ const payload = {
     rightMargin: "40px",              // Right margin
     printBackground: true,            // Include backgrounds
     displayHeaderFooter: true,        // Show headers/footers
-    async: true                       // Enable async processing
+    isAsync: true                       // Enable async processing
 };
 ```
 

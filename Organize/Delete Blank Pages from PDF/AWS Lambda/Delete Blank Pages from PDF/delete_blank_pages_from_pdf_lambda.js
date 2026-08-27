@@ -69,7 +69,7 @@ async function deleteBlankPagesFromPdf(base64Content, filename, deletePageOption
         docName: "output.pdf",
         docContent: base64Content,
         deletePageOption: deletePageOption, // Options: NoTextNoImages, NoText, NoImages
-        async: true
+        isAsync: true
     };
 
     console.log('Sending PDF to PDF4me API for blank page deletion...');

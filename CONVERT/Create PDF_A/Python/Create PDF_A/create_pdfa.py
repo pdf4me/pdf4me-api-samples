@@ -42,7 +42,7 @@ def create_pdf_a():
         "compliance": "PdfA1b",       # PDF/A level: PdfA1a/PdfA1b/PdfA2a/PdfA2b/PdfA2u/PdfA3a/PdfA3b/PdfA3u
         "allowUpgrade": True,         # Allow upgrading to higher compliance (True/False)
         "allowDowngrade": True,       # Allow downgrading to lower compliance (True/False)
-        "async": True                 # Enable asynchronous processing
+        "isAsync": True                 # Enable asynchronous processing
     }
     
     # Available PDF/A compliance options:

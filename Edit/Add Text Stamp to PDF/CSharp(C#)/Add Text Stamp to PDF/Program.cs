@@ -158,7 +158,7 @@ public class PdfTextStampAdder
                 // Rotation angle of the text stamp in degrees
                 rotation = 45,
                 // For big files and too many calls async is recommended to reduce the server load
-                async = true
+                isAsync = true
             };
 
             // Execute the text stamp addition operation

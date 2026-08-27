@@ -85,7 +85,7 @@ public class PdfBarcodeReader
             docName = Path.GetFileName(_inputPdfPath),
             barcodeType = new string[] { "all" },
             pages = "all",
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content

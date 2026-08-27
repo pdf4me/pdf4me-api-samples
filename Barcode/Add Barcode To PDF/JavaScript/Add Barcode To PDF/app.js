@@ -89,7 +89,7 @@ async function processBarcodeAddition() {
         hideText: false,                              // Hide barcode text (true/false)
         showOnlyInPrint: false,                       // Show only in print (true/false)
         isTextAbove: false,                           // Text position above barcode (true/false)
-        async: true                                   // Enable asynchronous processing
+        isAsync: true                                   // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

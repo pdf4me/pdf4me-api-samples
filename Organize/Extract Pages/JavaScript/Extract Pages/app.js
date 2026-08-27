@@ -47,7 +47,7 @@ async function extractPagesFromPdf() {
             docContent: pdfBase64,                                  // Base64 encoded PDF content
             docName: "output.pdf",                                  // Output PDF file name
             pageNumbers: PAGE_NUMBERS,                              // Pages to extract
-            async: ASYNC_PROCESSING                                 // Enable async processing
+            isAsync: true                                 // Enable async processing
         };
 
         // Execute the page extraction

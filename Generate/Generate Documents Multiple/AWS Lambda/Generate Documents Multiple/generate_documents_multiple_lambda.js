@@ -64,7 +64,7 @@ exports.handler = async (event, context) => {
                         "amount": "$200.00"
                     }
                 ]),
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

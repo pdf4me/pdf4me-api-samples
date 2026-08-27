@@ -104,7 +104,7 @@ public class ImageResizer
             Width = 60,                                   // Target width in pixels
             Height = 60,                                  // Target height in pixels
             MaintainAspectRatio = true,                   // Maintain aspect ratio during resizing
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content

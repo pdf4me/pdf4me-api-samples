@@ -88,7 +88,7 @@ async function mergePdfs(base64Contents, outputFilename) {
     const payload = {
         docContent: base64Contents,              // Array of base64 encoded PDF contents
         docName: outputFilename,                 // Output PDF file name
-        async: true                              // Enable asynchronous processing
+        isAsync: true                              // Enable asynchronous processing
     };
 
     console.log('Sending PDF merge request to PDF4me API...');

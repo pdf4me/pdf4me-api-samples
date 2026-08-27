@@ -198,7 +198,7 @@ For more information about the PDF4Me Find and Replace API:
   "oldText": "text_to_search",
   "newText": "text_to_replace",
   "pageSequence": "1,2,3",
-  "async": true
+  "isAsync": true
 }
 ```
 

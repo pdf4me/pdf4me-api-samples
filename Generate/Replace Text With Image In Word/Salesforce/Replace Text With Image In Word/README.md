@@ -151,7 +151,7 @@ POST /api/v2/ReplaceTextWithImageInWord
   "docName": "sample.docx",
   "imageName": "sample.png",
   "textToReplace": "REPLACE_ME",
-  "async": true
+  "isAsync": true
 }
 ```
 

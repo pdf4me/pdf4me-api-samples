@@ -117,7 +117,8 @@ public class PdfFormFiller
             inputDataType = "json",
             metaData = "",
             metaDataJson = "",
-            InputFormData = formFields.ToArray()
+            InputFormData = formFields.ToArray(),
+            isAsync = true
         };
 
         // Serialize payload to JSON and create HTTP content

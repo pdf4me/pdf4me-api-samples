@@ -106,7 +106,7 @@ public class FindReplaceTextDocument
                 oldText = "Sample",                                 // Text to find
                 newText = "new Sample",                             // Text to replace with
                 pageSequence = "1",                                 // Page sequence (1 for all pages)
-                                                       // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                                      // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteFindReplaceTextAsync(payload);

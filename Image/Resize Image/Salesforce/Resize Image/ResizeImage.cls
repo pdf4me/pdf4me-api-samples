@@ -27,7 +27,7 @@ public with sharing class ResizeImage {
             Map<String, Object> payload = new Map<String, Object>{
                 'docName' => imageFileName,
                 'docContent' => imageBase64,
-                'async' => false
+                'isAsync' => true
             };
             if (imageResizeType != null) payload.put('ImageResizeType', imageResizeType);
             if (resizePercentage != null) payload.put('ResizePercentage', resizePercentage);

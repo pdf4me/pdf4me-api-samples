@@ -23,7 +23,7 @@ public with sharing class RemoveExifTagsFromImage {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => imageBase64,
                 'docName' => imageFileName,
-                'async' => false
+                'isAsync' => true
             };
             if (imageType != null) payload.put('imageType', imageType);
             String jsonBody = JSON.serialize(payload);

@@ -146,7 +146,7 @@ var payload = {
   isBackground: true,                       // Place stamp in background/foreground
   showOnlyInPrint: false,                   // Show in view and print
   pages: "",                                // Page selection (empty = all pages)
-  async: true                               // Enable async processing
+  isAsync: true                               // Enable async processing
 };
 ```
 

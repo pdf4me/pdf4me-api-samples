@@ -68,7 +68,7 @@ async function processMarkdownToPdfConversion() {
         docContent: mdBase64,        // Base64 encoded Markdown document content
         docName: "sample.md",        // Name of the source Markdown file with extension
         mdFilePath: "",              // Path to .md file inside ZIP (empty for single file)
-        async: true                  // Enable asynchronous processing
+        isAsync: true                  // Enable asynchronous processing
     };
 
     // About Markdown formatting preserved in PDF:

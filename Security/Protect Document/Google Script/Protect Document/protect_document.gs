@@ -73,7 +73,7 @@ function protectDocument() {
       docContent: pdfBase64,                               // Base64 encoded PDF content
       password: protectionPassword,                        // Password for the protected PDF
       pdfPermission: pdfPermission,                        // PDF permissions
-      async: true                                          // Asynchronous processing (recommended for large files)
+      isAsync: true                                          // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request

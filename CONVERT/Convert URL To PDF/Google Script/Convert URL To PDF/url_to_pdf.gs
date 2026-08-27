@@ -33,7 +33,7 @@ function convertUrlToPdf() {
       "bottomMargin": "20px",        // Bottom margin of PDF (string format with px unit)
       "printBackground": true,       // Include background colors and images (boolean)
       "displayHeaderFooter": false,  // Show header and footer in PDF (boolean)
-      "async": true                  // Enable asynchronous processing
+      "isAsync": true                  // Enable asynchronous processing
     };
 
     // Set the headers for the API request

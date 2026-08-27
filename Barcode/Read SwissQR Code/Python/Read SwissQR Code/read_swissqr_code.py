@@ -39,7 +39,7 @@ def read_swissqr_code():
     payload = {
         "docContent": pdf_base64,                        # Base64 encoded PDF content
         "docName": os.path.basename(pdf_file_path),      # PDF file name
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

@@ -56,7 +56,7 @@ You can also customize the barcode's content and type by modifying the `payload`
       text: "PDF4me Create Barcode Sample",      // Text to encode in barcode
       barcodeType: "qrCode",                     // Barcode types: qrCode, code128, etc.
       hideText: false,                           // Hide barcode text: true=hide, false=show
-      async: true                                // Enable asynchronous processing
+      isAsync: true                                // Enable asynchronous processing
     };
 ```
 

@@ -53,7 +53,7 @@ public with sharing class ConvertUrlToPDF {
                 'bottomMargin' => '20px',
                 'printBackground' => true,
                 'displayHeaderFooter' => false,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

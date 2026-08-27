@@ -111,7 +111,7 @@ public class ImageFlipper
                 docContent = imageBase64,     // Base64 encoded image content
                 docName = "output",           // Output document name
                 orientationType = _orientationType,  // Flip orientation: "Vertical" or "Horizontal"
-                async = true // For big file and too many calls async is recommended to reduce the server load.
+                isAsync = true // For big file and too many calls async is recommended to reduce the server load.
             };
 
             // Serialize payload to JSON and create HTTP content

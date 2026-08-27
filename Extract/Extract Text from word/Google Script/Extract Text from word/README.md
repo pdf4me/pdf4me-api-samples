@@ -40,7 +40,7 @@ var endPageNumber = 3;           // Ending page number
 var removeComments = true;       // Remove comments option
 var removeHeaderFooter = true;   // Remove header/footer option
 var acceptChanges = true;        // Accept tracked changes option
-var async = false;               // Processing mode (synchronous)
+var isAsync = true;               // Processing mode (synchronous)
 ```
 
 ### 4. Alternative: File ID Input

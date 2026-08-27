@@ -40,7 +40,7 @@ public with sharing class ExtractResources {
                 'docName' => docName,
                 'extractText' => extractText,
                 'extractImages' => extractImages,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

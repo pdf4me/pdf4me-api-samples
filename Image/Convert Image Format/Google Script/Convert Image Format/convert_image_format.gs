@@ -51,7 +51,7 @@ function convertImageFormat() {
         imageName: outputFileName,        // Output image name with new extension
         imageContent: imageBase64,        // Base64 encoded image content
         quality: quality,                 // Quality for lossy formats
-        async: true                       // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                       // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Set the headers for the API request

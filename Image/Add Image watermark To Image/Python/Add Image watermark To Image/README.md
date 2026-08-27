@@ -142,7 +142,7 @@ POST /api/v2/AddImageWatermarkToImage
   "watermarkName": "watermark.png",
   "position": "bottom-right",
   "opacity": 0.7,
-  "async": true
+  "isAsync": true
 }
 ```
 

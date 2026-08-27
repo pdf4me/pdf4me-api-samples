@@ -72,7 +72,7 @@ async function mergeOverlay(baseDocContent, layerDocContent, baseDocName, layerD
         baseDocName: baseDocName,                // Name of the base PDF file
         layerDocContent: layerDocContent,        // Base64 encoded layer PDF content
         layerDocName: layerDocName,              // Name of the layer PDF file
-        async: true                              // Enable asynchronous processing
+        isAsync: true                              // Enable asynchronous processing
     };
 
     console.log('Sending PDF overlay merge request to PDF4me API...');

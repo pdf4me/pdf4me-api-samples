@@ -76,7 +76,7 @@ POST https://api.pdf4me.com/api/v2/ReplaceTextWithImageInWord
     "docContent": "base64_encoded_word_document",
     "imageContent": "base64_encoded_image",
     "textToReplace": "REPLACE_ME",
-    "async": true
+    "isAsync": true
 }
 ```
 
@@ -112,7 +112,7 @@ The script handles both synchronous and asynchronous processing:
 - **Multiple Occurrences**: All occurrences of the specified text will be replaced
 
 ### Processing Options
-- **Async Processing**: Set `async: true` for large files or high-volume processing
+- **Async Processing**: Set `isAsync: true` for large files or high-volume processing
 - **Polling**: Configurable retry attempts and delay intervals for async processing
 
 ## Error Handling

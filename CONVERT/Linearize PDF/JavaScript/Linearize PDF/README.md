@@ -104,7 +104,7 @@ const payload = {
     docContent: pdfBase64,
     docName: "output.pdf",
     optimizeProfile: "WebMax",  // Change this value
-    async: true
+    isAsync: true
 };
 ```
 

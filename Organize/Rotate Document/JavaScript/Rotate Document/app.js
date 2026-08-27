@@ -47,7 +47,7 @@ async function rotateDocument() {
             docContent: pdfBase64,                                  // Base64 encoded PDF content
             docName: "output.pdf",                                  // Output PDF file name
             rotationType: ROTATION_TYPE,                            // Rotation type
-            async: ASYNC_PROCESSING                                 // Enable async processing
+            isAsync: true                                 // Enable async processing
         };
 
         // Execute the document rotation

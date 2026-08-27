@@ -38,7 +38,7 @@ public class Main {
                 "\"text\":\"" + barcodeText + "\"," +
                 "\"barcodeType\":\"qrCode\"," +
                 "\"hideText\":false," +
-                "\"async\":true" +
+                "\"isAsync\":true" +
                 "}";
 
         return executeBarcodeCreation(payload, outputImagePath, url);

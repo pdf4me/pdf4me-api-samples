@@ -84,7 +84,7 @@ async function splitPdfByText(inputPdfPath, outputFolder, text, splitTextPage, f
             text: text,
             splitTextPage: splitTextPage,
             fileNaming: fileNaming,
-            async: true
+            isAsync: true
         };
         
         console.log("🚀 Sending text split request to PDF4Me API...");

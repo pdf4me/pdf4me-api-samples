@@ -41,7 +41,7 @@ public with sharing class GenerateCreateSwissQrBill {
                 'referenceType' => referenceType,
                 'languageType' => languageType,
                 'seperatorLine' => separatorLine,
-                'async' => false
+                'isAsync' => true
             };
             if (reference != null) {
                 payload.put('reference', reference);

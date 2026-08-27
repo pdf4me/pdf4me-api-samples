@@ -67,7 +67,7 @@ function disableTrackingChangesInWord() {
     var payload = {
       docName: "output.docx",                               // Name of the file
       docContent: docxBase64,                               // Base64 encoded Word document content
-      async: true                                           // Asynchronous processing (recommended for large files)
+      isAsync: true                                           // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request

@@ -70,7 +70,7 @@ async function processDocumentClassification() {
     const payload = {
         docContent: pdfBase64,                            // Base64 encoded PDF document content
         docName: "output.pdf",                            // Source PDF file name with .pdf extension
-        async: true                                       // Enable asynchronous processing
+        isAsync: true                                       // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

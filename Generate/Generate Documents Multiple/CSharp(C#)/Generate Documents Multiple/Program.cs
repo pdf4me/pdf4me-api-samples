@@ -143,7 +143,7 @@ public class DocumentMultipleGenerator
                 documentDataType = "Json",                    // Type of data being provided
                 outputType = "Docx",                          // Desired output format
                 documentDataText = jsonData,                  // JSON data to merge into template
-                async = false                                 // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                                 // For big files and too many calls async is recommended to reduce the server load
             };
 
             // Execute the document generation and return the result

@@ -42,7 +42,7 @@ async function createBarcode(barcodeConfig = {}) {
         text: barcodeConfig.text || "PDF4me Create Barcode Sample", // Text to encode in barcode
         barcodeType: barcodeConfig.barcodeType || "qrCode", // Barcode types: qrCode, code128, dataMatrix, aztec, hanXin, pdf417, etc.
         hideText: barcodeConfig.hideText || false, // Hide barcode text: true=hide, false=show text alongside barcode
-        async: true // Enable asynchronous processing
+        isAsync: true // Enable asynchronous processing
     };
 
     console.log('Sending barcode creation request to PDF4me API...');

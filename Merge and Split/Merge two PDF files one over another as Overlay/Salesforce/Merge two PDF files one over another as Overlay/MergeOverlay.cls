@@ -27,7 +27,7 @@ public with sharing class MergeOverlay {
                 'baseDocName' => basePDFName,
                 'layerDocContent' => layerPDFBase64,
                 'layerDocName' => layerPDFName,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

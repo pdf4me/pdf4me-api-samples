@@ -125,7 +125,7 @@ public class PdfSplitter
                 splitAction = "RecurringSplitAfterPage",  // Split action type
                 splitActionNumber = splitAfterPage,       // Number of pages after which to split
                 fileNaming = "NameAsPerOrder",            // File naming convention
-                async = true                              // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                              // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteSplitAsync(payload, "recurring_split");
@@ -163,7 +163,7 @@ public class PdfSplitter
                 splitAction = "SplitAfterPage",     // Split action type
                 splitActionNumber = splitAfterPage, // Page number after which to split
                 fileNaming = "NameAsPerOrder",      // File naming convention
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteSplitAsync(payload, "split_after_page");
@@ -201,7 +201,7 @@ public class PdfSplitter
                 splitAction = "SplitSequence",      // Split action type
                 splitSequence = splitSequence,      // Array of page numbers at which to split
                 fileNaming = "NameAsPerOrder",      // File naming convention
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteSplitAsync(payload, "split_sequence");
@@ -239,7 +239,7 @@ public class PdfSplitter
                 splitAction = "SplitRanges",        // Split action type
                 splitRanges = splitRanges,          // Page ranges string
                 fileNaming = "NameAsPerOrder",      // File naming convention
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteSplitAsync(payload, "split_ranges");

@@ -27,7 +27,7 @@ public with sharing class ProtectPDFDocument {
                 'docContent' => pdfBase64,
                 'password' => password,
                 'pdfPermission' => pdfPermission,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

@@ -59,7 +59,7 @@ async function rotateImage(inputImagePath, rotationAngle) {
             docContent: imageBase64,
             docName: "output",
             rotationAngle: rotationAngle,
-            async: true
+            isAsync: true
         };
         console.log("✅ API request prepared");
         console.log(`🔄 Rotating image by ${rotationAngle} degrees`);

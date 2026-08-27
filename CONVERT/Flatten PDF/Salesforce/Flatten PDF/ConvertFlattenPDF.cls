@@ -40,7 +40,7 @@ public with sharing class ConvertFlattenPDF {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => pdfBase64,
                 'docName' => outputFileName + '.pdf',
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

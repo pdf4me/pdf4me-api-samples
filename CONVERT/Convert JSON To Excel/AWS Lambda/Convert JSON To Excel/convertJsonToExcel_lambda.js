@@ -68,7 +68,7 @@ async function convertJsonToExcel(jsonBase64, filename, conversionConfig = {}) {
     const payload = {
         docContent: jsonBase64,                    // Base64 encoded JSON content (Required)
         docName: filename,                         // Output document name (Required)
-        async: true                                // Asynchronous processing as requested
+        isAsync: true                                // Asynchronous processing as requested
     };
 
     console.log('Sending JSON to PDF4me API for Excel conversion...');

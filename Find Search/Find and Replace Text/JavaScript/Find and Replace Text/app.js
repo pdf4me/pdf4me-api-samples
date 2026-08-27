@@ -75,7 +75,7 @@ async function processFindAndReplace() {
         oldText: OLD_TEXT,               // Text to be searched and replaced
         newText: NEW_TEXT,               // Text to replace with
         pageSequence: PAGE_SEQUENCE,     // Page indices as comma-separated values or ranges
-        async: true                      // Enable asynchronous processing
+        isAsync: true                      // Enable asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

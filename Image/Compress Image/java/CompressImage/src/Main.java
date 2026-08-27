@@ -32,7 +32,7 @@ public class Main {
                 "\"docName\":\"" + imgPath.getFileName() + "\"," +
                 "\"imageType\":\"JPG\"," +
                 "\"compressionLevel\":\"Medium\"," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/CompressImage"))
                 .header("Content-Type", "application/json")

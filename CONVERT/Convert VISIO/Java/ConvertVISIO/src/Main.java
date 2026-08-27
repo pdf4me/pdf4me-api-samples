@@ -41,6 +41,7 @@ public class Main {
         payload.put("SaveForegroundPage", true);
         payload.put("SaveToolBar", true);
         payload.put("AutoFit", true);
+        payload.put("isAsync", true);
 
         ApiResponse resp = post(API_URL, API_KEY, payload);
         if (resp.status == 200) {

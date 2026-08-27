@@ -83,7 +83,7 @@ async function processAttachmentAddition() {
                 docContent: attachmentBase64            // Base64 encoded attachment content
             }
         ],
-        async: true                                     // Enable asynchronous processing
+        isAsync: true                                     // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

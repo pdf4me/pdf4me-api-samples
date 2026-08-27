@@ -42,7 +42,7 @@ public class Main {
             payload.put("splitAction", "SplitAfterPage");
             payload.put("splitActionNumber", 1);
             payload.put("fileNaming", "NameAsPerOrder");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             executeSplit(payload, outputDir);
         } catch (Exception ex) {
             System.err.println("Error in splitPdf: " + ex.getMessage());

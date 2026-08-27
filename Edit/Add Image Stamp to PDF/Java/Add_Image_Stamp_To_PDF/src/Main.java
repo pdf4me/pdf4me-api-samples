@@ -104,7 +104,7 @@ public class Main {
                 payload.put("marginYInMM", "0");
                 payload.put("opacity", 100);
                 payload.put("showOnlyInPrint", false);
-                payload.put("async", false);
+                payload.put("isAsync", true);
 
                 // Execute the image stamp addition operation
                 return executeImageStampAddition(payload, outputPath);

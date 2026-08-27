@@ -80,7 +80,7 @@ async function extractPdfMetadata(inputPdfPath) {
         const payload = {
             docContent: pdfBase64,                                 // Base64 encoded PDF content
             docName: "output.pdf",                                 // Output document name
-            async: true                                            // For big files and too many calls async is recommended to reduce the server load
+            isAsync: true                                            // For big files and too many calls async is recommended to reduce the server load
         };
 
         console.log("✅ API request prepared with metadata extraction parameters");

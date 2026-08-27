@@ -76,7 +76,7 @@ async function addAttachmentToPdf(pdfBase64, attachmentBase64, pdfFilename, atta
                 docContent: attachmentBase64            // Base64 encoded attachment content
             }
         ],
-        async: true                                     // Enable asynchronous processing
+        isAsync: true                                     // Enable asynchronous processing
     };
 
     console.log('Sending attachment request to PDF4me API...');

@@ -40,7 +40,7 @@ public with sharing class ConvertToPDF {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => docBase64,
                 'docName' => outputFileName + '.doc',
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

@@ -42,7 +42,7 @@ def read_barcode_from_image():
         "docName": os.path.basename(image_file_path),              # Name of the input image file
         "docContent": image_base64,                                # Base64 encoded image content
         "imageType": "jpg",                                        # Image type options: JPG, PNG
-        "async": True                                             # Enable asynchronous processing
+        "isAsync": True                                             # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

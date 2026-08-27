@@ -74,7 +74,7 @@ function replaceTextWithImageInWord() {
         docContent: wordBase64,       // Base64 encoded Word document content
         imageContent: imageBase64,    // Base64 encoded image content
         textToReplace: textToReplace, // Text to replace with image
-        async: true                   // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                   // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Set the headers for the API request

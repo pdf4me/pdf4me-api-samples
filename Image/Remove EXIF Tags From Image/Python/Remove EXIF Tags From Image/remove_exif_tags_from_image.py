@@ -39,7 +39,7 @@ def remove_exif_tags_from_image():
         "docContent": image_base64,                                # Base64 encoded image content
         "docName": os.path.basename(image_file_path),              # Name of the input image file
         "imageType": "JPG",                                        # Image type options: JPG, PNG
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

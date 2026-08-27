@@ -55,7 +55,7 @@ def merge_two_pdf_files_one_over_another_as_overlay():
         "baseDocName": os.path.basename(base_pdf_file_path),       # Name of the base PDF file
         "layerDocContent": layer_pdf_base64,                       # Base64 encoded layer PDF content (second layer)
         "layerDocName": os.path.basename(layer_pdf_file_path),     # Name of the layer PDF file
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

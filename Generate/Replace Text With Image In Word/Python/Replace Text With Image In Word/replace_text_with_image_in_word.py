@@ -79,7 +79,7 @@ def replace_text_with_image_word(api_key, base_url, word_file_path, image_file_p
             "IsFirstPageSkip": False,           # Whether to skip the first page
             "PageNumbers": "1",                 # Page numbers to process
             "SearchText": "SIGN_HERE",           # Text to search and replace
-            "async": True                       # For big files and too many calls async is recommended to reduce the server load
+            "isAsync": True                       # For big files and too many calls async is recommended to reduce the server load
         }
         
         print("Sending replace text with image request...")

@@ -32,7 +32,7 @@ public class Main {
                 "\"docName\":\"" + imgPath.getFileName() + "\"," +
                 "\"currentImageFormat\":\"JPG\"," +
                 "\"newImageFormat\":\"PNG\"," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/ConvertImageFormat"))
                 .header("Content-Type", "application/json")

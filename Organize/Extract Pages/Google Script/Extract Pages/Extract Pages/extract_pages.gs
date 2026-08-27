@@ -71,7 +71,7 @@ function extractPages() {
       docName: "output.pdf",                               // Name of the file
       docContent: pdfBase64,                               // Base64 encoded PDF content
       pageNumbers: pageNumbers,                            // Page numbers to extract
-      async: true                                          // Asynchronous processing (recommended for large files)
+      isAsync: true                                          // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request

@@ -82,7 +82,7 @@ def split_pdf_by_barcode(base64_content, filename):
         "splitBarcodePage": "before",                              # Where to split relative to barcode (before, after)
         "combinePagesWithSameConsecutiveBarcodes": True,           # Whether to combine pages with same consecutive barcodes
         "pdfRenderDpi": "1",                                       # DPI for PDF rendering
-        "async": True                                              # Asynchronous processing as requested
+        "isAsync": True                                              # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for splitting by barcode...")

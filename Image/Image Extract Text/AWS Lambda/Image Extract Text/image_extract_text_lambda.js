@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
                 confidence: process.env.CONFIDENCE || 0.8, // Minimum confidence threshold
                 outputFormat: process.env.OUTPUT_FORMAT || "Text", // Text, JSON, XML
                 preserveFormatting: process.env.PRESERVE_FORMATTING || true, // Preserve text formatting
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

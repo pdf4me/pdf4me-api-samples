@@ -43,7 +43,7 @@ public with sharing class ConvertCreatePDFA {
                 'compliance' => compliance,
                 'allowUpgrade' => allowUpgrade,
                 'allowDowngrade' => allowDowngrade,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

@@ -117,7 +117,7 @@ async function replaceTextWithImage(inputPdfPath, replacementImagePath, replaceT
             imageContent: imageBase64,
             imageHeight: imageHeight,
             imageWidth: imageWidth,
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared");

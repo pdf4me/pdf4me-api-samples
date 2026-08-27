@@ -50,7 +50,7 @@ function readBarcodeFromImage() {
     var payload = {
         imageContent: imageBase64,        // Base64 encoded image content
         barcodeType: barcodeType,         // Barcode type to detect
-        async: true                       // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                       // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Set the headers for the API request

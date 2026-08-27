@@ -105,7 +105,7 @@ public class RotateDocument
                 docContent = pdfBase64,             // Base64 encoded PDF content
                 docName = "output.pdf",             // Output document name
                 rotationType = "UpsideDown",        // Rotation type (UpsideDown, Clockwise, CounterClockwise)
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteDocumentRotationAsync(payload);

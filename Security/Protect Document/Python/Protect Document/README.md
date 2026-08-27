@@ -128,7 +128,7 @@ The implementation supports these settings:
   "docContent": "base64-encoded-pdf-content",
   "password": "1234",
   "pdfPermission": "All",
-  "async": true
+  "isAsync": true
 }
 ```
 

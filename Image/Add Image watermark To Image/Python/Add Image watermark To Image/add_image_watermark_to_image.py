@@ -57,7 +57,7 @@ def add_image_watermark_to_image():
         "PositionX": 0.0,                                         # X position for custom positioning (float)
         "PositionY": 0.0,                                         # Y position for custom positioning (float)
         "Rotation": 0.0,                                          # Rotation angle for watermark (float)
-        "async": True                                             # Enable asynchronous processing
+        "isAsync": True                                             # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

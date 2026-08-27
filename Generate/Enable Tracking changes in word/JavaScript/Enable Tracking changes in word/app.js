@@ -65,7 +65,7 @@ async function processTrackingChangesEnabling() {
     const payload = {
         docContent: wordBase64,           // Base64 encoded Word document content
         docName: "output.docx",           // Name for the output file
-        async: true                       // Enable asynchronous processing for better performance
+        isAsync: true                       // Enable asynchronous processing for better performance
     };
 
     // Set up HTTP headers for authentication and content type

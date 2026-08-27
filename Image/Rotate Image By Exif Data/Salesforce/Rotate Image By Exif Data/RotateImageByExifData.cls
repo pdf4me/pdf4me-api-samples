@@ -22,7 +22,7 @@ public with sharing class RotateImageByExifData {
             Map<String, Object> payload = new Map<String, Object>{
                 'docName' => imageFileName,
                 'docContent' => imageBase64,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

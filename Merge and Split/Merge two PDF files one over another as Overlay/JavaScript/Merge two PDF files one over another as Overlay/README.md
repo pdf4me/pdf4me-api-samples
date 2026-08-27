@@ -83,7 +83,7 @@ if (result) {
     "baseDocName": "base.pdf",
     "layerDocContent": "base64_encoded_layer_pdf", 
     "layerDocName": "layer.pdf",
-    "async": true
+    "isAsync": true
 }
 ```
 

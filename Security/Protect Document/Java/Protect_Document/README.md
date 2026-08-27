@@ -79,7 +79,7 @@ Protected document saved to: sample.protected.pdf
   "docContent": "base64-encoded-pdf-content",
   "password": "1234",
   "pdfPermission": "All",
-  "async": true
+  "isAsync": true
 }
 ```
 

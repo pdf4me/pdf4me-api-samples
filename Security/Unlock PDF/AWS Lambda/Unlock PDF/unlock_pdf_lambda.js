@@ -69,7 +69,7 @@ async function unlockPdfDocument(base64Content, filename, unlockConfig) {
         docName: "output.pdf",
         docContent: base64Content,
         password: unlockConfig.password || "1234",
-        async: true
+        isAsync: true
     };
 
     console.log('Sending PDF to PDF4me API for document unlocking...');

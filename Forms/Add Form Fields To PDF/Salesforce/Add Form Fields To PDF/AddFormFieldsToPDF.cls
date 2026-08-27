@@ -24,7 +24,7 @@ public with sharing class AddFormFieldsToPDF {
             'Size' => size,
             'pages' => pages,
             'formFieldType' => formFieldType,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

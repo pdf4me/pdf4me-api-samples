@@ -91,7 +91,7 @@ const BASE_URL = "https://api.pdf4me.com/";
   "docName": "sample.jpg",
   "docContent": "base64-encoded-image-content",
   "Quality": 80,
-  "async": true
+  "isAsync": true
 }
 ```
 

@@ -52,7 +52,7 @@ function convertMarkdownToPdf() {
       "docContent": markdownBase64,    // Base64 encoded Markdown document content
       "docName": "sample.md",          // Name of the source Markdown file with extension
       "mdFilePath": "",                // Path to .md file inside ZIP (empty for single file)
-      "async": true                    // Enable asynchronous processing (JavaScript boolean, not Python)
+      "isAsync": true                    // Enable asynchronous processing (JavaScript boolean, not Python)
     };
 
     // Set the headers for the API request

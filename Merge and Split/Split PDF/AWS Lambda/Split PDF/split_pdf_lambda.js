@@ -73,7 +73,7 @@ async function splitPdf(base64Content, filename, splitAction = 'SplitAfterPage',
         docName: filename,                       // Name of the input PDF file
         splitAction: splitAction,                // Split action type
         fileNaming: 'NameAsPerOrder',           // File naming convention
-        async: true                              // Enable asynchronous processing
+        isAsync: true                              // Enable asynchronous processing
     };
 
     // Add specific parameters based on split action

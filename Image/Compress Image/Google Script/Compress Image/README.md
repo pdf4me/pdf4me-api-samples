@@ -74,7 +74,7 @@ POST https://api.pdf4me.com/api/v2/CompressImage
     "quality": 80,
     "maxWidth": 1920,
     "maxHeight": 1080,
-    "async": true
+    "isAsync": true
 }
 ```
 

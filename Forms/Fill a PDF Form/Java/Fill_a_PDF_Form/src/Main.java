@@ -52,6 +52,7 @@ public class Main {
             jsonPayload.append("\"metaData\":\"\",");
             jsonPayload.append("\"metaDataJson\":\"\",");
             jsonPayload.append("\"InputFormData\":").append(inputFormDataArr);
+            jsonPayload.append(",\"isAsync\":true");
             jsonPayload.append("}");
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/FillPdfForm"))

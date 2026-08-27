@@ -98,7 +98,7 @@ async function addImageWatermarkToImage(inputImagePath, watermarkImagePath) {
             PositionX: 0.0,
             PositionY: 0.0,
             Rotation: 0.0,
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with image watermark parameters");

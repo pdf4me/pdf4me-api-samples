@@ -53,7 +53,7 @@ exports.handler = async (event, context) => {
                 includeIptc: process.env.INCLUDE_IPTC || true, // Include IPTC data
                 includeXmp: process.env.INCLUDE_XMP || true, // Include XMP data
                 includeIcc: process.env.INCLUDE_ICC || true, // Include ICC profile data
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

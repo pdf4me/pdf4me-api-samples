@@ -42,7 +42,7 @@ public with sharing class FindAndReplaceText {
                 'oldText' => oldText,
                 'newText' => newText,
                 'pageSequence' => pageSequence,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

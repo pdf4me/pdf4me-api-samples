@@ -31,7 +31,7 @@ public with sharing class CropImage {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => imageBase64,
                 'docName' => imageFileName,
-                'async' => false
+                'isAsync' => true
             };
             if (cropType != null) payload.put('CropType', cropType);
             if (leftBorder != null) payload.put('LeftBorder', String.valueOf(leftBorder));

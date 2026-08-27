@@ -56,7 +56,7 @@ exports.handler = async (event, context) => {
                 imageName: process.env.IMAGE_NAME || "logo.png",
                 imageWidth: process.env.IMAGE_WIDTH || 100,
                 imageHeight: process.env.IMAGE_HEIGHT || 50,
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

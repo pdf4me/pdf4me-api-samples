@@ -59,7 +59,7 @@ def add_attachment_to_pdf():
                 "docContent": attachment_base64           # Base64 encoded attachment content
             }
         ],
-        "async": True                                     # Enable asynchronous processing
+        "isAsync": True                                     # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

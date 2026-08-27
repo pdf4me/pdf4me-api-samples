@@ -110,7 +110,7 @@
       "text": "page 1, line 10.",                        // Text to search for splitting
       "splitTextPage": "after",                          // Split position: before, after
       "fileNaming": "NameAsPerOrder",                    // File naming convention
-      "async": true                                      // Enable asynchronous processing
+      "isAsync": true                                      // Enable asynchronous processing
     };
 
     console.log("Sending PDF text split request to PDF4me API...");

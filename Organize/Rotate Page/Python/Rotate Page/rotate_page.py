@@ -34,7 +34,7 @@ def rotate_page():
             "docName": "output.pdf",                               # Output PDF file name
             "rotationType": "Clockwise",                           # Rotation type: NoRotation, Clockwise, CounterClockwise, UpsideDown
             "page": "1",                                           # Page numbers to rotate (e.g. "1" or "1,3,5" or "2-4")
-            "async": True                                          # Enable asynchronous processing
+            "isAsync": True                                          # Enable asynchronous processing
         }
         
         # Set up headers for the API request

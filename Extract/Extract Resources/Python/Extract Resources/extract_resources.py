@@ -46,7 +46,7 @@ def extract_resources():
         "docName": "sample.pdf",                                   # Name of the input PDF file
         "extractText": True,                                       # Extract text content from PDF
         "extractImages": True,                                      # Extract images from PDF
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

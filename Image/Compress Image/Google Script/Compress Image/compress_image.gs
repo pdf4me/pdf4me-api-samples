@@ -55,7 +55,7 @@ function compressImage() {
         quality: quality,                 // Compression quality (1-100)
         maxWidth: maxWidth,               // Maximum width
         maxHeight: maxHeight,             // Maximum height
-        async: true                       // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                       // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Set the headers for the API request

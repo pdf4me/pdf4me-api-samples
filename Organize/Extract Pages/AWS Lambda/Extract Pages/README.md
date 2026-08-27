@@ -217,7 +217,7 @@ Extract Pages/
   "docContent": "base64-encoded-pdf-content",
   "docName": "output.pdf",
   "pageNumbers": "1,3",
-  "async": true
+  "isAsync": true
 }
 ```
 

@@ -25,7 +25,7 @@ public with sharing class ExtractPagesFromPDF {
                 'docContent' => pdfBase64,
                 'docName' => outputFileName,
                 'pageNumbers' => pageNumbers,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

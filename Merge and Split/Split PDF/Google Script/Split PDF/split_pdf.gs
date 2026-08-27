@@ -102,7 +102,7 @@ function splitPdf() {
       "splitAction": "SplitAfterPage",                           // Split action type
       "splitActionNumber": 1,                                    // Split after page number (1 = split after first page)
       "fileNaming": "NameAsPerOrder",                            // File naming convention
-      "async": true                                              // Enable asynchronous processing
+      "isAsync": true                                              // Enable asynchronous processing
     };
 
     // Alternative payload options (COMMENTED OUT - only one can be active at a time):
@@ -114,7 +114,7 @@ function splitPdf() {
     //   "splitAction": "RecurringSplitAfterPage",                // Split action type
     //   "splitActionNumber": 4,                                  // Split every 4 pages
     //   "fileNaming": "NameAsPerOrder",                          // File naming convention
-    //   "async": true                                            // Enable asynchronous processing
+    //   "isAsync": true                                            // Enable asynchronous processing
     // };
 
     // Option 2: SplitSequence - Splits at specific page numbers
@@ -124,7 +124,7 @@ function splitPdf() {
     //   "splitAction": "SplitSequence",                          // Split action type
     //   "splitSequence": [1, 3, 8],                             // Split at pages 1, 3, and 8
     //   "fileNaming": "NameAsPerOrder",                          // File naming convention
-    //   "async": true                                            // Enable asynchronous processing
+    //   "isAsync": true                                            // Enable asynchronous processing
     // };
 
     // Option 3: SplitRanges - Extracts specific page ranges
@@ -134,7 +134,7 @@ function splitPdf() {
     //   "splitAction": "SplitRanges",                            // Split action type
     //   "splitRanges": "1-4",                                    // Extract pages 1-4
     //   "fileNaming": "NameAsPerOrder",                          // File naming convention
-    //   "async": true                                            // Enable asynchronous processing
+    //   "isAsync": true                                            // Enable asynchronous processing
     // };
 
     // Request headers with authentication

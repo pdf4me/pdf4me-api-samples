@@ -55,7 +55,7 @@ async function processBarcodeCreation() {
         text: "PDF4me Create Barcode Sample",            // Text to encode in barcode
         barcodeType: "qrCode",                           // Barcode type: qrCode (confirmed working)
         hideText: false,                                 // Hide barcode text: true=hide, false=show text alongside barcode
-        async: true                                      // Enable asynchronous processing
+        isAsync: true                                      // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

@@ -67,7 +67,7 @@ async function resizeImage(inputImagePath) {
             Width: WIDTH,
             Height: HEIGHT,
             MaintainAspectRatio: MAINTAIN_ASPECT_RATIO,
-            async: true
+            isAsync: true
         };
         console.log("✅ API request prepared");
         return await executeResize(payload, OUTPUT_IMAGE_PATH);

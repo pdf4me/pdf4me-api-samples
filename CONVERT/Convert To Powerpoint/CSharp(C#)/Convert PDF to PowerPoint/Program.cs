@@ -91,7 +91,7 @@ public class PdfToPowerPointConverter
             ocrWhenNeeded = "true",           // Enable OCR when needed
             outputFormat = "true",            // Output format setting
             mergeAllSheets = true,            // Merge all sheets into one
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content

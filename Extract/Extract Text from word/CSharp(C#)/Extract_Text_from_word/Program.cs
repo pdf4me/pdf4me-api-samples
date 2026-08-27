@@ -104,7 +104,8 @@ public class WordTextExtractor
             var payload = new
             {
                 docContent = wordBase64,
-                docName = "output.docx",                                      // For big files and too many calls async is recommended to reduce the server load
+                docName = "output.docx",
+                isAsync = true                                      // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteWordTextExtractionAsync(payload);

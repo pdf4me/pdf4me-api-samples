@@ -139,7 +139,7 @@ POST /api/v2/SplitPdf
   "pdfContent": "base64-encoded-pdf",
   "pdfName": "sample.pdf",
   "splitAfterPage": 5,
-  "async": true
+  "isAsync": true
 }
 ```
 
@@ -149,7 +149,7 @@ POST /api/v2/SplitPdf
   "pdfContent": "base64-encoded-pdf",
   "pdfName": "sample.pdf",
   "splitRecurringAfterPage": 3,
-  "async": true
+  "isAsync": true
 }
 ```
 
@@ -159,7 +159,7 @@ POST /api/v2/SplitPdf
   "pdfContent": "base64-encoded-pdf",
   "pdfName": "sample.pdf",
   "splitSequence": [2, 5, 8],
-  "async": true
+  "isAsync": true
 }
 ```
 
@@ -169,7 +169,7 @@ POST /api/v2/SplitPdf
   "pdfContent": "base64-encoded-pdf",
   "pdfName": "sample.pdf",
   "splitRanges": "1-3,5-7,9-10",
-  "async": true
+  "isAsync": true
 }
 ```
 

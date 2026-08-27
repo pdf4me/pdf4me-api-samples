@@ -75,7 +75,7 @@ async function addHtmlHeaderFooter(pdfBase64, htmlConfig = {}) {
         marginRight: htmlConfig.marginRight || 20.0,  // Right margin in pixels (double)
         marginTop: htmlConfig.marginTop || 50.0,      // Top margin in pixels (double)
         marginBottom: htmlConfig.marginBottom || 50.0, // Bottom margin in pixels (double)
-        async: true                                   // Enable asynchronous processing
+        isAsync: true                                   // Enable asynchronous processing
     };
 
     console.log('Sending HTML header/footer request to PDF4me API...');

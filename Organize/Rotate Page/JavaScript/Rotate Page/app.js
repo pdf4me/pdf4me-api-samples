@@ -49,7 +49,7 @@ async function rotatePage() {
             docName: "output.pdf",                                  // Output PDF file name
             rotationType: ROTATION_TYPE,                            // Rotation type
             page: PAGE_NUMBER,                                      // Specific page to rotate
-            async: ASYNC_PROCESSING                                 // Enable async processing
+            isAsync: true                                 // Enable async processing
         };
 
         // Execute the page rotation

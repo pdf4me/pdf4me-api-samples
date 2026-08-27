@@ -41,7 +41,7 @@ public class Main {
             payload.put("docContent", pdfBase64);
             payload.put("docName", "output.pdf");
             payload.put("rotationType", "UpsideDown");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executeDocumentRotation(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in rotateDocument: " + ex.getMessage());

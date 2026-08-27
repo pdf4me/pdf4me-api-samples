@@ -100,7 +100,7 @@ public class PdfFormFieldAdder
             Size = 4,                                           // Size of the form field
             pages = "1",                                        // Page number where to add the field
             formFieldType = "TextBox",                          // Type of form field
-            async = true                                        // For big files and too many calls async is recommended to reduce the server load
+            isAsync = true                                        // For big files and too many calls async is recommended to reduce the server load
         };
 
         // Serialize payload to JSON and create HTTP content

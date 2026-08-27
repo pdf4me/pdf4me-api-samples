@@ -40,7 +40,7 @@ def convert_image_format():
         "docName": os.path.basename(image_file_path),              # Name of the input image file
         "currentImageFormat": "JPG",                               # Current format options: BMP, GIF, JPG, PNG, TIFF
         "newImageFormat": "PNG",                                   # New format options: BMP, GIF, JPG, PNG, TIFF
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

@@ -71,7 +71,7 @@ The application supports various configuration options in the payload object:
 
 #### Processing Mode
 ```javascript
-async: true // Enable asynchronous processing for better performance
+isAsync: true // Enable asynchronous processing for better performance
 ```
 
 #### Document Information

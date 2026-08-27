@@ -69,7 +69,7 @@ function flattenPdf() {
     var payload = {
       docContent: pdfBase64,        // Base64 encoded PDF document content
       docName: 'Flatten_output.pdf', // Name for the output file
-      async: true                   // Enable asynchronous processing
+      isAsync: true                   // Enable asynchronous processing
     };
 
     // Set the headers for the API request

@@ -133,7 +133,7 @@ async function generateDocumentSingle(apiKey, baseUrl, templateFilePath, jsonDat
             "documentDataType": "text",              // Document data type (JSON/XML)
             "outputType": fileType,                  // Output document type (same as input type)
             "documentDataText": jsonData,           // JSON/XML data as text (required if documentDataFile not mapped)
-            "async": true                            // For big files and too many calls async is recommended to reduce the server load
+            "isAsync": true                            // For big files and too many calls async is recommended to reduce the server load
         };
 
         // Alternative payload examples for different scenarios:
@@ -147,7 +147,7 @@ async function generateDocumentSingle(apiKey, baseUrl, templateFilePath, jsonDat
         //     "outputType": "PDF",                     // Output as PDF
         //     "documentDataText": jsonData,           // JSON data as text
         //     "metaDataJson": "{}",                    // Additional metadata for fields in JSON format
-        //     "async": true
+        //     "isAsync": true
         // };
         
         // Example 2: PDF template with XML data outputting to Word
@@ -159,7 +159,7 @@ async function generateDocumentSingle(apiKey, baseUrl, templateFilePath, jsonDat
         //     "outputType": "Word",                    // Output as Word document
         //     "documentDataText": xmlData,            // XML data as text
         //     "metaDataJson": "{}",                    // Additional metadata
-        //     "async": true
+        //     "isAsync": true
         // };
         
         // Example 3: HTML template with JSON data outputting to Excel
@@ -171,7 +171,7 @@ async function generateDocumentSingle(apiKey, baseUrl, templateFilePath, jsonDat
         //     "outputType": "Excel",                   // Output as Excel file
         //     "documentDataText": jsonData,           // JSON data as text
         //     "metaDataJson": "{}",                    // Additional metadata
-        //     "async": true
+        //     "isAsync": true
         // };
         
         // Example 4: Word template with data file (instead of text)
@@ -183,7 +183,7 @@ async function generateDocumentSingle(apiKey, baseUrl, templateFilePath, jsonDat
         //     "outputType": "PDF",                     // Output as PDF
         //     "documentDataFile": dataFileBase64,     // Base64 encoded data file (alternative to documentDataText)
         //     "metaDataJson": "{}",                    // Additional metadata
-        //     "async": true
+        //     "isAsync": true
         // };
         
         // Example 5: Complete payload with all optional parameters
@@ -197,7 +197,7 @@ async function generateDocumentSingle(apiKey, baseUrl, templateFilePath, jsonDat
         //     "documentDataText": jsonData,           // Manual data entry (use if documentDataFile not mapped)
         //     "fileMetaData": "{}",                    // Any additional metadata for fields
         //     "metaDataJson": "{}",                    // Output metadata in JSON format
-        //     "async": true
+        //     "isAsync": true
         // };
 
         console.log("Sending generate document single request...");

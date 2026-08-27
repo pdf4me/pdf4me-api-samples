@@ -50,7 +50,7 @@ public class Main {
             String payload = "{" +
                 "\"docContent\":\"" + pdfBase64 + "\"," +
                 "\"docName\":\"" + Paths.get(pdfFilePath).getFileName().toString() + "\"," +
-                "\"async\":true" +
+                "\"isAsync\":true" +
                 "}";
             
             return executeSwissQrReading(payload, outputPath, url);

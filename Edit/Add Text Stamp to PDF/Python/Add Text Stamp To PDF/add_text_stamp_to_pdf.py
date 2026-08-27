@@ -57,7 +57,7 @@ def add_text_stamp_to_pdf():
         "showOnlyInPrint": False,                        # Show stamp in view and print (true/false)
         "transverse": False,                             # Transverse positioning (true/false)
         "fitTextOverPage": False,                        # Fit text over entire page (true/false)
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

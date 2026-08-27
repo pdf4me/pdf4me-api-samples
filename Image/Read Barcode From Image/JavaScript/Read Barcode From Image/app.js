@@ -86,7 +86,7 @@ async function readBarcodeFromImage(inputImagePath) {
             docName: path.basename(inputImagePath),
             readMultipleBarcodes: true,                            // Read all barcodes in image
             barcodeTypes: ["All"],                                 // Detect all barcode types
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with barcode parameters");

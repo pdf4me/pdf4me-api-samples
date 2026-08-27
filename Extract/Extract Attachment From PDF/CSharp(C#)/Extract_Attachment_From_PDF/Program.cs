@@ -129,7 +129,7 @@ public class PdfAttachmentExtractor
                         docContent = textBase64
                     }
                 },
-                async = true                                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteAttachmentExtractionAsync(payload);

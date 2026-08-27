@@ -64,7 +64,7 @@ function convertWordToPdfForm() {
     var payload = {
       "docContent": wordBase64,      // Base64 encoded Word document content
       "docName": "output.pdf",       // Name for the output PDF file
-      "async": true                  // Enable asynchronous processing
+      "isAsync": true                  // Enable asynchronous processing
     };
 
     // Set the headers for the API request

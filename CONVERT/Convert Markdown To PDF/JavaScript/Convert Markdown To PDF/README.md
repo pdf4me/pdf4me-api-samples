@@ -65,7 +65,7 @@ const payload = {
     docContent: mdBase64,        // Base64 encoded Markdown content
     docName: "sample.md",        // Name of the source Markdown file
     mdFilePath: "",              // Path to .md file inside ZIP (empty for single file)
-    async: true                  // Enable async processing
+    isAsync: true                  // Enable async processing
 };
 ```
 

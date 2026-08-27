@@ -180,7 +180,7 @@ var payload = {
   oldText: "Old Company Name",       // Replace across entire document
   newText: "New Company Name",       // New company name
   pageSequence: "",                  // All pages
-  async: true                        // Background processing
+  isAsync: true                        // Background processing
 };
 ```
 
@@ -190,7 +190,7 @@ var payload = {
   oldText: "Draft",                  // Replace on specific pages
   newText: "Final",                  // Final version indicator
   pageSequence: "1, 5",              // Title page and summary page
-  async: true                        // Background processing
+  isAsync: true                        // Background processing
 };
 ```
 
@@ -200,7 +200,7 @@ var payload = {
   oldText: "teh",                    // Common typo
   newText: "the",                    // Corrected spelling
   pageSequence: "",                  // All pages
-  async: true                        // Background processing
+  isAsync: true                        // Background processing
 };
 ```
 

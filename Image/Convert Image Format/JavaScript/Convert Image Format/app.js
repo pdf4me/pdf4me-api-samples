@@ -83,7 +83,7 @@ async function convertImageFormat(inputImagePath) {
             docName: path.basename(inputImagePath),
             currentImageFormat: "JPG",
             newImageFormat: "PNG",
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with format conversion parameters");

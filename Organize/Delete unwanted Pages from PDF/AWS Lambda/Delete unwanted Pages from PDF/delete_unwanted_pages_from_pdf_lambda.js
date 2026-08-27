@@ -69,7 +69,7 @@ async function deleteUnwantedPagesFromPdf(base64Content, filename, pageNumbers =
         docName: "output.pdf",
         docContent: base64Content,
         pageNumbers: pageNumbers, // Page numbers to delete (e.g. "2" or "1,3,5" or "2-4")
-        async: true
+        isAsync: true
     };
 
     console.log('Sending PDF to PDF4me API for unwanted page deletion...');

@@ -67,7 +67,7 @@ function extractAttachmentFromPdf() {
     var payload = {
       docName: file.getName(),                      // Source PDF file name with .pdf extension
       docContent: pdfBase64,                        // Base64 encoded PDF document content
-      async: true                                   // Asynchronous processing
+      isAsync: true                                   // Asynchronous processing
     };
 
     // Set the headers for the API request

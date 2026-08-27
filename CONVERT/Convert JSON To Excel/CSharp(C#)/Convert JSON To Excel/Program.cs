@@ -95,7 +95,7 @@ public class JsonToExcelConverter
             ignoreNullValues = false,          // Include null values
             firstRow = 1,                      // Starting row
             firstColumn = 1,                   // Starting column
-            async = true                     // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true                     // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content

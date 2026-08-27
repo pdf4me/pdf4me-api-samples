@@ -82,7 +82,7 @@ var payload = {
     ignoreNullValues: false,
     firstRow: 1,
     firstColumn: 1,
-    async: true
+    isAsync: true
 };
 
     // Set the headers for the API request

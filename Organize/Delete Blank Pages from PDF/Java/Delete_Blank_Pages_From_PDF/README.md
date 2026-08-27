@@ -140,7 +140,7 @@ The output PDF file that will be generated after removing blank pages from the s
   "docContent": "base64_encoded_pdf_content",
   "docName": "output.pdf",
   "deletePageOption": "NoTextNoImages",
-  "async": true
+  "isAsync": true
 }
 ```
 

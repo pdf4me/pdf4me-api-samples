@@ -38,7 +38,7 @@ def convert_word_to_pdf_form():
     payload = {
         "docContent": word_base64,    # Base64 encoded Word document content
         "docName": "output.pdf",      # Name for the output PDF file
-        "async": True                 # Enable asynchronous processing
+        "isAsync": True                 # Enable asynchronous processing
     }
 
     # Step 4: Set up HTTP headers for the API request
