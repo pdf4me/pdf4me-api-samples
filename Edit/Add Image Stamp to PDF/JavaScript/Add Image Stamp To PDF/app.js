@@ -103,7 +103,7 @@ async function processImageStampAddition() {
         opacity: 50,                                  // Opacity (0-100): 0=invisible, 100=fully opaque
         isBackground: true,                           // Place stamp in background/foreground (true/false)
         showOnlyInPrint: false,                       // Show in view and print (true/false)
-        async: true                                   // Enable asynchronous processing
+        isAsync: true                                   // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

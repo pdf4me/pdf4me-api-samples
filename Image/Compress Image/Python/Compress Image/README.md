@@ -133,7 +133,7 @@ POST /api/v2/CompressImage
   "imageName": "sample.png",
   "quality": 80,
   "format": "JPEG",
-  "async": true
+  "isAsync": true
 }
 ```
 

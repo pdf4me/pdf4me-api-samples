@@ -44,7 +44,7 @@ public with sharing class ConvertPdfToEditablePdfUsingOcr {
                 'language' => language,
                 'outputFormat' => outputFormat,
                 'mergeAllSheets' => mergeAllSheets,
-                'isAsync' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

@@ -44,7 +44,7 @@ public class Main {
             payload.put("docName", "output.pdf");
             payload.put("docContent", pdfBase64);
             payload.put("password", "1234");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             
             return executePdfUnlock(payload, outputPdfPath);
         } catch (Exception ex) {

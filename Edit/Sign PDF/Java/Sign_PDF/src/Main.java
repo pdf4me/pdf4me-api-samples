@@ -60,7 +60,7 @@ public class Main {
             payload.put("marginYInMM", 20);
             payload.put("opacity", 100);
             payload.put("isBackground", false);
-            payload.put("async", true);
+            payload.put("isAsync", true);
 
             return executePdfSigningAsync(payload, outputPath);
         } catch (Exception ex) {

@@ -48,7 +48,7 @@ public with sharing class ParseDocument {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => pdfBase64,
                 'docName' => docName,
-                'async' => false
+                'isAsync' => true
             };
             if (!String.isBlank(templateName)) {
                 payload.put('templateName', templateName);

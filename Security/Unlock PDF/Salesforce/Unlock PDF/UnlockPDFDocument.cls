@@ -25,7 +25,7 @@ public with sharing class UnlockPDFDocument {
                 'docName' => outputFileName,
                 'docContent' => pdfBase64,
                 'password' => password,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

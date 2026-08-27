@@ -98,7 +98,7 @@ Done: Add_image_stamp_to_PDF_output.pdf
   "width": 200,
   "height": 100,
   "opacity": 0.8,
-  "async": true
+  "isAsync": true
 }
 ```
 

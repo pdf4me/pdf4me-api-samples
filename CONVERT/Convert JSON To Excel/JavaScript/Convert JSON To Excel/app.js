@@ -74,7 +74,7 @@ async function processJsonToExcelConversion() {
         ignoreNullValues: false,          // Include null/empty values
         firstRow: 1,                      // Starting row position
         firstColumn: 1,                   // Starting column position
-        async: true                       // Enable asynchronous processing
+        isAsync: true                       // Enable asynchronous processing
     };
 
     // Additional payload options you can customize:

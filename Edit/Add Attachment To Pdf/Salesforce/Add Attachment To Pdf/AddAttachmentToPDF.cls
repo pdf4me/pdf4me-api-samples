@@ -47,7 +47,7 @@ public with sharing class AddAttachmentToPDF {
                 'docName' => outputFileName + '.pdf',
             'docContent' => pdfBase64,
             'attachments' => attachments,
-                'async' => false
+                'isAsync' => true
         };
             String jsonBody = JSON.serialize(payload);
 

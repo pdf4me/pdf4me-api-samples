@@ -74,7 +74,7 @@ async function unlockPdf(inputPdfPath) {
             docName: "output.pdf",
             docContent: pdfBase64,
             password: PASSWORD,
-            async: true  // For big files and too many calls async is recommended to reduce the server load
+            isAsync: true  // For big files and too many calls async is recommended to reduce the server load
         };
 
         console.log("✅ API request sent with unlock parameters");

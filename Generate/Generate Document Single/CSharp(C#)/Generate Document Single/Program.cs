@@ -118,7 +118,7 @@ public class DocumentSingleGenerator
                 documentDataType = "text",
                 outputType = "html",
                 documentDataText = jsonData,
-                async = false
+                isAsync = true
             };
 
             return await ExecuteDocumentGenerationAsync(payload);

@@ -75,7 +75,7 @@ hideText: false // Hide barcode text: true=hide, false=show text alongside barco
 
 #### Processing Mode
 ```javascript
-async: true // Enable asynchronous processing for better performance
+isAsync: true // Enable asynchronous processing for better performance
 ```
 
 ## Output Files

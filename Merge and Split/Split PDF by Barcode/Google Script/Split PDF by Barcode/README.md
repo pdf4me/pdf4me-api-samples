@@ -74,7 +74,7 @@ var payload = {
   "splitBarcodePage": "after", // Split position: before, after, remove
   "combinePagesWithSameConsecutiveBarcodes": false,
   "pdfRenderDpi": "150",
-  "async": true // Enable asynchronous processing
+  "isAsync": true // Enable asynchronous processing
 };
 ```
 

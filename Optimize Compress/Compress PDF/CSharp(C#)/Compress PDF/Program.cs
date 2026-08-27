@@ -36,7 +36,7 @@ public class Program
         Console.WriteLine("=== Optimizing PDF ===");
         var result = await pdfOptimizer.OptimizePdfAsync(
             optimizeProfile: "Web",
-            async: true
+            isAsync: true
         );
         
         // Display the result
@@ -94,11 +94,11 @@ public class PdfOptimizer
     /// Optimizes PDF asynchronously using the PDF4ME API
     /// </summary>
     /// <param name="optimizeProfile">Optimization profile (e.g., "Web", "Print", "Screen")</param>
-    /// <param name="async">Whether to use asynchronous processing for large files</param>
+    /// <param name="isAsync">Whether to use asynchronous processing for large files</param>
     /// <returns>Path to the optimized PDF file, or null if optimization failed</returns>
     public async Task<string?> OptimizePdfAsync(
         string optimizeProfile = "Web",
-        bool async = true)
+        bool isAsync = true)
     {
         try
         {
@@ -117,7 +117,7 @@ public class PdfOptimizer
                 docContent = pdfBase64,                             // Base64 encoded PDF content
                 docName = "output.pdf",                             // Output document name
                 optimizeProfile = optimizeProfile,                  // Optimization profile
-                async = true                                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                                      // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteOptimizationAsync(payload);

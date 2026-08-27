@@ -52,7 +52,7 @@ function imageExtractText() {
         imageContent: imageBase64,        // Base64 encoded image content
         language: language,               // OCR language
         confidence: confidence,           // Confidence threshold
-        async: true                       // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                       // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Set the headers for the API request

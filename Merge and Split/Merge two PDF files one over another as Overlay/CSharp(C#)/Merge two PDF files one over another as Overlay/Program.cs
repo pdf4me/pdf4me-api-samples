@@ -126,7 +126,7 @@ public class PdfOverlayer
                 baseDocName = "output.pdf",         // Base document name
                 layerDocContent = layerPdfBase64,   // Base64 encoded layer PDF content
                 layerDocName = "output.pdf",        // Layer document name
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             // Serialize payload to JSON and create HTTP content

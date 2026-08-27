@@ -71,7 +71,7 @@ public class Main {
                 "\"splitBarcodePage\":\"" + splitBarcodePage + "\"," +
                 "\"combinePagesWithSameConsecutiveBarcodes\":" + combinePagesWithSameConsecutiveBarcodes + "," +
                 "\"pdfRenderDpi\":\"" + pdfRenderDpi + "\"," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             
             return executeBarcodeSplit(payload, outputPath);
         } catch (Exception ex) {

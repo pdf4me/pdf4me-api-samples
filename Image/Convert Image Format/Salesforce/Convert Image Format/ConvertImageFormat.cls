@@ -24,7 +24,7 @@ public with sharing class ConvertImageFormat {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => imageBase64,
                 'docName' => imageFileName,
-                'async' => false
+                'isAsync' => true
             };
             if (currentImageFormat != null) payload.put('currentImageFormat', currentImageFormat);
             if (newImageFormat != null) payload.put('newImageFormat', newImageFormat);

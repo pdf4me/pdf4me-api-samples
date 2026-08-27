@@ -65,7 +65,7 @@ This Google Apps Script reads barcodes from images using the PDF4Me API. It can 
 {
   "imageContent": "base64_encoded_image_content",
   "barcodeType": "all",
-  "async": true
+  "isAsync": true
 }
 ```
 

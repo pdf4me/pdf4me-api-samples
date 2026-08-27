@@ -135,7 +135,7 @@ POST /api/v2/MergeMultiplePdfs
     "sample1.pdf",
     "sample2.pdf"
   ],
-  "async": true
+  "isAsync": true
 }
 ```
 

@@ -78,7 +78,7 @@ async function convertHtmlToPdf(htmlBase64, filename, conversionConfig = {}) {
         rightMargin: conversionConfig.rightMargin || "40px", // Right margin
         printBackground: conversionConfig.printBackground !== false, // Print background (true/false)
         displayHeaderFooter: conversionConfig.displayHeaderFooter !== false, // Display header/footer (true/false)
-        async: true                                // Asynchronous processing as requested
+        isAsync: true                                // Asynchronous processing as requested
     };
 
     console.log('Sending HTML to PDF4me API for PDF conversion...');

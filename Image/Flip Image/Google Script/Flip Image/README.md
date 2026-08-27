@@ -66,7 +66,7 @@ This Google Apps Script flips images using the PDF4Me API. It allows you to flip
   "imageName": "flipped.jpg",
   "imageContent": "base64_encoded_image_content",
   "flipDirection": "horizontal",
-  "async": true
+  "isAsync": true
 }
 ```
 

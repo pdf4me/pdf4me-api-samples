@@ -88,7 +88,7 @@ def find_and_replace_text_in_pdf(base64_content, filename, old_text, new_text, p
                                                # Examples: "0, 1, 2-" or "1, 2, 3-7"
                                                # If not specified, processes all pages
                                                # Must be in string format
-        "async": True                          # Asynchronous processing as requested
+        "isAsync": True                          # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for find and replace operation...")

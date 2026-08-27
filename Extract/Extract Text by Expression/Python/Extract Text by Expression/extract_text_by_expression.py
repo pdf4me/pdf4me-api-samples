@@ -50,7 +50,7 @@ def extract_text_by_expression():
         "docName": "output.pdf",                                   # Name of the input PDF file
         "expression": expression,                                  # Regular expression pattern to search for
         "pageSequence": page_sequence,                             # Page range to process
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

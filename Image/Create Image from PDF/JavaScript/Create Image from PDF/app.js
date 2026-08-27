@@ -92,7 +92,7 @@ async function createImagesFromPdf(inputPdfPath) {
                 }
             },
             pageNrs: "1-2",
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with image creation parameters");

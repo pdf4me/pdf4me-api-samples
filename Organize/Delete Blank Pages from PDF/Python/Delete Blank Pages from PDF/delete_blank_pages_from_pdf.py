@@ -33,7 +33,7 @@ def delete_blank_pages_from_pdf():
             "docContent": pdf_base64,                              # Base64 encoded PDF content
             "docName": "output.pdf",                               # Output PDF file name
             "deletePageOption": "NoTextNoImages",                  # Options: NoTextNoImages, NoText, NoImages
-            "async": True                                          # Enable asynchronous processing
+            "isAsync": True                                          # Enable asynchronous processing
         }
         
         # Set up headers for the API request

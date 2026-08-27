@@ -61,7 +61,7 @@ async function rotateImageByExifData(inputImagePath) {
             docContent: imageBase64,
             docName: path.basename(inputImagePath),
             imageType: imageType,
-            async: true
+            isAsync: true
         };
         console.log("✅ API request prepared");
         console.log("🔄 Rotating image based on EXIF orientation data");

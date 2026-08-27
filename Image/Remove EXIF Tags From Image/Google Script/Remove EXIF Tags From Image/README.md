@@ -60,7 +60,7 @@ This Google Apps Script removes EXIF (Exchangeable Image File Format) metadata f
 {
   "imageName": "cleaned.jpg",
   "imageContent": "base64_encoded_image_content",
-  "async": true
+  "isAsync": true
 }
 ```
 

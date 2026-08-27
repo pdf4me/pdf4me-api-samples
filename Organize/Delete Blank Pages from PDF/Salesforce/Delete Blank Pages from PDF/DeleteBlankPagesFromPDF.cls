@@ -25,7 +25,7 @@ public with sharing class DeleteBlankPagesFromPDF {
                 'docContent' => pdfBase64,
                 'docName' => outputFileName,
                 'deletePageOption' => deletePageOption,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

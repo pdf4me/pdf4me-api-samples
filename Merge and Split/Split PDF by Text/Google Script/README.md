@@ -71,7 +71,7 @@ var payload = {
   "text": "page 1, line 10.",                         // Text to search for splitting
   "splitTextPage": "after",                           // Split position: "before" or "after"
   "fileNaming": "NameAsPerOrder",                     // File naming convention
-  "async": true                                       // Enable asynchronous processing
+  "isAsync": true                                       // Enable asynchronous processing
 };
 ```
 

@@ -162,7 +162,7 @@ POST /api/v2/GenerateDocumentSingle
   "documentDataType": "text",
   "outputType": "html",
   "documentDataText": "json-data-content",
-  "async": true
+  "isAsync": true
 }
 ```
 

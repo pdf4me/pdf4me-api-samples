@@ -68,7 +68,7 @@ async function convertToPdf(docBase64, filename, conversionConfig = {}) {
     const payload = {
         docContent: docBase64,                     // Base64 encoded document content (Required)
         docName: filename,                         // Output document name (Required)
-        async: true                                // Asynchronous processing as requested
+        isAsync: true                                // Asynchronous processing as requested
     };
 
     console.log('Sending document to PDF4me API for PDF conversion...');

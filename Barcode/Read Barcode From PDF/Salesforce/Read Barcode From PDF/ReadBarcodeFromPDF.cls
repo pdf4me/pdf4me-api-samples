@@ -43,7 +43,7 @@ public with sharing class ReadBarcodeFromPDF {
                 'docName' => outputFileName + '.pdf',
                 'barcodeType' => barcodeTypes,
                 'pages' => pages,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

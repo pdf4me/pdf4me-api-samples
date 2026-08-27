@@ -27,7 +27,7 @@ public with sharing class RotatePage {
                 'docName' => outputFileName,
                 'rotationType' => rotationType,
                 'page' => page,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

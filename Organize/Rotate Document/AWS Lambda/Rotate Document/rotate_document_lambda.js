@@ -69,7 +69,7 @@ async function rotateDocument(base64Content, filename, rotationType = 'UpsideDow
         docName: "output.pdf",
         docContent: base64Content,
         rotationType: rotationType, // NoRotation, Clockwise, CounterClockwise, UpsideDown
-        async: true
+        isAsync: true
     };
 
     console.log('Sending PDF to PDF4me API for document rotation...');

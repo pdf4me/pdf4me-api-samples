@@ -38,7 +38,7 @@ function cropImage() {
       y: y,
       width: width,
       height: height,
-      async: true
+      isAsync: true
     };
     
     // Make API request

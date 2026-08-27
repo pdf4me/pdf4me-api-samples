@@ -56,7 +56,7 @@ exports.handler = async (event, context) => {
                 maintainAspectRatio: process.env.MAINTAIN_ASPECT_RATIO || false,
                 outputFormat: process.env.OUTPUT_FORMAT || "PNG", // JPEG, PNG, GIF, BMP, TIFF
                 quality: process.env.QUALITY || 85, // 0-100 (for JPEG)
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

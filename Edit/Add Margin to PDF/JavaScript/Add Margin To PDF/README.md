@@ -55,7 +55,7 @@ const payload = {
     marginRight: 20,   // Right margin: 0-100mm
     marginTop: 25,     // Top margin: 0-100mm
     marginBottom: 25,  // Bottom margin: 0-100mm
-    async: true        // Enable async processing
+    isAsync: true        // Enable async processing
 };
 ```
 
@@ -85,7 +85,7 @@ const payload = {
     marginRight: 15,   // Custom right margin
     marginTop: 40,     // Custom top margin
     marginBottom: 20,  // Custom bottom margin
-    async: true
+    isAsync: true
 };
 ```
 
@@ -153,7 +153,7 @@ Add Margin To PDF/
     "marginRight": 20,
     "marginTop": 25,
     "marginBottom": 25,
-    "async": true
+    "isAsync": true
 }
 ```
 

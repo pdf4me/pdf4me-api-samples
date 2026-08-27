@@ -40,7 +40,7 @@ def read_barcode_from_pdf():
         "docName": "output.pdf",                         # Output PDF file name
         "barcodeType": ["all"],                          # Barcode types: ["all"], ["qrCode"], ["dataMatrix"], ["code128"], etc.
         "pages": "all",                                  # Page options: "all", "1", "1,3,5", "2-5", "1,3,7-10", "2-"
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

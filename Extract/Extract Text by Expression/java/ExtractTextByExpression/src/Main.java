@@ -40,7 +40,7 @@ public class Main {
             payload.put("docName", "output.pdf");
             payload.put("expression", "%");
             payload.put("pageSequence", "1-3");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             executeExtractByExpression(payload, outputDir);
         } catch (Exception ex) {
             System.err.println("Error in extractTextByExpression: " + ex.getMessage());

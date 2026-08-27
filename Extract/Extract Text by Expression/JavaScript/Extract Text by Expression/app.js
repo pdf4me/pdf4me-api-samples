@@ -51,7 +51,7 @@ async function extractTextByExpression() {
         docName: "output.pdf", // Name of the input PDF file
         expression: expression, // Regular expression pattern to search for
         pageSequence: pageSequence, // Page range to process
-        async: true // Enable asynchronous processing
+        isAsync: true // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

@@ -98,7 +98,7 @@ public class VisioToPdfConverter
             TiffCompression = "string",         // TIFF compression
             SaveToolBar = true,                 // Save toolbar
             AutoFit = true,                     // Auto-fit setting
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
         // Serialize payload to JSON and create HTTP content
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");

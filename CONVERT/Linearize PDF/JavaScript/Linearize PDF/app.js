@@ -67,7 +67,7 @@ async function processPdfLinearization() {
         docContent: pdfBase64,        // Base64 encoded PDF document content
         docName: "output.pdf",        // Name for the output file
         optimizeProfile: "web",       // Optimization profile for web viewing
-        async: true                   // Enable asynchronous processing
+        isAsync: true                   // Enable asynchronous processing
     };
 
     // Available optimization profiles:

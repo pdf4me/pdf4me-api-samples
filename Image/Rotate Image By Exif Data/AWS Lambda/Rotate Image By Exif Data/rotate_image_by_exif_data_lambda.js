@@ -56,7 +56,7 @@ exports.handler = async (event, context) => {
                 quality: process.env.QUALITY || 85, // 0-100 (for JPEG)
                 maintainTransparency: process.env.MAINTAIN_TRANSPARENCY || true,
                 removeExifAfterRotation: process.env.REMOVE_EXIF_AFTER_ROTATION || false, // Remove EXIF after rotation
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

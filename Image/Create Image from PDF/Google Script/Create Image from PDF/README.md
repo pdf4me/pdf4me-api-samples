@@ -74,7 +74,7 @@ This Google Apps Script converts PDF pages to images using the PDF4Me API. It ca
   "quality": 90,
   "maxWidth": 1920,
   "maxHeight": 1080,
-  "async": true
+  "isAsync": true
 }
 ```
 

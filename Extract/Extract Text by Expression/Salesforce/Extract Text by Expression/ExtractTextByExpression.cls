@@ -47,7 +47,7 @@ public with sharing class ExtractTextByExpression {
                 'docName' => docName,
                 'expression' => expression,
                 'pageSequence' => pageSequence,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

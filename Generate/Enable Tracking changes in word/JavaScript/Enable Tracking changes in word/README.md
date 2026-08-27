@@ -83,7 +83,7 @@ const RETRY_DELAY = 10000;     // Delay between attempts (10 seconds)
 {
   "docContent": "base64-encoded-word-document",
   "docName": "output.docx",
-  "async": true
+  "isAsync": true
 }
 ```
 

@@ -36,7 +36,7 @@ public with sharing class SplitPDF {
                 'docName' => 'sample.pdf',
                 'splitAction' => splitAction,
                 'fileNaming' => fileNaming,
-                'async' => false
+                'isAsync' => true
             };
             if (splitAction == 'SplitAfterPage' || splitAction == 'RecurringSplitAfterPage') {
                 payload.put('splitActionNumber', splitActionNumber);

@@ -32,7 +32,7 @@ public class Main {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("docContent", pdfBase64);
             payload.put("docName", "output.pdf");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             executeClassify(payload, outputJsonPath);
         } catch (Exception ex) {
             System.err.println("Error in classifyDocument: " + ex.getMessage());

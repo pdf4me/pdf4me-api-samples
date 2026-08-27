@@ -85,7 +85,7 @@ const API_ENDPOINT = `${BASE_URL}api/v2/ConvertWordToPdfForm`;
 const payload = {
     docContent: wordBase64,    // Base64 encoded Word document content
     docName: "output.pdf",     // Name for the output PDF file
-    async: true                // Enable asynchronous processing
+    isAsync: true                // Enable asynchronous processing
 };
 ```
 

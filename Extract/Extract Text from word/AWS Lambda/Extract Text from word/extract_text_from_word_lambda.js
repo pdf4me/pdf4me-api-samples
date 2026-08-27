@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
             inputData = {
                 docContent: s3Object.Body.toString('base64'),
                 docName: key,
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

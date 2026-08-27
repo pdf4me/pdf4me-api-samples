@@ -88,7 +88,7 @@ const BASE_URL = "https://api.pdf4me.com/";
   "docContent": "base64-encoded-image-content",
   "TextToReplace": "CONFIDENTIAL",
   "ReplacementImageContent": "base64-encoded-replacement-image",
-  "async": true
+  "isAsync": true
 }
 ```
 

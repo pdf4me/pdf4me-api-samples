@@ -91,7 +91,7 @@ async function processPdfFormFilling(formData) {
         metaData: "",                                    // Additional metadata (Optional)
         metaDataJson: "",                                // Additional JSON metadata (Optional)
         InputFormData: inputFormData,                    // Array of form field objects (Required)
-        async: true                                      // Asynchronous processing
+        isAsync: true                                      // Asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

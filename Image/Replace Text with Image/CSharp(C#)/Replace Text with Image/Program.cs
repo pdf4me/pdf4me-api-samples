@@ -106,7 +106,7 @@ public class TextReplacer
                 replaceText = _replaceText,                   // Text to be replaced
                 replaceImageContent = imageBase64,            // Base64 encoded replacement image content
                 replaceImageName = Path.GetFileName(_replacementImagePath),  // Replacement image filename
-                async = true // For big file and too many calls async is recommended to reduce the server load.
+                isAsync = true // For big file and too many calls async is recommended to reduce the server load.
             };
 
             // Serialize payload to JSON and create HTTP content

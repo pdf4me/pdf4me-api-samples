@@ -70,7 +70,7 @@ async function extractResources(pdfBase64, filename, extractionConfig = {}) {
         docName: filename,                         // Output document name (Required)
         extractText: true,                                       // Extract text content from PDF
         extractImages: true,                                      // Extract images from PDF
-        async: true                                              // Enable asynchronous processing
+        isAsync: true                                              // Enable asynchronous processing
     };
 
     console.log('Sending PDF to PDF4me API for resource extraction...');

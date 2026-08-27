@@ -50,7 +50,7 @@ public class Main {
                 "\"docContent\":\"" + pdfBase64 + "\"," +
                 "\"docName\":\"output.pdf\"," +
                 "\"optimizeProfile\":\"Web\"," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             return executeOptimization(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in optimizePdf: " + ex.getMessage());

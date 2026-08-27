@@ -91,7 +91,7 @@ def fill_pdf_form(base64_content, filename, form_data):
         "metaData": "",                             # Additional metadata (Optional)
         "metaDataJson": "",                         # Additional JSON metadata (Optional)
         "InputFormData": input_form_data,           # Array of form field objects (Required)
-        "async": True                               # Asynchronous processing as requested
+        "isAsync": True                               # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for filling form fields...")

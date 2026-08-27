@@ -146,7 +146,7 @@ public class PdfAttachmentAdder
                     }
                 },
                 // For big files and too many calls async is recommended to reduce the server load
-                async = true
+                isAsync = true
             };
 
             // Execute the attachment addition operation

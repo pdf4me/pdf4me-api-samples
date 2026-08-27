@@ -78,7 +78,7 @@ def protect_pdf_document(base64_content, filename):
         "docContent": base64_content,                              # Base64 encoded PDF content (Required)
         "password": "1234",                                        # Password for the protected PDF (Required)
         "pdfPermission": "All",                                    # PDF permissions (Required)
-        "async": True                                              # Asynchronous processing as requested
+        "isAsync": True                                              # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for document protection...")

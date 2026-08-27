@@ -86,7 +86,7 @@ async function addBarcodeToPdf(base64Content, filename, barcodeConfig = {}) {
         hideText: barcodeConfig.hideText || false, // Hide barcode text (true/false)
         showOnlyInPrint: barcodeConfig.showOnlyInPrint || false, // Show only in print (true/false)
         isTextAbove: barcodeConfig.isTextAbove || false, // Text position above barcode (true/false)
-        async: true                              // Asynchronous processing as requested
+        isAsync: true                              // Asynchronous processing as requested
     };
 
     console.log('Sending PDF to PDF4me API for barcode addition...');

@@ -22,7 +22,7 @@ def create_barcode():
         "text": "PDF4me Create Barcode Sample",            # Text to encode in barcode
         "barcodeType": "qrCode",                         # Barcode types: qrCode, code128, dataMatrix, aztec, hanXin, pdf417, etc.
         "hideText": False,                               # Hide barcode text: true=hide, false=show text alongside barcode
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

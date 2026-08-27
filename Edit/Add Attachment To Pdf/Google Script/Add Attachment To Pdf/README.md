@@ -132,7 +132,7 @@ var payload = {
       docContent: attachmentBase64          // Attachment content (auto-generated)
     }
   ],
-  async: true                               // Enable async processing
+  isAsync: true                               // Enable async processing
 };
 ```
 

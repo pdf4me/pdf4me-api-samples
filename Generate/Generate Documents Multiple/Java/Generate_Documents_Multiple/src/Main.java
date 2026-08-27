@@ -62,7 +62,7 @@ public class Main {
             payload.put("documentDataType", "Json");
             payload.put("outputType", "Docx");
             payload.put("documentDataText", jsonData);
-            payload.put("async", false);
+            payload.put("isAsync", true);
             
             return executeMultipleDocumentGeneration(payload, outputPath);
         } catch (Exception ex) {

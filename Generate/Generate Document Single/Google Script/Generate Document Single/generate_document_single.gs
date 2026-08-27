@@ -65,7 +65,7 @@ function generateDocumentSingle() {
         documentDataType: "text",              // Document data type (JSON/XML)
         outputType: "html",                    // Output document type (PDF/Word/Excel/HTML)
         documentDataText: jsonDataContent,           // JSON/XML data as text (required if documentDataFile not mapped)
-        async: true                            // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                            // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Alternative payload examples for different scenarios:
@@ -79,7 +79,7 @@ function generateDocumentSingle() {
     //     outputType: "PDF",                     // Output as PDF
     //     documentDataText: jsonDataContent,           // JSON data as text
     //     metaDataJson: "{}",                    // Additional metadata for fields in JSON format
-    //     async: true
+    //     isAsync: true
     // };
     
     // Example 2: PDF template with XML data outputting to Word
@@ -91,7 +91,7 @@ function generateDocumentSingle() {
     //     outputType: "Word",                    // Output as Word document
     //     documentDataText: xmlData,            // XML data as text
     //     metaDataJson: "{}",                    // Additional metadata
-    //     async: true
+    //     isAsync: true
     // };
     
     // Example 3: HTML template with JSON data outputting to Excel
@@ -103,7 +103,7 @@ function generateDocumentSingle() {
     //     outputType: "Excel",                   // Output as Excel file
     //     documentDataText: jsonDataContent,           // JSON data as text
     //     metaDataJson: "{}",                    // Additional metadata
-    //     async: true
+    //     isAsync: true
     // };
 
     // Set the headers for the API request

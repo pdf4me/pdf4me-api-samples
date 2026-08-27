@@ -42,7 +42,7 @@ public with sharing class ConvertJsonToExcel {
                 'ignoreNullValues' => ignoreNullValues,
                 'firstRow' => firstRow,
                 'firstColumn' => firstColumn,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

@@ -89,7 +89,7 @@ async function processSwissQrBillCreation() {
         referenceType: "NON",                               // Reference type (NON = No reference) (Required)
         languageType: "English",                            // Language for the QR bill (Required)
         seperatorLine: "LineWithScissor",                   // Separator line style (Required)
-        async: true                                         // Enable asynchronous processing
+        isAsync: true                                         // Enable asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

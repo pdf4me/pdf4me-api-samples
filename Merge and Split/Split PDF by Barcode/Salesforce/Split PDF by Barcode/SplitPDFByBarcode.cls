@@ -42,7 +42,7 @@ public with sharing class SplitPDFByBarcode {
                 'splitBarcodePage' => splitBarcodePage,
                 'combinePagesWithSameConsecutiveBarcodes' => combinePagesWithSameConsecutiveBarcodes,
                 'pdfRenderDpi' => pdfRenderDpi,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

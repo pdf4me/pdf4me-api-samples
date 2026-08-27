@@ -71,7 +71,7 @@ async function repairPdfDocument(base64Content, filename) {
     const payload = {
         docContent: base64Content,               // Base64 encoded PDF content (Required)
         docName: filename,                       // Output document name (Required)
-        async: true                              // Asynchronous processing as requested
+        isAsync: true                              // Asynchronous processing as requested
     };
     
     console.log('Sending PDF to PDF4me API for document repair...');

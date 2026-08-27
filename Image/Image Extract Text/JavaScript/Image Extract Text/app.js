@@ -82,7 +82,7 @@ async function extractTextFromImage(inputImagePath) {
             docContent: imageBase64,
             docName: path.basename(inputImagePath),
             language: "eng",                                       // OCR language (English)
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with OCR parameters");

@@ -38,7 +38,7 @@ def parse_document():
     payload = {
         "docContent": pdf_base64,
         "docName": "output.pdf",
-        "async": True
+        "isAsync": True
     }
 
     # Set headers

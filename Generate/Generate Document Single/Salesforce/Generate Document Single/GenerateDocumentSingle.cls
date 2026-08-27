@@ -21,7 +21,7 @@ public with sharing class GenerateDocumentSingle {
                 'documentDataType' => documentDataType,
                 'outputType' => outputType,
                 'documentDataText' => documentDataText,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

@@ -17,7 +17,7 @@ public with sharing class GenerateGetTrackingChangesInWord {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => wordBase64,
                 'docName' => docName,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

@@ -96,7 +96,7 @@ async function splitPdfByBarcode(inputPdfPath, outputFolder, barcodeString, barc
             splitBarcodePage: splitBarcodePage,
             combinePagesWithSameConsecutiveBarcodes: combinePagesWithSameConsecutiveBarcodes,
             pdfRenderDpi: pdfRenderDpi,
-            async: true
+            isAsync: true
         };
         
         console.log("🚀 Sending barcode split request to PDF4Me API...");

@@ -41,7 +41,7 @@ def image_extract_text():
     payload = {
         "docName": os.path.basename(image_file_path),              # Name of the input image file
         "docContent": image_base64,                                # Base64 encoded image content
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

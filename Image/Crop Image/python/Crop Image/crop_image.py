@@ -47,7 +47,7 @@ def crop_image():
         "UpperLeftY": 10,                                          # Upper left Y coordinate for rectangle crop (integer)
         "Width": 50,                                               # Width for rectangle crop (integer)
         "Height": 50,                                              # Height for rectangle crop (integer)
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

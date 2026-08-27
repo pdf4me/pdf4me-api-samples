@@ -43,7 +43,7 @@ def resize_image():
         "Width": 800,                                              # Width in pixels (for Specific resize type)
         "Height": 600,                                             # Height in pixels (for Specific resize type)
         "MaintainAspectRatio": True,                               # Maintain aspect ratio (boolean)
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

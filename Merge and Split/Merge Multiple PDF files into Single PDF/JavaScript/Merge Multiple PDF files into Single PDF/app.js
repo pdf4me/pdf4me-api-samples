@@ -74,7 +74,7 @@ async function mergeMultiplePdfs(pdfPaths) {
         const payload = {
             docContent: pdfBase64List,
             docName: path.basename(OUTPUT_PDF_PATH),
-            async: true
+            isAsync: true
         };
         
         console.log("🚀 Sending merge request to PDF4Me API...");

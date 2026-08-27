@@ -37,7 +37,7 @@ public class Main {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("docName", "output.pdf");
             payload.put("docContent", pdfBase64);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             String jsonPayload = convertToJson(payload);
             HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/ExtractTableFromPdf"))

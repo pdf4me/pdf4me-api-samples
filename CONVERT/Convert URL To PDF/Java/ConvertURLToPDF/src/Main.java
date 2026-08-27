@@ -42,6 +42,7 @@ public class Main {
         payload.put("bottomMargin", "20px");
         payload.put("printBackground", true);
         payload.put("displayHeaderFooter", false);
+        payload.put("isAsync", true);
         
         ApiResponse resp = post(API_URL, API_KEY, payload);
         if (resp.status == 200) {

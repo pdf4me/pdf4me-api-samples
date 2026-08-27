@@ -80,7 +80,7 @@ POST https://api.pdf4me.com/api/v2/AddTextWatermarkToImage
     "fontSize": 24,
     "fontColor": "#FF0000",
     "fontFamily": "Arial",
-    "async": true
+    "isAsync": true
 }
 ```
 

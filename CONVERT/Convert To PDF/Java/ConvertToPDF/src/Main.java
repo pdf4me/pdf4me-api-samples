@@ -41,7 +41,8 @@ public class Main {
         String docBase64 = Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get(docPath)));
         Map<String, Object> payload = Map.of(
             "docContent", docBase64,
-            "docName", "output"
+            "docName", "output",
+            "isAsync", true
         );
         
         ApiResponse resp = post(API_URL, API_KEY, payload);

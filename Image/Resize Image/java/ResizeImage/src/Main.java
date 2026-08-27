@@ -28,7 +28,7 @@ public class Main {
             byte[] imageBytes = Files.readAllBytes(inputPath);
             String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
             String docName = inputPath.getFileName().toString();
-            String payload = String.format("{\"docName\":\"%s\",\"docContent\":\"%s\",\"ImageResizeType\":\"Percentage\",\"ResizePercentage\":\"50.0\",\"Width\":800,\"Height\":600,\"MaintainAspectRatio\":true,\"async\":true}", docName, imageBase64);
+            String payload = String.format("{\"docName\":\"%s\",\"docContent\":\"%s\",\"ImageResizeType\":\"Percentage\",\"ResizePercentage\":\"50.0\",\"Width\":800,\"Height\":600,\"MaintainAspectRatio\":true,\"isAsync\":true}", docName, imageBase64);
             String endpoint = BASE_URL + "api/v2/ResizeImage?schemaVal=Percentage";
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(endpoint))

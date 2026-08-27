@@ -68,7 +68,7 @@ async function convertWordToPdfForm(wordBase64, filename, conversionConfig = {})
     const payload = {
         docContent: wordBase64,                    // Base64 encoded Word content (Required)
         docName: filename,                        // Output document name (Required)
-        async: true                               // Asynchronous processing as requested
+        isAsync: true                               // Asynchronous processing as requested
     };
 
     console.log('Sending Word file to PDF4me API for PDF form conversion...');

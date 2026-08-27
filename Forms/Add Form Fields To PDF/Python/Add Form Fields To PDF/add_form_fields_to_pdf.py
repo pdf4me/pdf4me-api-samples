@@ -84,7 +84,7 @@ def add_form_fields_to_pdf(base64_content, filename, form_field_config):
         "Size": 4,                                  # Size of the form field (Required)
         "pages": "1",                               # Page indices as comma-separated values or ranges (Required)
         "formFieldType": "TextBox",                 # Form field type - TextBox or CheckBox (Required)
-        "async": True                               # Asynchronous processing as requested
+        "isAsync": True                               # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for adding form fields...")

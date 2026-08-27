@@ -40,7 +40,7 @@ def compress_image():
         "docName": os.path.basename(image_file_path),              # Name of the input image file
         "imageType": "JPG",                                        # Output format options: JPG, PNG
         "compressionLevel": "Medium",                              # Compression level options: Max, Medium, Low
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

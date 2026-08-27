@@ -68,7 +68,7 @@ async function convertMarkdownToPdf(markdownBase64, filename, conversionConfig =
     const payload = {
         docContent: markdownBase64,                // Base64 encoded Markdown content (Required)
         docName: filename,                         // Output document name (Required)
-        async: true                                // Asynchronous processing as requested
+        isAsync: true                                // Asynchronous processing as requested
     };
 
     console.log('Sending Markdown to PDF4me API for PDF conversion...');

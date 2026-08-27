@@ -43,7 +43,7 @@ public class Main {
             String imageType = getImageTypeFromExtension(inputImagePath);
             System.out.println("Detected image type: " + imageType);
             
-            String payload = String.format("{\"docName\":\"%s\",\"docContent\":\"%s\",\"imageType\":\"%s\",\"async\":true}", 
+            String payload = String.format("{\"docName\":\"%s\",\"docContent\":\"%s\",\"imageType\":\"%s\",\"isAsync\":true}", 
                 docName, imageBase64, imageType);
             
             String endpoint = BASE_URL + "api/v2/ReadBarcodesfromImage";

@@ -189,7 +189,7 @@ This application uses the PDF4Me ExtractResources API endpoint:
   "docName": "sample.pdf",
   "extractText": true,
   "extractImage": true,
-  "async": true
+  "isAsync": true
 }
 ```
 

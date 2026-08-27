@@ -61,7 +61,7 @@ function addTextWatermarkToImage() {
         fontSize: fontSize,               // Font size
         fontColor: fontColor,             // Font color
         fontFamily: fontFamily,           // Font family
-        async: true                       // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                       // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Set the headers for the API request

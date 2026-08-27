@@ -43,7 +43,7 @@ function replaceTextWithImage() {
       textToReplace: textToReplace,
       scale: scale,
       position: position,
-      async: true
+      isAsync: true
     };
     
     // Make API request

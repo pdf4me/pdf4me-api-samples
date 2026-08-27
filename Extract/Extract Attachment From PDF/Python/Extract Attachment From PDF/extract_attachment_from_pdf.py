@@ -46,7 +46,7 @@ def extract_attachment_from_pdf():
     payload = {
         "docName": "output.pdf",                                   # Source PDF file name with .pdf extension
         "docContent": pdf_base64,                                  # Base64 encoded PDF document content
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

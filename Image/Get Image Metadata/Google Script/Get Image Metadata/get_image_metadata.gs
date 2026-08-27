@@ -41,7 +41,8 @@ function getImageMetadata() {
 
     // Prepare the payload for the API request
     var payload = {
-        imageContent: imageBase64        // Base64 encoded image content
+        imageContent: imageBase64,       // Base64 encoded image content
+        isAsync: true
     };
 
     // Set the headers for the API request

@@ -45,7 +45,7 @@ def extract_text_from_word():
         "RemoveComments": True,                                    # Remove comments option
         "RemoveHeaderFooter": True,                                # Remove header/footer option
         "AcceptChanges": True,                                     # Accept tracked changes option
-        "async": False                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

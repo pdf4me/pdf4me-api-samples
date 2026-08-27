@@ -65,7 +65,7 @@ function generateDocumentsMultiple() {
         documentDataType: "Json",                    // Type of data being provided
         outputType: "Docx",                          // Desired output format
         documentDataText: jsonDataContent,           // JSON data to merge into template
-        async: true                                  // For big files and too many calls async is recommended to reduce the server load
+        isAsync: true                                  // For big files and too many calls async is recommended to reduce the server load
     };
 
     // Alternative payload examples for different scenarios:
@@ -78,7 +78,7 @@ function generateDocumentsMultiple() {
     //     documentDataType: "Json",                   // JSON data type
     //     outputType: "Pdf",                          // Output as PDF
     //     documentDataText: jsonDataContent,          // JSON data as text
-    //     async: true
+    //     isAsync: true
     // };
     
     // Example 2: Word template with JSON data outputting to Excel
@@ -89,7 +89,7 @@ function generateDocumentsMultiple() {
     //     documentDataType: "Json",                   // JSON data type
     //     outputType: "Excel",                        // Output as Excel file
     //     documentDataText: jsonDataContent,          // JSON data as text
-    //     async: true
+    //     isAsync: true
     // };
     
     // Example 3: PDF template with XML data outputting to Word
@@ -100,7 +100,7 @@ function generateDocumentsMultiple() {
     //     documentDataType: "Xml",                    // XML data type
     //     outputType: "Docx",                         // Output as Word document
     //     documentDataText: xmlData,                  // XML data as text
-    //     async: true
+    //     isAsync: true
     // };
 
     // Set the headers for the API request

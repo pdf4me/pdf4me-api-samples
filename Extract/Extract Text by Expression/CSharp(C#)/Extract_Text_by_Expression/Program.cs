@@ -110,7 +110,7 @@ public class PdfTextExpressionExtractor
                 docContent = pdfBase64,
                 docName = "output.pdf",
                 expression = ".*", // Regular expression to extract all text
-                async = true                                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteTextExpressionExtractionAsync(payload);

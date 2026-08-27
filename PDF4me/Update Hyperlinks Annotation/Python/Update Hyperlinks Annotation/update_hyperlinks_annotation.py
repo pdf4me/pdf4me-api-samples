@@ -87,7 +87,7 @@ def update_hyperlinks_annotation(base64_content, filename):
                 "URLNewValue": "https://pdf4me.com"               # New URL destination (Required)
             }
         ],
-        "async": True                                              # Asynchronous processing as requested
+        "isAsync": True                                              # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for updating hyperlinks annotation...")

@@ -80,7 +80,7 @@ async function processTextReplacement() {
         IsFirstPageSkip: false,                    // Whether to skip the first page
         PageNumbers: "1",                          // Page numbers to process (comma-separated)
         SearchText: "SIGN_HERE",                   // Text to search and replace
-        async: true                                // Enable asynchronous processing
+        isAsync: true                                // Enable asynchronous processing
     };
 
     // Additional payload options you can customize:

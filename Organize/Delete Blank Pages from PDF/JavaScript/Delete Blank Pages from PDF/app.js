@@ -47,7 +47,7 @@ async function deleteBlankPagesFromPdf() {
             docContent: pdfBase64,                                  // Base64 encoded PDF content
             docName: "output.pdf",                                  // Output PDF file name
             deletePageOption: DELETE_PAGE_OPTION,                   // Blank page detection option
-            async: ASYNC_PROCESSING                                 // Enable async processing
+            isAsync: true                                 // Enable async processing
         };
 
         // Execute the blank page deletion

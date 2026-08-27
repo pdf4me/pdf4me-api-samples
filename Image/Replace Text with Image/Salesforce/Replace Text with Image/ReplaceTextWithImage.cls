@@ -27,7 +27,7 @@ public with sharing class ReplaceTextWithImage {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => pdfBase64,
                 'docName' => pdfFileName,
-                'async' => false
+                'isAsync' => true
             };
             if (replaceText != null) payload.put('replaceText', replaceText);
             if (pageSequence != null) payload.put('pageSequence', pageSequence);

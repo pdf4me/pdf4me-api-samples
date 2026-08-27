@@ -109,7 +109,7 @@ function mergeOverlayPdfFiles() {
       baseDocName: basePdfFileName,            // Name of the base PDF file
       layerDocContent: layerPdfBase64,         // Base64 encoded layer PDF content (second layer)
       layerDocName: layerPdfFileName,          // Name of the layer PDF file
-      async: true                              // Enable asynchronous processing
+      isAsync: true                              // Enable asynchronous processing
     };
 
     // Set the headers for the API request

@@ -29,7 +29,7 @@ function extractTextFromWord() {
   var removeComments = true;      // Remove comments option
   var removeHeaderFooter = true;  // Remove header/footer option
   var acceptChanges = true;       // Accept tracked changes option
-  var async = false;              // Synchronous processing
+  var isAsync = true;              // Synchronous processing
 
   try {
     // === Folder structure file input START ===

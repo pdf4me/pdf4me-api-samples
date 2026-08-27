@@ -81,7 +81,7 @@ async function removeExifTagsFromImage(inputImagePath) {
         const payload = {
             docContent: imageBase64,
             docName: path.basename(inputImagePath),
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared");

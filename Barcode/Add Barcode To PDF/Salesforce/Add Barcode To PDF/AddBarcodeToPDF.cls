@@ -61,7 +61,7 @@ public with sharing class AddBarcodeToPDF {
                 'hideText' => hideText,
                 'showOnlyInPrint' => false,
                 'isTextAbove' => false,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

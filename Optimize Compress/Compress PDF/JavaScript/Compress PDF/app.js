@@ -47,7 +47,7 @@ async function compressPdf() {
             docContent: pdfBase64,                                  // Base64 encoded PDF content
             docName: "output.pdf",                                  // Output PDF file name
             optimizeProfile: OPTIMIZE_PROFILE,                      // Optimization profile
-            async: ASYNC_PROCESSING                                 // Enable async processing
+            isAsync: true                                           // Enable async processing
         };
 
         // Execute the PDF compression

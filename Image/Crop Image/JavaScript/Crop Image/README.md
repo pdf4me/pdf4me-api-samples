@@ -92,7 +92,7 @@ const BASE_URL = "https://api.pdf4me.com/";
   "Y": 10,
   "Width": 100,
   "Height": 100,
-  "async": true
+  "isAsync": true
 }
 ```
 

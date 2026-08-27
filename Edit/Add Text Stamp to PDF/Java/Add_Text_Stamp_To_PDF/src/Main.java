@@ -54,7 +54,7 @@ public class Main {
             payload.put("opacity", 50);
             payload.put("isBackground", false);
             payload.put("rotation", 45);
-            payload.put("async", true);
+            payload.put("isAsync", true);
 
             return executeTextStampAddition(payload, outputPath);
         } catch (Exception ex) {

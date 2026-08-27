@@ -59,7 +59,7 @@ payload = {
     "marginBottom": 20,  # Bottom margin
     "marginLeft": 20,    # Left margin
     "marginRight": 20,   # Right margin
-    "async": True        # Enable async processing
+    "isAsync": True        # Enable async processing
 }
 ```
 

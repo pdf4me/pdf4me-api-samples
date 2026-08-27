@@ -36,7 +36,7 @@ public class Main {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("docName", new File(inputPdfPath).getName());
             payload.put("docContent", pdfBase64);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             executeExtractAttachment(payload, outputDir);
         } catch (Exception ex) {
             System.err.println("Error in extractAttachmentFromPdf: " + ex.getMessage());

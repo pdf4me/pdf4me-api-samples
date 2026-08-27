@@ -105,7 +105,7 @@ public class RepairPdfDocument
             {
                 docContent = pdfBase64,                             // Base64 encoded PDF content
                 docName = "sample.pdf",                             // Output document name
-                async = true                                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecutePdfRepairAsync(payload);

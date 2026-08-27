@@ -76,7 +76,7 @@ def disable_tracking_changes_in_word(base64_content, filename):
     payload = {
         "docName": "output.docx",                                  # Output document name (Required)
         "docContent": base64_content,                              # Base64 encoded Word document content (Required)
-        "async": True                                              # Asynchronous processing as requested
+        "isAsync": True                                              # Asynchronous processing as requested
     }
     
     print("Sending Word document to PDF4me API for disabling tracking changes...")

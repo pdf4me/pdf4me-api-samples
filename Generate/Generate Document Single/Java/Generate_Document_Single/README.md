@@ -84,7 +84,7 @@ Generated document saved to: invoice_sample.generated.html
   "documentDataType": "text",
   "outputType": "html",
   "documentDataText": "json-data-content",
-  "async": false
+  "isAsync": true
 }
 ```
 

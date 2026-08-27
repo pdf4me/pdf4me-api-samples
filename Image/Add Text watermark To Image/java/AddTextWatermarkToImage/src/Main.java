@@ -42,7 +42,7 @@ public class Main {
                 "\"RotationAngle\":0.0," +
                 "\"PositionX\":272.0," +
                 "\"PositionY\":0.0," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/AddTextWatermarkToImage"))
                 .header("Content-Type", "application/json")

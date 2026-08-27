@@ -23,7 +23,7 @@ public with sharing class DisableTrackingChangesInWord {
             Map<String, Object> payload = new Map<String, Object>{
                 'docName' => outputFileName,
                 'docContent' => docxBase64,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

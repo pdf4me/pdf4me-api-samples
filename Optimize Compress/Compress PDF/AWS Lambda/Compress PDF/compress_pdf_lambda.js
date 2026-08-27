@@ -69,7 +69,7 @@ async function compressPdf(base64Content, filename, optimizeProfile = 'Web') {
         docContent: base64Content,               // Base64 encoded PDF content (Required)
         docName: filename,                       // Output document name (Required)
         optimizeProfile: optimizeProfile,        // Optimization profile - Web, Print, Screen (Required)
-        async: true                              // Asynchronous processing as requested
+        isAsync: true                            // Asynchronous processing as requested
     };
 
     console.log('Sending PDF to PDF4me API for compression and optimization...');

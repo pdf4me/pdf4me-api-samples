@@ -35,7 +35,7 @@ public class Main {
             String imgBase64 = Base64.getEncoder().encodeToString(imgBytes);
             byte[] watermarkBytes = Files.readAllBytes(watermarkPath);
             String watermarkBase64 = Base64.getEncoder().encodeToString(watermarkBytes);
-            String payload = String.format("{\"docName\":\"%s\",\"docContent\":\"%s\",\"WatermarkFileName\":\"%s\",\"WatermarkFileContent\":\"%s\",\"Position\":\"topright\",\"Opacity\":1,\"HorizontalOffset\":0,\"VerticalOffset\":0,\"PositionX\":0.0,\"PositionY\":0.0,\"Rotation\":0.0,\"async\":true}", imgPath.getFileName(), imgBase64, watermarkPath.getFileName(), watermarkBase64);
+            String payload = String.format("{\"docName\":\"%s\",\"docContent\":\"%s\",\"WatermarkFileName\":\"%s\",\"WatermarkFileContent\":\"%s\",\"Position\":\"topright\",\"Opacity\":1,\"HorizontalOffset\":0,\"VerticalOffset\":0,\"PositionX\":0.0,\"PositionY\":0.0,\"Rotation\":0.0,\"isAsync\":true}", imgPath.getFileName(), imgBase64, watermarkPath.getFileName(), watermarkBase64);
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/AddImageWatermarkToImage"))
                 .header("Content-Type", "application/json")

@@ -106,7 +106,7 @@ The script performs the following actions:
     {
       "docContent": ["...base64_string_1...", "...base64_string_2..."],
       "docName": "output.pdf",
-      "async": true
+      "isAsync": true
     }
     ```
 

@@ -70,7 +70,7 @@ POST https://api.pdf4me.com/api/v2/ConvertImageFormat
     "imageName": "output_converted.png",
     "imageContent": "base64_encoded_image",
     "quality": 90,
-    "async": true
+    "isAsync": true
 }
 ```
 

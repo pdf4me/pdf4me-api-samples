@@ -40,7 +40,7 @@ def convert_visio_to_pdf():
         "SaveForegroundPage": True,          # Save foreground elements (True/False)
         "SaveToolBar": True,                 # Include toolbar (True/False)
         "AutoFit": True,                     # Auto-fit content to page (True/False)
-        "async": True                        # Enable asynchronous processing
+        "isAsync": True                        # Enable asynchronous processing
     }
 
     # Alternative payload examples for other output formats:

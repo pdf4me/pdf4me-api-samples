@@ -80,7 +80,7 @@ public class PdfACreator
             compliance = "PdfA1b",            // PDF-A compliance level
             allowUpgrade = true,              // Allow upgrading to higher compliance
             allowDowngrade = true,            // Allow downgrading to lower compliance
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
         // Serialize payload to JSON and create HTTP content
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");

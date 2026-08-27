@@ -83,7 +83,7 @@ You can modify these values in the `Main.java` file.
   "marginBottom": 20,
   "marginLeft": 20,
   "marginRight": 20,
-  "async": true
+  "isAsync": true
 }
 ```
 

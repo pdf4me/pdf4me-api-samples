@@ -78,7 +78,7 @@ async function flipImage(inputImagePath) {
             docName: path.basename(inputImagePath),
             flipHorizontal: true,                                  // Flip horizontally
             flipVertical: false,                                   // Don't flip vertically
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with flip parameters");

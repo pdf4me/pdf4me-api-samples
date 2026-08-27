@@ -29,7 +29,7 @@ public class Main {
             String imgBase64 = Base64.getEncoder().encodeToString(imgBytes);
             String docName = imgPath.getFileName().toString();
             String imageType = getImageTypeFromExtension(inputImagePath);
-            String payload = String.format("{\"docContent\":\"%s\",\"docName\":\"%s\",\"imageType\":\"%s\",\"async\":true}", imgBase64, docName, imageType);
+            String payload = String.format("{\"docContent\":\"%s\",\"docName\":\"%s\",\"imageType\":\"%s\",\"isAsync\":true}", imgBase64, docName, imageType);
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/RemoveEXIFTagsFromImage"))
                 .header("Content-Type", "application/json")

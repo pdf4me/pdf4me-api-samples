@@ -29,7 +29,7 @@ public with sharing class UpdateHyperlinksAnnotation {
                 'docName' => outputFileName,
                 'docContent' => pdfBase64,
                 'updatehyperlinkannotationlist' => hyperlinkUpdates,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

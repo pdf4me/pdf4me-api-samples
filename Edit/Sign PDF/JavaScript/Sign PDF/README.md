@@ -101,7 +101,7 @@ const payload = {
     opacity: "100",                  // 0-100 (0=invisible, 100=fully opaque)
     showOnlyInPrint: true,           // Show in view and print
     isBackground: false,             // Background/foreground placement
-    async: true                      // Enable async processing
+    isAsync: true                      // Enable async processing
 };
 ```
 

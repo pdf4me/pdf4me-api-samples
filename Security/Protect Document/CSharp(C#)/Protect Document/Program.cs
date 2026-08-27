@@ -104,7 +104,7 @@ public class ProtectDocument
                 docContent = pdfBase64,                             // Base64 encoded PDF content
                 password = "1234",                                  // Password for the protected PDF
                 pdfPermission = "All",                              // PDF permissions
-                async = true                                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteDocumentProtectionAsync(payload);

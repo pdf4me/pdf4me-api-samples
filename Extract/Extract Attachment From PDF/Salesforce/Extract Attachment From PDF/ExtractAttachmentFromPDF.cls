@@ -46,7 +46,7 @@ public with sharing class ExtractAttachmentFromPDF {
             Map<String, Object> payload = new Map<String, Object>{
                 'docName' => docName,
                 'docContent' => pdfBase64,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

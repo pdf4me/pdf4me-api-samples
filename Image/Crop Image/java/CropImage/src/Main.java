@@ -39,7 +39,7 @@ public class Main {
                 "\"UpperLeftY\":10," +
                 "\"Width\":50," +
                 "\"Height\":50," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             String url = BASE_URL + "api/v2/CropImage?schemaVal=Border";
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

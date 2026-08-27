@@ -71,7 +71,7 @@ async function processPdfToExcelConversion() {
         language: "English",             // OCR language for text recognition in images/scanned PDFs
         outputFormat: true,              // Preserve original formatting when possible
         ocrWhenNeeded: true,             // Use OCR (Optical Character Recognition) for scanned PDFs
-        async: true                      // ADDED: Enable asynchronous processing
+        isAsync: true                      // ADDED: Enable asynchronous processing
     };
 
     // Additional payload options you can customize:

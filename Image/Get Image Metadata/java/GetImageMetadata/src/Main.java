@@ -31,7 +31,7 @@ public class Main {
                 "\"docContent\":\"" + imgBase64 + "\"," +
                 "\"docName\":\"" + imgPath.getFileName() + "\"," +
                 "\"imageType\":\"PNG\"," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             String url = BASE_URL + "api/v2/GetImageMetadata";
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

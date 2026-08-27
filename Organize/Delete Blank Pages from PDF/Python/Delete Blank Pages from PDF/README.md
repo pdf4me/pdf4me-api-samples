@@ -137,7 +137,7 @@ The implementation supports these settings:
   "docContent": "base64-encoded-pdf-content",
   "docName": "output.pdf",
   "deletePageOption": "NoTextNoImages",
-  "async": true
+  "isAsync": true
 }
 ```
 

@@ -22,7 +22,7 @@ public with sharing class GenerateReplaceTextWithImageInWord {
                 'IsFirstPageSkip' => isFirstPageSkip,
                 'PageNumbers' => pageNumbers,
                 'SearchText' => searchText,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

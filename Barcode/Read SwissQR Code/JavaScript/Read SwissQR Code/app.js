@@ -71,7 +71,7 @@ async function processSwissQRReading() {
     const payload = {
         docContent: pdfBase64,                        // Base64 encoded PDF content
         docName: path.basename(INPUT_FILE),           // PDF file name
-        async: true                                   // Enable asynchronous processing
+        isAsync: true                                   // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

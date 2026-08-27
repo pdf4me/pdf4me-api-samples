@@ -55,7 +55,7 @@ exports.handler = async (event, context) => {
                 maxWidth: process.env.MAX_WIDTH || 1920,
                 maxHeight: process.env.MAX_HEIGHT || 1080,
                 maintainAspectRatio: process.env.MAINTAIN_ASPECT_RATIO || true,
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

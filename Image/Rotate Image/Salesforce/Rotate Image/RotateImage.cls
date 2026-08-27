@@ -25,7 +25,7 @@ public with sharing class RotateImage {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => imageBase64,
                 'docName' => imageFileName,
-                'async' => false
+                'isAsync' => true
             };
             if (backgroundColor != null) payload.put('Backgroundcolor', backgroundColor);
             if (proportionateResize != null) payload.put('ProportionateResize', proportionateResize);

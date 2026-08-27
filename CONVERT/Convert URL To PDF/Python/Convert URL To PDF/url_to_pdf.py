@@ -35,7 +35,7 @@ def convert_url_to_pdf():
         "bottomMargin": "20px",         # Bottom margin of PDF (string format with px unit)
         "printBackground": True,        # Include background colors and images (boolean)
         "displayHeaderFooter": False,   # Show header and footer in PDF (boolean)
-        "async": True                   # Enable asynchronous processing
+        "isAsync": True                   # Enable asynchronous processing
     }
     
     # About URL to PDF conversion features:

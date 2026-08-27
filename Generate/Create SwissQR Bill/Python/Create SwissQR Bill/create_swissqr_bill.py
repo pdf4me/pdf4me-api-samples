@@ -94,7 +94,7 @@ def create_swiss_qr_bill(base64_content, filename):
         "referenceType": "NON",                                    # Reference type (NON = No reference) (Required)
         "languageType": "English",                                 # Language for the QR bill (Required)
         "seperatorLine": "LineWithScissor",                        # Separator line style (Required)
-        "async": True                                              # Asynchronous processing as requested
+        "isAsync": True                                              # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for Swiss QR Bill creation...")

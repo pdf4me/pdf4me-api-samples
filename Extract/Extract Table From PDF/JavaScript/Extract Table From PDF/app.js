@@ -70,7 +70,7 @@ async function processTableExtraction() {
     const payload = {
         docName: "output.pdf",            // Name of the input PDF file
         docContent: pdfBase64,            // Base64 encoded PDF document content
-        async: true                       // Enable asynchronous processing
+        isAsync: true                       // Enable asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

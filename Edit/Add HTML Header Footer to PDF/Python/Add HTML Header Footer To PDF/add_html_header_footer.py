@@ -45,7 +45,7 @@ def add_html_header_footer_to_pdf():
         "marginRight": 20.0,                             # Right margin in pixels (double)
         "marginTop": 50.0,                               # Top margin in pixels (double)
         "marginBottom": 50.0,                            # Bottom margin in pixels (double)
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

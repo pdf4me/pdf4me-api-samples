@@ -91,7 +91,7 @@ async function processTrackingChangesDisable() {
     const payload = {
         docName: "output.docx",        // Output document name (Required)
         docContent: base64Content,     // Base64 encoded Word document content (Required)
-        async: true                    // Asynchronous processing as requested
+        isAsync: true                    // Asynchronous processing as requested
     };
 
     // Set up HTTP headers for authentication and content type

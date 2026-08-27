@@ -72,7 +72,7 @@ This Google Apps Script crops images using the PDF4Me API. It allows you to extr
   "y": 100,
   "width": 800,
   "height": 600,
-  "async": true
+  "isAsync": true
 }
 ```
 

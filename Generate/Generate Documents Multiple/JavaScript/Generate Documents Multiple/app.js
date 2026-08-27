@@ -88,7 +88,8 @@ async function processDocumentGeneration() {
         documentDataType: "Json",                     // Type of data (Json/XML)
         outputType: getOutputType(OUTPUT_TYPE),       // Output format (PDF/Docx/Excel/HTML)
         documentDataText: jsonData,                   // JSON data as text
-        metaDataJson: "{}"                            // Additional metadata for fields in JSON format
+        metaDataJson: "{}",                           // Additional metadata for fields in JSON format
+        isAsync: true
     };
 
     // Additional payload options you can customize:

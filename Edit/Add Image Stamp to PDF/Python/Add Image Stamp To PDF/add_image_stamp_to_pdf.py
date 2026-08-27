@@ -67,7 +67,7 @@ def add_image_stamp_to_pdf():
         "opacity": 50,                               # Opacity (0-100): 0=invisible, 100=fully opaque
         "isBackground": True,                        # Place stamp in background/foreground (true/false)
         "showOnlyInPrint": False,                    # Show in view and print (true/false)
-        "async": True                                # Enable asynchronous processing
+        "isAsync": True                                # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

@@ -75,7 +75,7 @@ async function processTextExtraction() {
         RemoveComments: true,                            // Remove comments option
         RemoveHeaderFooter: true,                        // Remove header/footer option
         AcceptChanges: true,                             // Accept tracked changes option
-        async: true                                      // Enable asynchronous processing
+        isAsync: true                                      // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

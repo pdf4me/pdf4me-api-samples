@@ -41,6 +41,7 @@ public class Main {
         payload.put("compliance", "PdfA1b");
         payload.put("allowUpgrade", true);
         payload.put("allowDowngrade", true);
+        payload.put("isAsync", true);
 
         ApiResponse resp = post(API_URL, API_KEY, payload);
         if (resp.status == 200) {

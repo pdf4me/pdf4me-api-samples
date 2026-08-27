@@ -42,7 +42,7 @@ def merge_multiple_pdf_files_into_single_pdf():
     payload = {
         "docContent": pdf_contents_base64,                         # Array of base64 encoded PDF contents
         "docName": os.path.basename(output_path),                  # Output PDF file name
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

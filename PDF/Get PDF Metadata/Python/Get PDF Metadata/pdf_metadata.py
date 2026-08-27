@@ -76,7 +76,7 @@ def extract_pdf_metadata(base64_content, filename):
     payload = {
         "docContent": base64_content,               # Base64 encoded PDF content (Required)
         "docName": "output.pdf",                    # Output document name (Required)
-        "async": True                               # Asynchronous processing as requested
+        "isAsync": True                               # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for metadata extraction...")

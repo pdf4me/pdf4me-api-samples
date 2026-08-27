@@ -41,7 +41,7 @@ public class Main {
             payload.put("docContent", pdfBase64);
             payload.put("docName", "output.pdf");
             payload.put("pageNumbers", "2-4");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executeUnwantedPageDeletion(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in deleteUnwantedPagesFromPdf: " + ex.getMessage());

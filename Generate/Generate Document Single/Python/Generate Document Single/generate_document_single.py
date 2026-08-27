@@ -88,7 +88,7 @@ def generate_document_single(api_key, base_url, template_file_path, json_data_pa
             "documentDataType": "text",              # Document data type (JSON/XML)
             "outputType": "html",                    # Output document type (PDF/Word/Excel/HTML)
             "documentDataText": json_data,           # JSON/XML data as text (required if documentDataFile not mapped)
-            "async": True                            # For big files and too many calls async is recommended to reduce the server load
+            "isAsync": True                            # For big files and too many calls async is recommended to reduce the server load
         }
         
         # Alternative payload examples for different scenarios:
@@ -102,7 +102,7 @@ def generate_document_single(api_key, base_url, template_file_path, json_data_pa
         #     "outputType": "PDF",                     # Output as PDF
         #     "documentDataText": json_data,           # JSON data as text
         #     "metaDataJson": "{}",                    # Additional metadata for fields in JSON format
-        #     "async": True
+        #     "isAsync": True
         # }
         
         # Example 2: PDF template with XML data outputting to Word
@@ -114,7 +114,7 @@ def generate_document_single(api_key, base_url, template_file_path, json_data_pa
         #     "outputType": "Word",                    # Output as Word document
         #     "documentDataText": xml_data,            # XML data as text
         #     "metaDataJson": "{}",                    # Additional metadata
-        #     "async": True
+        #     "isAsync": True
         # }
         
         # Example 3: HTML template with JSON data outputting to Excel
@@ -126,7 +126,7 @@ def generate_document_single(api_key, base_url, template_file_path, json_data_pa
         #     "outputType": "Excel",                   # Output as Excel file
         #     "documentDataText": json_data,           # JSON data as text
         #     "metaDataJson": "{}",                    # Additional metadata
-        #     "async": True
+        #     "isAsync": True
         # }
         
         # Example 4: Word template with data file (instead of text)
@@ -138,7 +138,7 @@ def generate_document_single(api_key, base_url, template_file_path, json_data_pa
         #     "outputType": "PDF",                     # Output as PDF
         #     "documentDataFile": data_file_base64,    # Base64 encoded data file (alternative to documentDataText)
         #     "metaDataJson": "{}",                    # Additional metadata
-        #     "async": True
+        #     "isAsync": True
         # }
         
         # Example 5: Complete payload with all optional parameters
@@ -152,7 +152,7 @@ def generate_document_single(api_key, base_url, template_file_path, json_data_pa
         #     "documentDataText": json_data,           # Manual data entry (use if documentDataFile not mapped)
         #     "fileMetaData": "{}",                    # Any additional metadata for fields
         #     "metaDataJson": "{}",                    # Output metadata in JSON format
-        #     "async": True
+        #     "isAsync": True
         # }
         
         print("Sending generate document single request...")

@@ -75,7 +75,7 @@ async function splitPdf(inputPdfPath, outputFolder) {
             splitAction: SPLIT_ACTION,
             splitActionNumber: SPLIT_ACTION_NUMBER,
             fileNaming: FILE_NAMING,
-            async: true
+            isAsync: true
         };
         
         console.log("🚀 Sending split request to PDF4Me API...");

@@ -90,7 +90,7 @@ const payload = {
     ocrWhenNeeded: true,          // Enable OCR for scanned PDFs
     outputFormat: true,           // Preserve original formatting
     mergeAllSheets: true,         // Organize content for presentation format
-    async: true                   // Enable asynchronous processing
+    isAsync: true                   // Enable asynchronous processing
 };
 ```
 

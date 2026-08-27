@@ -42,7 +42,7 @@ public class Main {
             payload.put("docName", "output.pdf");
             payload.put("rotationType", "Clockwise");
             payload.put("page", "1");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             return executePageRotation(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in rotatePage: " + ex.getMessage());

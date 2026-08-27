@@ -78,7 +78,7 @@ function addPageNumberToPdf() {
       isBold: true,                                 // Make page numbers bold (true/false)
       isItalic: false,                              // Make page numbers italic (true/false)
       skipFirstPage: false,                         // Skip numbering on first page (true/false)
-      async: true                                   // Enable asynchronous processing
+      isAsync: true                                   // Enable asynchronous processing
     };
 
     // Set the headers for the API request

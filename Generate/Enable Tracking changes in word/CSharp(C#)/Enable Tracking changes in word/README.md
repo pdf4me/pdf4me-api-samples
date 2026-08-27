@@ -109,7 +109,7 @@ POST /api/v2/EnableTrackingChangesInWord
 {
   "docContent": "base64-encoded-word-document",
   "docName": "output.docx",
-  "async": true
+  "isAsync": true
 }
 ```
 

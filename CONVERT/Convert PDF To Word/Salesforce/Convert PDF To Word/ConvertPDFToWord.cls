@@ -45,7 +45,7 @@ public with sharing class ConvertPDFToWord {
                 'mergeAllSheets' => mergeAllSheets,
                 'outputFormat' => outputFormat,
                 'ocrWhenNeeded' => ocrWhenNeeded,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

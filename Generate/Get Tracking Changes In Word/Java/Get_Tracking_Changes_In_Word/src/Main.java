@@ -59,7 +59,7 @@ public class Main {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("docName", "output.docx");      // Output document name
             payload.put("docContent", docxBase64);      // Base64 encoded Word document content
-            payload.put("async", true);                 // For big files and too many calls async is recommended to reduce the server load
+            payload.put("isAsync", true);                 // For big files and too many calls async is recommended to reduce the server load
 
             return executeTrackingChangesRetrieval(payload, outputJsonPath);
         } catch (Exception ex) {

@@ -63,7 +63,7 @@ public class Main {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("docContent", pdfBase64);
             payload.put("docName", "sample.pdf");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             
             return executePdfRepair(payload, outputPdfPath);
         } catch (Exception ex) {

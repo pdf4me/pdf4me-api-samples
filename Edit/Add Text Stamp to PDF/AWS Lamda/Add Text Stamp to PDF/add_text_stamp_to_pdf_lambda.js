@@ -44,7 +44,7 @@ async function addTextStampToPdf(pdfBase64, options = {}) {
         showOnlyInPrint = false,
         transverse = false,
         fitTextOverPage = false,
-        async = true
+        isAsync = true
     } = options;
 
     const payload = {

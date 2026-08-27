@@ -72,7 +72,7 @@ async function processResourceExtraction() {
         docName: "sample.pdf",           // Name of the input PDF file
         extractText: true,               // Extract text content from PDF
         extractImages: true,              // Extract images from PDF
-        async: true                      // Enable asynchronous processing
+        isAsync: true                      // Enable asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

@@ -71,7 +71,7 @@ async function processPdfToPowerpointConversion() {
         ocrWhenNeeded: true,          // Use OCR (Optical Character Recognition) for scanned PDFs
         outputFormat: true,           // Preserve original formatting when possible
         mergeAllSheets: true,         // Combine content appropriately for presentation format
-        async: true                   // Enable asynchronous processing
+        isAsync: true                   // Enable asynchronous processing
     };
 
     // About PDF to PowerPoint conversion features:

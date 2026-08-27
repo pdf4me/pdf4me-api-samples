@@ -135,7 +135,7 @@ POST /api/v2/SplitPdfByText
   "text": "Chapter",
   "splitTextPage": "before",
   "fileNaming": "NameAsPerOrder",
-  "async": true
+  "isAsync": true
 }
 ```
 

@@ -49,7 +49,7 @@ public with sharing class AddPageNumberToPDF {
             'isBold' => true,
             'isItalic' => false,
             'skipFirstPage' => false,
-                'async' => false
+                'isAsync' => true
         };
             String jsonBody = JSON.serialize(payload);
 

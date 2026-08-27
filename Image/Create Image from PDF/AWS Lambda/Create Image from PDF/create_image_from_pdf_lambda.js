@@ -56,7 +56,7 @@ exports.handler = async (event, context) => {
                 width: process.env.WIDTH || null, // Optional width in pixels
                 height: process.env.HEIGHT || null, // Optional height in pixels
                 maintainAspectRatio: process.env.MAINTAIN_ASPECT_RATIO || true,
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

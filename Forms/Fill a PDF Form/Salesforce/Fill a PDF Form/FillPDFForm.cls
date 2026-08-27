@@ -30,7 +30,7 @@ public with sharing class FillPDFForm {
             'metaData' => '',
             'metaDataJson' => '',
             'InputFormData' => inputFormData,
-                'async' => false
+                'isAsync' => true
         };
             String jsonBody = JSON.serialize(payload);
 

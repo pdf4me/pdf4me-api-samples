@@ -96,7 +96,7 @@ public class HtmlToPdfConverter
             rightMargin = "40px",              // Right margin
             printBackground = true,            // Include background colors/images
             displayHeaderFooter = true,        // Show headers and footers
-            async = true                    // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true                    // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content

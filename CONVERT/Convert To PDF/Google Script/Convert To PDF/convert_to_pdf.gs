@@ -53,7 +53,7 @@ function convertDocumentToPdf() {
     var payload = {
       docContent: docBase64,
       docName: file.getName(),
-      async: true
+      isAsync: true
     };
 
     // Set the headers for the API request

@@ -106,7 +106,7 @@ public class DeleteUnwantedPages
                 docContent = pdfBase64,             // Base64 encoded PDF content
                 docName = "output.pdf",             // Output document name
                 pageNumbers = "2",                  // Page numbers to delete (comma-separated)
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteUnwantedPageDeletionAsync(payload);

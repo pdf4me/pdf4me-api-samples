@@ -102,7 +102,7 @@ async function splitPdfByBarcode(
             splitBarcodePage: splitBarcodePage,                    // Where to split relative to barcode
             combinePagesWithSameConsecutiveBarcodes: combinePagesWithSameConsecutiveBarcodes,  // Combine pages with same consecutive barcodes
             pdfRenderDpi: pdfRenderDpi,                            // DPI for PDF rendering
-            async: true                                            // For big files and too many calls async is recommended to reduce the server load
+            isAsync: true                                            // For big files and too many calls async is recommended to reduce the server load
         };
 
         console.log("✅ API request prepared with barcode splitting parameters");

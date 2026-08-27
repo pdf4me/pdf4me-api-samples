@@ -38,7 +38,7 @@ public class Main {
             payload.put("docName", new File(inputPdfPath).getName());
             payload.put("extractText", true);
             payload.put("extractImages", true);
-            payload.put("async", true);
+            payload.put("isAsync", true);
             executeExtractResources(payload, outputDir);
         } catch (Exception ex) {
             System.err.println("Error in extractResources: " + ex.getMessage());

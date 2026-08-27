@@ -76,7 +76,7 @@ def repair_pdf_document(base64_content, filename):
     payload = {
         "docContent": base64_content,               # Base64 encoded PDF content (Required)
         "docName": "sample.pdf",                    # Output document name (Required)
-        "async": True                               # Asynchronous processing as requested
+        "isAsync": True                               # Asynchronous processing as requested
     }
     
     print("Sending PDF to PDF4me API for document repair...")

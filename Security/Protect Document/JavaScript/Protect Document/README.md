@@ -67,7 +67,7 @@ const payload = {
     docContent: base64Content,    // Base64 encoded PDF content
     password: "1234",             // Password for the protected PDF
     pdfPermission: "All",         // PDF permissions
-    async: true                   // Enable async processing
+    isAsync: true                   // Enable async processing
 };
 ```
 

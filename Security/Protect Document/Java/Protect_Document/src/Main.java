@@ -45,7 +45,7 @@ public class Main {
             payload.put("docContent", pdfBase64);
             payload.put("password", "1234");
             payload.put("pdfPermission", "All");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             
             return executeDocumentProtection(payload, outputPdfPath);
         } catch (Exception ex) {

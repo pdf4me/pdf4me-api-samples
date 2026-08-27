@@ -69,7 +69,7 @@ async function extractTextByExpression(pdfBase64, filename, extractionConfig = {
         docContent: pdfBase64,                     // Base64 encoded PDF content (Required)
         docName: filename,                         // Output document name (Required)
         expression: extractionConfig.expression || ".*", // Regular expression pattern (Required)
-        async: true                                // Asynchronous processing as requested
+        isAsync: true                                // Asynchronous processing as requested
     };
 
     console.log('Sending PDF to PDF4me API for text extraction by expression...');

@@ -83,7 +83,7 @@ async function compressImage(inputImagePath) {
             docName: path.basename(inputImagePath),
             imageType: "JPG",
             compressionLevel: "Medium",
-            async: true
+            isAsync: true
         };
 
         console.log("✅ API request prepared with compression parameters");

@@ -127,7 +127,7 @@ public class PdfHtmlHeaderFooterAdder
                 // Page range where header/footer should be applied
                 pages = "all",
                 // For big files and too many calls async is recommended to reduce the server load
-                async = true
+                isAsync = true
             };
 
             // Execute the HTML header/footer addition operation

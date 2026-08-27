@@ -23,7 +23,7 @@ public with sharing class MergeMultiplePDFs {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => pdfContentsBase64,
                 'docName' => outputFileName,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

@@ -25,7 +25,7 @@ public with sharing class CompressPDF {
                 'docContent' => pdfBase64,
                 'docName' => outputFileName,
                 'optimizeProfile' => optimizeProfile,
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

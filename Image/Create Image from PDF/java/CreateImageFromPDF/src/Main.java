@@ -37,7 +37,7 @@ public class Main {
                 "\"docname\":\"" + pdfPath.getFileName() + "\"," +
                 "\"imageAction\":{\"WidthPixel\":\"800\",\"ImageExtension\":\"jpeg\",\"PageSelection\":{\"PageNrs\":[1,2,3]}}," +
                 "\"pageNrs\":\"1-2\"," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "api/v2/CreateImages"))
                 .header("Content-Type", "application/json")

@@ -44,7 +44,7 @@ public with sharing class CreateBarcodePDF4me {
                 'text' => text,
                 'barcodeType' => barcodeType,
                 'hideText' => hideText,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

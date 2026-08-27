@@ -116,7 +116,7 @@ public class PdfMerger
             {
                 docContent = pdfBase64Contents,     // Base64 encoded PDF contents
                 docName = "output.pdf",             // Output document name
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             // Serialize payload to JSON and create HTTP content

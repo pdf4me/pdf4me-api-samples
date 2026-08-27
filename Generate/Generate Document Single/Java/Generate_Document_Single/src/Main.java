@@ -54,7 +54,7 @@ public class Main {
             payload.put("documentDataType", "text");
             payload.put("outputType", "html");
             payload.put("documentDataText", jsonData);
-            payload.put("async", false);
+            payload.put("isAsync", true);
             
             return executeDocumentGeneration(payload, outputPath);
         } catch (Exception ex) {

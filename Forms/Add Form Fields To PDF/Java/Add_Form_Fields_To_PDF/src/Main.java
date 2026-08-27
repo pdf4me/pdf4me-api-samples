@@ -36,7 +36,7 @@ public class Main {
             String outputPdfPath = Paths.get(System.getProperty("user.dir"), outputFileName).toString();
             byte[] pdfBytes = Files.readAllBytes(Paths.get(inputPdfPath));
             String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
-            String jsonPayload = "{\"docContent\":\"" + pdfBase64 + "\",\"docName\":\"sample.pdf\",\"initialValue\":\"input text\",\"positionX\":300,\"positionY\":300,\"fieldName\":\"Input Field Name\",\"Size\":4,\"pages\":\"1\",\"formFieldType\":\"TextBox\",\"async\":true}";
+            String jsonPayload = "{\"docContent\":\"" + pdfBase64 + "\",\"docName\":\"sample.pdf\",\"initialValue\":\"input text\",\"positionX\":300,\"positionY\":300,\"fieldName\":\"Input Field Name\",\"Size\":4,\"pages\":\"1\",\"formFieldType\":\"TextBox\",\"isAsync\":true}";
             return executeFormFieldAddition(jsonPayload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in addFormField: " + ex.getMessage());

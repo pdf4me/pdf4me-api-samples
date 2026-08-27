@@ -48,7 +48,7 @@ public with sharing class AddHtmlHeaderFooterToPDF {
             'marginRight' => 20.0,
             'marginTop' => 50.0,
             'marginBottom' => 50.0,
-                'async' => false
+                'isAsync' => true
         };
             String jsonBody = JSON.serialize(payload);
 

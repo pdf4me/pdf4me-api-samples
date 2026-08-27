@@ -77,7 +77,7 @@ public class PdfFlattener
         {
             docContent = pdfBase64,           // Base64 encoded PDF content
             docName = "output.pdf",           // Output document name
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
         // Serialize payload to JSON and create HTTP content
         var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");

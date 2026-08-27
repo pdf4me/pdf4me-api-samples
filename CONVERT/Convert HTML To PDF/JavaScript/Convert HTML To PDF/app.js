@@ -75,7 +75,7 @@ async function processHtmlToPdfConversion() {
         rightMargin: "40px",              // Right margin spacing
         printBackground: true,            // Include background colors and images
         displayHeaderFooter: true,        // Show header and footer in PDF
-        async: true                       // Enable asynchronous processing
+        isAsync: true                       // Enable asynchronous processing
     };
 
     // Additional payload options you can customize:

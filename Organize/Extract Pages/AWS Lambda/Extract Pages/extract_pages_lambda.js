@@ -69,7 +69,7 @@ async function extractPagesFromPdf(base64Content, filename, pageNumbers = '1,3')
         docName: "output.pdf",
         docContent: base64Content,
         pageNumbers: pageNumbers, // Page numbers to extract (e.g. "1" or "1,3,5" or "2-4")
-        async: true
+        isAsync: true
     };
 
     console.log('Sending PDF to PDF4me API for page extraction...');

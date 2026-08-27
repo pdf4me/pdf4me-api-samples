@@ -89,7 +89,7 @@ public class BarcodeReader
                 docName = Path.GetFileName(_inputImagePath),  // Original filename
                 docContent = imageBase64,           // Base64 encoded image content
                 imageType = imageType,              // Image format type (JPG, PNG, etc.)
-                async = true // For big file and too many calls async is recommended to reduce the server load.
+                isAsync = true // For big file and too many calls async is recommended to reduce the server load.
             };
 
             // Serialize payload to JSON and create HTTP content

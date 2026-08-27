@@ -125,7 +125,7 @@ The implementation supports these settings:
   "docName": "output.pdf",
   "docContent": "base64-encoded-pdf-content",
   "password": "1234",
-  "async": true
+  "isAsync": true
 }
 ```
 

@@ -73,7 +73,7 @@ function extractTextByExpression() {
       docName: file.getName(),                      // Name of the input PDF file
       expression: expression,                       // Regular expression pattern to search for
       pageSequence: pageSequence,                   // Page range to process
-      async: true                                   // Asynchronous processing
+      isAsync: true                                   // Asynchronous processing
     };
 
     // Set the headers for the API request

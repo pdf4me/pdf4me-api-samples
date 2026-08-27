@@ -68,7 +68,7 @@ async function convertVisioToPdf(visioBase64, filename, conversionConfig = {}) {
     const payload = {
         docContent: visioBase64,                   // Base64 encoded VISIO content (Required)
         docName: filename,                         // Output document name (Required)
-        async: true                                // Asynchronous processing as requested
+        isAsync: true                                // Asynchronous processing as requested
     };
 
     console.log('Sending VISIO file to PDF4me API for PDF conversion...');

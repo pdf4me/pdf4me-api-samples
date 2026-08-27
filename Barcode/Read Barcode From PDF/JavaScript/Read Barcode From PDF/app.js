@@ -73,7 +73,7 @@ async function processBarcodeReading() {
         docName: "output.pdf",                        // Output PDF file name
         barcodeType: ["all"],                         // Barcode types: ["all"], ["qrCode"], ["dataMatrix"], ["code128"], etc.
         pages: "all",                                 // Page options: "all", "1", "1,3,5", "2-5", "1,3,7-10", "2-"
-        async: true                                   // Enable asynchronous processing
+        isAsync: true                                   // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

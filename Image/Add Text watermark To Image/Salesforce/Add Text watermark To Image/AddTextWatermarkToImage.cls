@@ -43,7 +43,7 @@ public with sharing class AddTextWatermarkToImage {
             'IsUnderline' => isUnderline,
             'IsItalic' => isItalic,
             'Opacity' => opacity,
-                'async' => false
+                'isAsync' => true
             };
             if (rotationAngle != null) payload.put('RotationAngle', rotationAngle);
             if (positionX != null) payload.put('PositionX', positionX);

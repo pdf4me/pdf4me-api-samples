@@ -56,7 +56,7 @@ public with sharing class AddImageStampToPDF {
             'opacity' => 50,
             'isBackground' => true,
             'showOnlyInPrint' => false,
-                'async' => false
+                'isAsync' => true
         };
             String jsonBody = JSON.serialize(payload);
 

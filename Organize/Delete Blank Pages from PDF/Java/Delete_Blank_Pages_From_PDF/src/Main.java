@@ -51,7 +51,7 @@ public class Main {
             payload.put("docContent", pdfBase64);                              // Base64 encoded PDF content
             payload.put("docName", "output.pdf");                              // Output PDF file name
             payload.put("deletePageOption", "NoTextNoImages");                 // Options: NoTextNoImages, NoText, NoImages
-            payload.put("async", true);                                        // Enable asynchronous processing
+            payload.put("isAsync", true);                                        // Enable asynchronous processing
             
             return executeBlankPageDeletion(payload, outputPdfPath);
         } catch (Exception ex) {

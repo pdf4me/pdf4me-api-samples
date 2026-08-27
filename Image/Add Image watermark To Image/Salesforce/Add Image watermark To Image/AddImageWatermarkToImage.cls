@@ -37,7 +37,7 @@ public with sharing class AddImageWatermarkToImage {
                 'horizontalOffset' => horizontalOffset,
                 'verticalOffset' => verticalOffset,
                 'rotation' => rotation,
-                'async' => false
+                'isAsync' => true
             };
             if (positionX != null) payload.put('positionX', positionX);
             if (positionY != null) payload.put('positionY', positionY);

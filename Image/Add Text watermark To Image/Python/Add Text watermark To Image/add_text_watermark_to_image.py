@@ -50,7 +50,7 @@ def add_text_watermark_to_image():
         "RotationAngle": 0.0,                                     # Rotation angle for the text (float)
         "PositionX": 272.0,                                       # X position for custom positioning (float)
         "PositionY": 0.0,                                         # Y position for custom positioning (float)
-        "async": True                                             # Enable asynchronous processing
+        "isAsync": True                                             # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

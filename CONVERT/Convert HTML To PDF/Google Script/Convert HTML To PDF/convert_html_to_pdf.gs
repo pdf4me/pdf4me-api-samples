@@ -67,7 +67,7 @@ function convertHtmlToPdf() {
         rightMargin: "40px",              // Right margin spacing
         printBackground: true,            //  Boolean value, not string
         displayHeaderFooter: true,        //  Boolean value, not string
-        async: true                       //  Boolean value, not string
+        isAsync: true                       //  Boolean value, not string
     };
 
     // Set the headers for the API request

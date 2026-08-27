@@ -107,7 +107,7 @@ public class DeleteBlankPages
                 docContent = pdfBase64,             // Base64 encoded PDF content
                 docName = "output.pdf",             // Output document name
                 deletePageOption = "NoTextNoImages", // Option to delete pages with no text and no images
-                async = true                        // For big files and too many calls async is recommended to reduce the server load
+                isAsync = true                        // For big files and too many calls async is recommended to reduce the server load
             };
 
             return await ExecuteBlankPageDeletionAsync(payload);

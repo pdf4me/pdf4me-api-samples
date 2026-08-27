@@ -139,7 +139,7 @@ POST /api/v2/AddTextWatermarkToImage
   "fontSize": 24,
   "fontColor": "#FF0000",
   "opacity": 0.7,
-  "async": true
+  "isAsync": true
 }
 ```
 

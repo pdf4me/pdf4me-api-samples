@@ -24,7 +24,7 @@ public with sharing class CompressImage {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => imageBase64,
                 'docName' => imageFileName,
-                'async' => false
+                'isAsync' => true
             };
             if (imageType != null) payload.put('imageType', imageType);
             if (compressionLevel != null) payload.put('compressionLevel', compressionLevel);

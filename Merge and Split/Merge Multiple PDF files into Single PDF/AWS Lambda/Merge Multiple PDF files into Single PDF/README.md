@@ -127,7 +127,7 @@ The function uses the PDF4me Merge API endpoint:
 {
   "docContent": ["base64-pdf1", "base64-pdf2"],
   "docName": "Merged_pdf_output.pdf",
-  "async": true
+  "isAsync": true
 }
 ```
 

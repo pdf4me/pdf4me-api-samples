@@ -69,7 +69,7 @@ def sign_pdf():
         "opacity": "100",                                # Opacity (0-100): 0=invisible, 100=fully opaque
         "showOnlyInPrint": True,                        # Show signature in view and print (true/false)
         "isBackground": False,                           # Place signature in background/foreground (true/false)
-        "async": True                                    # Enable asynchronous processing
+        "isAsync": True                                    # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

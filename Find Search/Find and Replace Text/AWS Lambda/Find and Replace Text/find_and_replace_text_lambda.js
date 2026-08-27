@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
                 oldText: process.env.FIND_TEXT || 'old text',
                 newText: process.env.REPLACE_TEXT || 'new text',
                 pageSequence: process.env.PAGE_SEQUENCE || 'all',
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

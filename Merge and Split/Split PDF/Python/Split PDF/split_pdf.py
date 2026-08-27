@@ -47,7 +47,7 @@ def split_pdf():
         "splitAction": "SplitAfterPage",                           # Split action type
         "splitActionNumber": 1,                                    # Split after page number (1 = split after first page)
         "fileNaming": "NameAsPerOrder",                            # File naming convention
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Alternative payload options (COMMENTED OUT - only one can be active at a time):
@@ -59,7 +59,7 @@ def split_pdf():
     #     "splitAction": "RecurringSplitAfterPage",                # Split action type
     #     "splitActionNumber": 4,                                  # Split every 4 pages
     #     "fileNaming": "NameAsPerOrder",                          # File naming convention
-    #     "async": True                                            # Enable asynchronous processing
+    #     "isAsync": True                                            # Enable asynchronous processing
     # }
 
     # Option 2: SplitSequence - Splits at specific page numbers
@@ -69,7 +69,7 @@ def split_pdf():
     #     "splitAction": "SplitSequence",                          # Split action type
     #     "splitSequence": [1, 3, 8],                             # Split at pages 1, 3, and 8
     #     "fileNaming": "NameAsPerOrder",                          # File naming convention
-    #     "async": True                                            # Enable asynchronous processing
+    #     "isAsync": True                                            # Enable asynchronous processing
     # }
 
     # Option 3: SplitRanges - Extracts specific page ranges
@@ -79,7 +79,7 @@ def split_pdf():
     #     "splitAction": "SplitRanges",                            # Split action type
     #     "splitRanges": "1-4",                                    # Extract pages 1-4
     #     "fileNaming": "NameAsPerOrder",                          # File naming convention
-    #     "async": True                                            # Enable asynchronous processing
+    #     "isAsync": True                                            # Enable asynchronous processing
     # }
 
     # Set up HTTP headers for the API request

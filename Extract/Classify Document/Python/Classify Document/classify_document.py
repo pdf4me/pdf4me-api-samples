@@ -39,7 +39,7 @@ def classify_document():
     payload = {
         "docContent": pdf_base64,                                  # Base64 encoded PDF document content
         "docName": "output.pdf",                                   # Source PDF file name with .pdf extension
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

@@ -149,7 +149,7 @@ POST /api/v2/SplitPdfByBarcode_old
   "splitBarcodePage": "before",
   "combinePagesWithSameConsecutiveBarcodes": true,
   "pdfRenderDpi": "1",
-  "async": true
+  "isAsync": true
 }
 ```
 

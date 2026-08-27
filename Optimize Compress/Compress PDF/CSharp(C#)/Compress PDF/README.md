@@ -151,7 +151,7 @@ The implementation supports these settings:
   "docName": "output.pdf",
   "docContent": "base64-encoded-pdf-content",
   "optimizeProfile": "Web",
-  "async": true
+  "isAsync": true
 }
 ```
 

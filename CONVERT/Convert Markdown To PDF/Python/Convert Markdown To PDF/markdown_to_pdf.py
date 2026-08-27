@@ -40,7 +40,7 @@ def convert_markdown_to_pdf():
         "docContent": md_base64,    # Base64 encoded Markdown document content
         "docName": "sample.md",     # Name of the source Markdown file with extension
         "mdFilePath": "",           # Path to .md file inside ZIP (empty for single file)
-        "async": True               # Enable asynchronous processing
+        "isAsync": True               # Enable asynchronous processing
     }
     
     # About Markdown formatting preserved in PDF:

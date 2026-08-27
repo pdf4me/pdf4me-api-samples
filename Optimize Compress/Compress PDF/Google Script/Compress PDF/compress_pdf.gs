@@ -71,7 +71,7 @@ function compressPdf() {
       docContent: pdfBase64,                        // Base64 encoded PDF document content
       docName: file.getName(),                      // Name of the input PDF file
       optimizeProfile: optimizeProfile,             // Optimization profile - Web, Print, Screen
-      async: true                                   // Asynchronous processing (recommended for large files)
+      isAsync: true                                 // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request

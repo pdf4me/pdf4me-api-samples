@@ -147,7 +147,7 @@ public class PdfSigner
                 opacity = 100,                       // Opacity of the signature (100 = fully opaque)
                 isBackground = false,                // Whether signature is in background
                 // For big files and too many calls async is recommended to reduce the server load
-                async = true                         // Enable asynchronous processing
+                isAsync = true                         // Enable asynchronous processing
             };
 
             // Execute the PDF signing operation

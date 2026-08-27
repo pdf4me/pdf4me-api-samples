@@ -65,7 +65,7 @@ async function processDocumentToPdfConversion() {
     const payload = {
         docContent: docBase64,           // Base64 encoded document content
         docName: "output",               // Name for the output file
-        async: true                      // Enable asynchronous processing
+        isAsync: true                      // Enable asynchronous processing
     };
 
     // Set up HTTP headers for authentication and content type

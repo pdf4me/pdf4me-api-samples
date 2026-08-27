@@ -56,7 +56,7 @@ exports.handler = async (event, context) => {
                 watermarkFontColor: process.env.WATERMARK_FONT_COLOR || "#FF0000", // Red color
                 watermarkFontFamily: process.env.WATERMARK_FONT_FAMILY || "Arial",
                 watermarkRotation: process.env.WATERMARK_ROTATION || 0, // Degrees
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

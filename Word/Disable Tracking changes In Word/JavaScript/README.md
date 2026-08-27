@@ -65,7 +65,7 @@ Customize the processing settings in the payload:
 const payload = {
     docName: "output.docx",        // Output document name
     docContent: base64Content,     // Base64 encoded Word document
-    async: true                    // Enable async processing
+    isAsync: true                    // Enable async processing
 };
 ```
 

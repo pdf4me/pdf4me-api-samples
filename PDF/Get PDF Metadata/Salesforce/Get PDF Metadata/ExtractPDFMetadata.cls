@@ -23,7 +23,7 @@ public with sharing class ExtractPDFMetadata {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => pdfBase64,
                 'docName' => 'input.pdf',
-                'async' => false
+                'isAsync' => true
             };
             String payloadJson = JSON.serialize(payload);
 

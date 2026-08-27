@@ -117,7 +117,7 @@ public class TextWatermarker
             FontSize = 24,                                // Font size for the watermark text
             FontColor = "#FF0000",                        // Font color (red)
             FontFamily = "Arial",                         // Font family for the watermark text
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
         
         // Serialize payload to JSON and create HTTP content

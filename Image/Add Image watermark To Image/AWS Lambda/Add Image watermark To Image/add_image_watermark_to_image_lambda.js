@@ -56,7 +56,7 @@ exports.handler = async (event, context) => {
                 watermarkPosition: process.env.WATERMARK_POSITION || "Center", // TopLeft, TopRight, BottomLeft, BottomRight, Center
                 watermarkOpacity: process.env.WATERMARK_OPACITY || 50, // 0-100
                 watermarkScale: process.env.WATERMARK_SCALE || 100, // Percentage
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

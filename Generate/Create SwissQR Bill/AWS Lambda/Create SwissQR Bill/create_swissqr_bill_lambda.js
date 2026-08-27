@@ -69,7 +69,7 @@ exports.handler = async (event, context) => {
                 referenceType: process.env.REFERENCE_TYPE || "NON",
                 languageType: process.env.LANGUAGE_TYPE || "English",
                 seperatorLine: process.env.SEPERATOR_LINE || "LineWithScissor",
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

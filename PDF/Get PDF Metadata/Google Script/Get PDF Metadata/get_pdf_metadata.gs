@@ -67,7 +67,7 @@ function getPdfMetadata() {
     var payload = {
       docContent: pdfBase64,                        // Base64 encoded PDF document content
       docName: "output.pdf",                        // Output document name
-      async: true                                   // Asynchronous processing (recommended for large files)
+      isAsync: true                                   // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request

@@ -79,7 +79,7 @@ async function updateHyperlinksAnnotation(inputPdfPath) {
                     URLNewValue: "https://pdf4me.com"
                 }
             ],
-            async: true  // For big files and too many calls async is recommended to reduce the server load
+            isAsync: true  // For big files and too many calls async is recommended to reduce the server load
         };
 
         console.log("✅ API request sent with hyperlinks update parameters");

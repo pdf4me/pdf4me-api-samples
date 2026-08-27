@@ -71,7 +71,7 @@ pages: "all" // Options: "all", "1", "1,3,5", "2-5", "1,3,7-10", "2-"
 
 #### Processing Mode
 ```javascript
-async: true // Enable asynchronous processing for better performance
+isAsync: true // Enable asynchronous processing for better performance
 ```
 
 ## Input Files

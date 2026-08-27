@@ -52,7 +52,7 @@ public class Main {
                 "\"docName\":\"output.pdf\"," +
                 "\"barcodeType\":[\"all\"]," +
                 "\"pages\":\"all\"," +
-                "\"async\":true" +
+                "\"isAsync\":true" +
                 "}";
             
             return executeBarcodeReading(payload, outputPath, url);

@@ -40,7 +40,7 @@ public with sharing class ConvertWordToPDFForm {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => wordBase64,
                 'docName' => outputFileName + '.docx',
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

@@ -91,7 +91,7 @@ async function processTextStampAddition() {
         showOnlyInPrint: false,                       // Show stamp in view and print (true/false)
         transverse: false,                            // Transverse positioning (true/false)
         fitTextOverPage: false,                       // Fit text over entire page (true/false)
-        async: true                                   // Enable asynchronous processing
+        isAsync: true                                   // Enable asynchronous processing
     };
 
     // Set up HTTP headers for the API request

@@ -69,7 +69,7 @@ function convertPdfToExcel() {
       "language": "English",         // OCR language for text recognition in images/scanned PDFs
       "outputFormat": true,          // Preserve original formatting when possible
       "ocrWhenNeeded": true,         // Use OCR (Optical Character Recognition) for scanned PDFs
-      "async": true                  // Enable asynchronous processing
+      "isAsync": true                  // Enable asynchronous processing
     };
 
     // Set the headers for the API request

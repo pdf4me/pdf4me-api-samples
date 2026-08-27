@@ -83,7 +83,7 @@ async function updateHyperlinksAnnotation(base64Content, filename, hyperlinkConf
                 URLNewValue: hyperlinkConfig.urlNewValue || 'https://pdf4me.com'           // New URL destination (Required)
             }
         ],
-        async: true                                              // Asynchronous processing as requested
+        isAsync: true                                              // Asynchronous processing as requested
     };
     
     console.log('Sending PDF to PDF4me API for updating hyperlinks annotation...');

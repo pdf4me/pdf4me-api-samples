@@ -33,7 +33,7 @@ async function addPageNumberToPdf(pdfBase64, options = {}) {
         isBold = true,
         isItalic = false,
         skipFirstPage = false,
-        async = true
+        isAsync = true
     } = options;
 
     const payload = {

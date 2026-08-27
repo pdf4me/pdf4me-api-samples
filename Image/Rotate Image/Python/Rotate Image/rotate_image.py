@@ -41,7 +41,7 @@ def rotate_image():
         "Backgroundcolor": "#FFFFFF",                              # Background color for rotation (string format)
         "ProportionateResize": True,                               # Maintain proportions during rotation (boolean)
         "RotationAngle": 90,                                       # Rotation angle in degrees (integer)
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

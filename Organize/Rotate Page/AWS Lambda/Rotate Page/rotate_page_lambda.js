@@ -71,7 +71,7 @@ async function rotatePage(base64Content, filename, rotationType = 'Clockwise', p
         docContent: base64Content,
         rotationType: rotationType, // NoRotation, Clockwise, CounterClockwise, UpsideDown
         page: page, // Page numbers to rotate (e.g. "1" or "1,3,5" or "2-4")
-        async: true
+        isAsync: true
     };
 
     console.log('Sending PDF to PDF4me API for page rotation...');

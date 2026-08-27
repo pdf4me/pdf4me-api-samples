@@ -97,7 +97,7 @@ public class MarkdownToPdfConverter
             docContent = pdfBase64,           // Base64 encoded PDF template content
             docName = "output.pdf",           // Output document name
             mdFilePath = zipBase64,           // Base64 encoded ZIP file containing Markdown
-            async = true // For big file and too many calls async is recommended to reduce the server load.
+            isAsync = true // For big file and too many calls async is recommended to reduce the server load.
         };
 
         // Serialize payload to JSON and create HTTP content

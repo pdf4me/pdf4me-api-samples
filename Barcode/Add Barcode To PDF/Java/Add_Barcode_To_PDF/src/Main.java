@@ -59,7 +59,7 @@ public class Main {
                 "\"hideText\":false," +
                 "\"showOnlyInPrint\":false," +
                 "\"isTextAbove\":false," +
-                "\"async\":true}";
+                "\"isAsync\":true}";
             return executeBarcodeAddition(payload, outputPdfPath);
         } catch (Exception ex) {
             System.err.println("Error in addBarcodeToPdf: " + ex.getMessage());

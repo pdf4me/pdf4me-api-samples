@@ -217,7 +217,7 @@ Delete unwanted Pages from PDF/
   "docContent": "base64-encoded-pdf-content",
   "docName": "output.pdf",
   "pageNumbers": "2-4",
-  "async": true
+  "isAsync": true
 }
 ```
 

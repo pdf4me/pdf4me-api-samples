@@ -33,7 +33,7 @@ def rotate_document():
             "docContent": pdf_base64,                              # Base64 encoded PDF content
             "docName": "output.pdf",                               # Output PDF file name
             "rotationType": "UpsideDown",                          # Rotation type: NoRotation, Clockwise, CounterClockwise, UpsideDown
-            "async": True                                          # Enable asynchronous processing
+            "isAsync": True                                          # Enable asynchronous processing
         }
         
         # Set up headers for the API request

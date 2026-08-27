@@ -110,7 +110,7 @@ var payload = {
   "pdfRenderDpi": "150",                                     // DPI for QR code detection: 100, 150, 200, 250
   "combinePagesWithSameBarcodes": false,                     // If true, combines pages with identical QR codes
   "returnAsZip": false,                                      // If true, returns a single ZIP file
-  "async": false                                             // Set to true for large files to avoid timeouts
+  "isAsync": true                                             // Set to true for large files to avoid timeouts
 };
 ```
 

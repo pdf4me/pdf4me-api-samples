@@ -48,7 +48,7 @@ public with sharing class ConvertVisioToPDF {
                 'SaveForegroundPage' => true,
                 'SaveToolBar' => true,
                 'AutoFit' => true,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

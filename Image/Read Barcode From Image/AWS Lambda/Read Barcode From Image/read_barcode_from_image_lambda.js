@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
                 confidence: process.env.CONFIDENCE || 0.8, // Minimum confidence threshold
                 outputFormat: process.env.OUTPUT_FORMAT || "JSON", // JSON, XML, Text
                 includeBarcodeImage: process.env.INCLUDE_BARCODE_IMAGE || false, // Include barcode image in result
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

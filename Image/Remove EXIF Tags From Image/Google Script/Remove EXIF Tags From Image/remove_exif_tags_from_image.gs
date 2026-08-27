@@ -28,7 +28,7 @@ function removeExifTagsFromImage() {
     var payload = {
       imageName: outputFileName,
       imageContent: imageBase64,
-      async: true
+      isAsync: true
     };
     
     // Make API request

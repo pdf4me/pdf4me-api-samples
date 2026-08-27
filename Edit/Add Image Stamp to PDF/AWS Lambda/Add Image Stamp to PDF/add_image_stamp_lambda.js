@@ -86,7 +86,7 @@ async function addImageStamp(pdfBase64, imageBase64, imageFilename, stampConfig 
         opacity: stampConfig.opacity || 50,       // Opacity (0-100): 0=invisible, 100=fully opaque
         isBackground: stampConfig.isBackground !== undefined ? stampConfig.isBackground : true, // Place stamp in background/foreground (true/false)
         showOnlyInPrint: stampConfig.showOnlyInPrint || false, // Show in view and print (true/false)
-        async: true                               // Enable asynchronous processing
+        isAsync: true                               // Enable asynchronous processing
     };
 
     console.log('Sending image stamp request to PDF4me API...');

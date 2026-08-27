@@ -73,7 +73,7 @@ This Google Apps Script replaces text in images with other images using the PDF4
   "textToReplace": "REPLACE_ME",
   "scale": 1.0,
   "position": "center",
-  "async": true
+  "isAsync": true
 }
 ```
 

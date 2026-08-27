@@ -66,7 +66,7 @@ This Google Apps Script rotates images using the PDF4Me API. It can rotate image
   "imageName": "rotated.jpg",
   "imageContent": "base64_encoded_image_content",
   "angle": 90,
-  "async": true
+  "isAsync": true
 }
 ```
 

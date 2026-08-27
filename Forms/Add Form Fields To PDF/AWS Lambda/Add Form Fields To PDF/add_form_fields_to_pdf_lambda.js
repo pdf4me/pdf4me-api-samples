@@ -58,7 +58,7 @@ exports.handler = async (event, context) => {
                 Size: 4,
                 pages: "1",
                 formFieldType: "TextBox",
-                async: true
+                isAsync: true
             };
         } else {
             // Direct invocation

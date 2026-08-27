@@ -75,7 +75,7 @@ async function splitPdfBySwissQR(base64Content, filename, splitQRPage = 'after',
         pdfRenderDpi: pdfRenderDpi,             // PDF render DPI: 100, 150, 200, 250
         combinePagesWithSameBarcodes: combinePagesWithSameBarcodes, // Combine consecutive pages with same QR
         returnAsZip: returnAsZip,               // Return individual files, not ZIP
-        async: false                             // Synchronous processing
+        isAsync: true                             // Synchronous processing
     };
 
     console.log('Sending PDF Swiss QR split request to PDF4me API...');

@@ -36,7 +36,7 @@ public with sharing class CreateImageFromPDF {
                 'docContent' => pdfBase64,
                 'docname' => pdfFileName,
                 'imageAction' => imageAction,
-                'async' => false
+                'isAsync' => true
             };
             
             // Debug the payload

@@ -96,7 +96,7 @@ const BASE_URL = "https://api.pdf4me.com/";
   "Rotation": 45,
   "FontSize": 24,
   "FontColor": "#FF0000",
-  "async": true
+  "isAsync": true
 }
 ```
 

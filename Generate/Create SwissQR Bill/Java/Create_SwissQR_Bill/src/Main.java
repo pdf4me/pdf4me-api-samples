@@ -61,7 +61,7 @@ public class Main {
             payload.put("referenceType", "NON");
             payload.put("languageType", "English");
             payload.put("seperatorLine", "LineWithScissor");
-            payload.put("async", true);
+            payload.put("isAsync", true);
             
             return executeSwissQrBillCreation(payload, outputPdfPath);
         } catch (Exception ex) {

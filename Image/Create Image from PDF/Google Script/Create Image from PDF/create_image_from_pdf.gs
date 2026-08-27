@@ -40,7 +40,7 @@ function createImageFromPdf() {
       quality: quality,
       maxWidth: maxWidth,
       maxHeight: maxHeight,
-      async: true
+      isAsync: true
     };
     
     // Make API request

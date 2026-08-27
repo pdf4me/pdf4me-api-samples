@@ -81,7 +81,7 @@ function updateHyperlinksAnnotation() {
       docName: "output.pdf",                               // Name of the file
       docContent: pdfBase64,                               // Base64 encoded PDF content
       updatehyperlinkannotationlist: hyperlinkUpdates,    // List of hyperlink updates
-      async: true                                          // Asynchronous processing (recommended for large files)
+      isAsync: true                                          // Asynchronous processing (recommended for large files)
     };
 
     // Set the headers for the API request

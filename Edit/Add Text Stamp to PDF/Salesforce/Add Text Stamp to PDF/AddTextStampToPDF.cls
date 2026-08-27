@@ -60,7 +60,7 @@ public with sharing class AddTextStampToPDF {
             'showOnlyInPrint' => false,
             'transverse' => false,
             'fitTextOverPage' => false,
-                'async' => false
+                'isAsync' => true
         };
             String jsonBody = JSON.serialize(payload);
 

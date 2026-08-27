@@ -44,7 +44,7 @@ def extract_table_from_pdf():
     payload = {
         "docName": "output.pdf",                                   # Name of the input PDF file
         "docContent": pdf_base64,                                  # Base64 encoded PDF document content
-        "async": True                                              # Enable asynchronous processing
+        "isAsync": True                                              # Enable asynchronous processing
     }
 
     # Set up HTTP headers for the API request

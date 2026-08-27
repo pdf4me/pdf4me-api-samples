@@ -45,7 +45,7 @@ public with sharing class ConvertPDFToPowerPoint {
                 'ocrWhenNeeded' => ocrWhenNeeded,
                 'outputFormat' => outputFormat,
                 'mergeAllSheets' => mergeAllSheets,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 

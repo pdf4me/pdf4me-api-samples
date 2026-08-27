@@ -27,7 +27,7 @@ def convert_json_to_excel():
         "ignoreNullValues": False,           # Ignore null values (True/False)
         "firstRow": 1,                       # Starting row number (1-based)
         "firstColumn": 1,                    # Starting column number (1-based)
-        "async": True                        # Enable asynchronous processing
+        "isAsync": True                        # Enable asynchronous processing
     }
 
     headers = {

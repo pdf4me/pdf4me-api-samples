@@ -44,7 +44,7 @@ public with sharing class ClassifyDocument {
             Map<String, Object> payload = new Map<String, Object>{
                 'docContent' => pdfBase64,
                 'docName' => docName,
-                'async' => false
+                'isAsync' => true
             };
             String jsonBody = JSON.serialize(payload);
 
